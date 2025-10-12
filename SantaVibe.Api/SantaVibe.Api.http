@@ -1,0 +1,6 @@
+@SantaVibe.Api_HostAddress = http://localhost:5017
+
+GET {{SantaVibe.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

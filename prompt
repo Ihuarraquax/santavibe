@@ -1,0 +1,86 @@
+  Context
+
+  You are an expert in creating proof of concept for web applications. Your task is to create a minimal PoC for SantaVibe - a platform for organizing Secret Santa draws.
+
+  PoC Scope - Minimal Functionality
+
+  1. Groups (MUST HAVE)
+
+  - Create group
+  - Generate unique invitation link
+  - Join group via link
+  - List of group participants
+  - Set budget by organizer (without participant suggestions for PoC)
+
+  2. Wishlists (MUST HAVE)
+
+  - Text field for entering wishlist
+  - Save/edit wishlist
+  - Display assigned person's wishlist (after draw)
+
+  3. Draw (MUST HAVE - SIMPLIFIED)
+
+  - "Start Draw" button for organizer
+  - Simple draw algorithm:
+    - Each participant gets exactly one person
+    - No one can draw themselves
+    - NO exclusion rules (simplification for PoC)
+    - NO validation for 2-person cycles (simplification for PoC)
+  - Display assigned person after draw
+  - Anonymity of results (everyone sees only their assignment)
+
+  4. Basic UI (MUST HAVE)
+
+  - Group view (different before and after draw)
+  - Create group form
+  - Join via link page
+  - Display assignment and wishlist
+
+  EXCLUDED from PoC (OUT OF SCOPE)
+
+  - ❌ Auth
+  - ❌ Email notifications
+  - ❌ AI gift suggestions
+  - ❌ Exclusion rules (pairs cannot draw each other)
+  - ❌ Draw feasibility validation
+  - ❌ Budget suggestions from participants
+  - ❌ Wishlist change notifications
+  - ❌ Removing participants
+  - ❌ GDPR checkbox and terms
+  - ❌ Email verification
+  - ❌ Advanced business rules validation
+  - ❌ CI/CD and deployment
+
+  Technical Requirements
+
+  Frontend
+
+  - Tailwind CSS + Flowbite for UI
+
+  Database
+
+  - In-memoryfor simplicity
+
+  IMPORTANT INSTRUCTIONS
+
+  🔴 BEFORE STARTING TO CODE:
+
+  1. PLAN YOUR WORK - present a detailed implementation plan including:
+  2. GET MY APPROVAL - wait for my confirmation before starting to code
+  3. ONLY THEN start creating the code
+
+  Expectations from PoC:
+
+  - ✅ Working basic flow: create group → invite → draw → result
+  - ✅ Simple, clean code (this is PoC, not production)
+  - ✅ Minimal styling (Tailwind + Flowbite)
+  - ✅ No advanced validation and error handling (basic error handling is enough)
+  - ✅ Data in memory
+  - ✅ Easy to run locally
+
+  PoC Goal:
+
+  Verify that the basic app concept works, the draw algorithm is correct, and the user flow makes sense. This should be the foundation on which we'll build the full MVP.
+
+  ---
+  START BY PRESENTING YOUR PLAN!

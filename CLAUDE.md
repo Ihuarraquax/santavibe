@@ -166,6 +166,15 @@ dotnet restore
 
 ### Guidelines for ARCHITECTURE
 
+#### CLEAN_ARCHITECTURE
+
+- Strictly separate code into layers: domain, application (use cases), infrastructure, and frameworks
+- Ensure dependencies point inward, with inner layers having no knowledge of outer layers
+- Implement domain entities that encapsulate {{business_rules}} without framework dependencies
+- Use interfaces (ports) and implementations (adapters) to isolate external dependencies
+- Create use cases that orchestrate entity interactions for specific business operations
+- Implement mappers to transform data between layers to maintain separation of concerns
+
 #### ADR
 
 - Create ADRs in /docs/adr/{name}.md for:
@@ -174,6 +183,11 @@ dotnet restore
 - 3) New integration patterns
 - 4) Database schema changes
 
+#### DDD
+
+- Create rich domain models with behavior, not just data structures, for {{core_domain_entities}}
+- Use value objects for concepts with no identity but defined by their attributes
+- Use aggregates to enforce consistency boundaries and transactional integrity
 
 ### Guidelines for STATIC_ANALYSIS
 

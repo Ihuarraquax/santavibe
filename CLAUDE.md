@@ -246,6 +246,8 @@ dotnet restore
 
 ### Guidelines for DOTNET
 
+####
+
 #### ENTITY_FRAMEWORK
 
 - Use the repository and unit of work patterns to abstract data access logic and simplify testing

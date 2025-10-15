@@ -15,6 +15,7 @@ Backend - .NET Core:
 - Serilog
 - Background tasks with hosted services
 - Rate limiting middleware
+- xUnit with Verify.Xunit for snapshot testing
 
 Database: Neon (Serverless Postgres)
 - Fast MVP: Serverless, no infrastructure management needed, 512MB storage in free tier

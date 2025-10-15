@@ -4,7 +4,8 @@
       "Bash(dotnet --version)",
       "Bash(dotnet restore)",
       "Bash(dotnet restore:*)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(docker compose ps)"
     ]
   },
   "outputStyle": "default"

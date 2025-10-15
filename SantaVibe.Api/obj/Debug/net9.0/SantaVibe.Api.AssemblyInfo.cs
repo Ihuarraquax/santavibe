@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SantaVibe.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c3fa0c9100492a9da298b992b815f51b9bb0bb7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b566a7ae5c8474c831f4d9236578965f41e83a86")]
 [assembly: System.Reflection.AssemblyProductAttribute("SantaVibe.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SantaVibe.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

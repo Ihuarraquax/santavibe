@@ -472,3 +472,5 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/```
+obj/
+SantaVibe.Api/obj/*

@@ -1,0 +1,9 @@
+{
+    "npmName": "@zablodev/santa-vibe",
+    "ngVersion": "16.2.11",
+    "npmVersion": "1.0.0",
+    "snapshot": false,
+    "apiModulePrefix": "SantaVibe",
+    "modelPropertyNaming": "original",
+    "useSingleRequestParameter": "true"
+}

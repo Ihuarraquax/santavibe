@@ -12,21 +12,6 @@ Extends the standard `IdentityUser` table with application-specific fields.
 
 | Column Name | Data Type | Constraints | Description |
 |-------------|-----------|-------------|-------------|
-| Id | VARCHAR(450) | PRIMARY KEY | User identifier (from Identity) |
-| UserName | NVARCHAR(256) | NOT NULL, UNIQUE | Email address (from Identity) |
-| NormalizedUserName | NVARCHAR(256) | NOT NULL, UNIQUE | Normalized username (from Identity) |
-| Email | NVARCHAR(256) | NOT NULL | Email address (from Identity) |
-| NormalizedEmail | NVARCHAR(256) | NOT NULL | Normalized email (from Identity) |
-| EmailConfirmed | BOOLEAN | NOT NULL, DEFAULT FALSE | Email verification status (from Identity) |
-| PasswordHash | NVARCHAR(MAX) | NULL | Hashed password (from Identity) |
-| SecurityStamp | NVARCHAR(MAX) | NULL | Security stamp (from Identity) |
-| ConcurrencyStamp | NVARCHAR(MAX) | NULL | Concurrency token (from Identity) |
-| PhoneNumber | NVARCHAR(MAX) | NULL | Phone number (from Identity) |
-| PhoneNumberConfirmed | BOOLEAN | NOT NULL, DEFAULT FALSE | Phone verification status (from Identity) |
-| TwoFactorEnabled | BOOLEAN | NOT NULL, DEFAULT FALSE | 2FA status (from Identity) |
-| LockoutEnd | TIMESTAMPTZ | NULL | Lockout end time (from Identity) |
-| LockoutEnabled | BOOLEAN | NOT NULL, DEFAULT FALSE | Lockout enabled (from Identity) |
-| AccessFailedCount | INTEGER | NOT NULL, DEFAULT 0 | Failed login attempts (from Identity) |
 | FirstName | VARCHAR(100) | NOT NULL | User's first name (FR-003) |
 | LastName | VARCHAR(100) | NOT NULL | User's last name (FR-003) |
 | CreatedAt | TIMESTAMPTZ | NOT NULL, DEFAULT NOW() | Account creation timestamp |
@@ -634,7 +619,7 @@ ORDER BY "BudgetSuggestion" ASC;
 This schema provides a solid foundation for the SantaVibe MVP, supporting all functional requirements from the PRD while maintaining flexibility for future enhancements. The design prioritizes:
 
 - **Simplicity:** Minimal tables, denormalized where appropriate for MVP speed
-- **Security:** Soft deletes, RLS policies, unpredictable tokens
+- **Security:** Soft deletes, unpredictable tokens
 - **Performance:** Strategic indexes for critical queries
 - **Scalability:** UUID primary keys, partitioning-ready design
 - **Maintainability:** Clear constraints, audit fields, comprehensive documentation

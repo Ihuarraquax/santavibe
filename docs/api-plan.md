@@ -725,6 +725,59 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 
 ---
 
+#### Update My Budget Suggestion
+
+**Endpoint**: `PUT /api/groups/{groupId}/participants/me/budget-suggestion`
+
+**Description**: Update or set the authenticated user's budget suggestion for a group. Available to any participant before draw completion.
+
+**Authentication**: Required (JWT Bearer token)
+
+**Path Parameters**:
+- `groupId` (UUID): Group identifier
+
+**Authorization**: User must be a participant in the group
+
+**Request Body**:
+```json
+{
+  "budgetSuggestion": 120.00
+}
+```
+
+**Request Validation**:
+- `budgetSuggestion`: Required, NUMERIC(10,2), min 0.01, max 99999999.99
+- Draw must not be completed
+
+**Success Response** (200 OK):
+```json
+{
+  "groupId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "budgetSuggestion": 120.00,
+  "updatedAt": "2025-10-16T10:30:00Z"
+}
+```
+
+**Business Logic**:
+- Updates the BudgetSuggestion field in GroupParticipants table
+- Can be used to set initial suggestion or update existing suggestion
+- Setting to null will clear the suggestion
+- Only affects organizer's anonymous suggestion list
+
+**Error Responses**:
+- `400 Bad Request`: Validation failed or draw already completed
+  ```json
+  {
+    "error": "DrawAlreadyCompleted",
+    "message": "Cannot modify budget suggestion after draw has been completed"
+  }
+  ```
+- `401 Unauthorized`: Missing or invalid token
+- `403 Forbidden`: User is not a participant
+- `404 Not Found`: Group does not exist
+
+---
+
 ### 3.8 Exclusion Rules Management
 
 #### Get Exclusion Rules
@@ -923,17 +976,15 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
     "Minimum 3 participants required for draw",
     "Current exclusion rules prevent valid assignments"
   ],
-  "warnings": [
-    "No budget has been set for this group"
-  ]
+  "warnings": []
 }
 ```
 
 **Validation Rules**:
 - Minimum 3 participants
 - Exclusion rules must allow valid assignment graph
-- Budget recommended (warning if not set)
 - Draw not already completed
+- Note: Budget validation not included here as it's provided during draw execution
 
 **Error Responses**:
 - `401 Unauthorized`: Missing or invalid token
@@ -946,7 +997,7 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 
 **Endpoint**: `POST /api/groups/{groupId}/draw`
 
-**Description**: Execute the Secret Santa draw algorithm. Creates assignments for all participants, marks draw as completed, and triggers email notifications. This action is irreversible.
+**Description**: Execute the Secret Santa draw algorithm. The organizer must provide the final budget when performing the draw. Creates assignments for all participants, sets the final budget, marks draw as completed, and triggers email notifications. This action is irreversible.
 
 **Authentication**: Required (JWT Bearer token)
 
@@ -955,19 +1006,28 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 
 **Authorization**: User must be the group organizer
 
-**Request Body**: None
+**Request Body**:
+```json
+{
+  "budget": 100.00
+}
+```
+
+**Request Validation**:
+- `budget`: Required, NUMERIC(10,2), min 0.01, max 99999999.99
 
 **Pre-execution Validations**:
 - User is the organizer
 - Draw has not been completed
 - Minimum 3 participants
 - Exclusion rules allow valid draw
-- Budget is set
+- Budget is provided in request body
 
 **Success Response** (200 OK):
 ```json
 {
   "groupId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "budget": 100.00,
   "drawCompleted": true,
   "drawCompletedAt": "2025-10-20T15:30:00Z",
   "participantCount": 5,
@@ -982,20 +1042,30 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 ```
 
 **Business Logic**:
-1. Validate all preconditions
-2. Execute draw algorithm:
+1. Validate all preconditions including budget in request body
+2. Set the final budget: Update Groups.Budget field (transaction)
+3. Execute draw algorithm:
    - Each participant assigned exactly one recipient
    - No self-assignments (SantaUserId ≠ RecipientUserId)
    - No 2-person circles (if A→B then B≠A)
    - Respect all exclusion rules
    - Randomized for fairness
-3. Create Assignment records in database (transaction)
-4. Update Groups.DrawCompletedAt timestamp
-5. Schedule DrawCompleted email notifications for all participants
-6. Return organizer's own assignment (they cannot see others)
+4. Create Assignment records in database (transaction)
+5. Update Groups.DrawCompletedAt timestamp
+6. Schedule DrawCompleted email notifications for all participants
+7. Return organizer's own assignment with the final budget (they cannot see others)
 
 **Error Responses**:
 - `400 Bad Request`: Validation failed
+  ```json
+  {
+    "error": "ValidationError",
+    "message": "Budget is required",
+    "details": {
+      "budget": ["Budget must be between 0.01 and 99999999.99"]
+    }
+  }
+  ```
   ```json
   {
     "error": "DrawValidationFailed",
@@ -1204,12 +1274,11 @@ All other endpoints require authentication
 
 #### Organizer-Only Endpoints
 These endpoints require the authenticated user to be the group organizer:
-- `PUT /api/groups/{groupId}/budget`
 - `GET /api/groups/{groupId}/budget/suggestions`
 - `POST /api/groups/{groupId}/exclusion-rules`
 - `DELETE /api/groups/{groupId}/exclusion-rules/{ruleId}`
 - `DELETE /api/groups/{groupId}/participants/{userId}`
-- `POST /api/groups/{groupId}/draw`
+- `POST /api/groups/{groupId}/draw` (includes setting final budget)
 
 #### Participant-Only Endpoints
 These endpoints require the authenticated user to be a participant in the group:
@@ -1218,6 +1287,7 @@ These endpoints require the authenticated user to be a participant in the group:
 - `GET /api/groups/{groupId}/exclusion-rules`
 - `GET /api/groups/{groupId}/participants/me/wishlist`
 - `PUT /api/groups/{groupId}/participants/me/wishlist`
+- `PUT /api/groups/{groupId}/participants/me/budget-suggestion`
 - `GET /api/groups/{groupId}/draw/validate`
 
 #### Post-Draw Endpoints
@@ -1281,16 +1351,17 @@ These endpoints require draw to be completed:
 ### 5.2 Business Logic Rules
 
 #### Draw Execution Logic
-1. **Minimum Participants**: At least 3 participants required
-2. **No Self-Assignment**: SantaUserId ≠ RecipientUserId (CHECK constraint)
-3. **One-to-One Mapping**: Each participant is exactly one Santa and exactly one Recipient
-4. **No 2-Person Circles**: If A→B (A is Santa for B), then B≠A (B cannot be Santa for A)
-5. **Exclusion Rules**: All bidirectional exclusion rules must be respected
-6. **Feasibility Validation**: Graph theory validation ensures valid assignment exists
-7. **Randomization**: Algorithm uses randomization for fairness
-8. **Transaction**: All assignments created in single transaction (all-or-nothing)
-9. **Immutability**: Once DrawCompletedAt is set, it cannot be changed
-10. **Email Notifications**: Trigger EmailNotification records for all participants
+1. **Budget Required**: Organizer must provide budget in request body (required field)
+2. **Minimum Participants**: At least 3 participants required
+3. **No Self-Assignment**: SantaUserId ≠ RecipientUserId (CHECK constraint)
+4. **One-to-One Mapping**: Each participant is exactly one Santa and exactly one Recipient
+5. **No 2-Person Circles**: If A→B (A is Santa for B), then B≠A (B cannot be Santa for A)
+6. **Exclusion Rules**: All bidirectional exclusion rules must be respected
+7. **Feasibility Validation**: Graph theory validation ensures valid assignment exists
+8. **Randomization**: Algorithm uses randomization for fairness
+9. **Transaction**: Budget update and all assignments created in single transaction (all-or-nothing)
+10. **Immutability**: Once DrawCompletedAt is set, neither budget nor assignments can be changed
+11. **Email Notifications**: Trigger EmailNotification records for all participants
 
 #### Wishlist Update Notification Logic
 1. **Trigger Condition**: Wishlist updated after draw completion
@@ -1310,9 +1381,11 @@ These endpoints require draw to be completed:
 #### Budget Management Logic
 1. **Anonymous Suggestions**: Budget suggestions displayed without user identity
 2. **Sorted Display**: Suggestions sorted ascending for organizer review
-3. **Final Budget**: Organizer sets final binding budget (not auto-calculated)
-4. **Immutability After Draw**: Budget cannot be changed after draw completion
-5. **Optional**: Budget is optional but recommended
+3. **Final Budget**: Organizer must provide final binding budget when executing draw (not auto-calculated)
+4. **Budget Set During Draw**: Budget is set as part of the draw execution (POST /api/groups/{groupId}/draw)
+5. **Immutability After Draw**: Budget cannot be changed after draw completion (set during draw, immutable after)
+6. **Budget Suggestion Updates**: Participants can update their budget suggestions at any time before draw
+7. **Pre-Draw Only**: Budget suggestions can only be modified before DrawCompletedAt is set
 
 #### Participant Management Logic
 1. **Organizer Auto-Add**: Organizer automatically added as participant on group creation
@@ -1607,7 +1680,6 @@ GET /api/groups?page=1&pageSize=20
 ### 14.1 Potential New Endpoints
 - `PATCH /api/groups/{groupId}` - Update group name/description
 - `GET /api/users/me/notifications` - View notification history
-- `POST /api/groups/{groupId}/participants/me/budget-suggestion` - Update budget suggestion
 - `GET /api/groups/{groupId}/statistics` - Group statistics for organizer
 
 ### 14.2 Feature Additions

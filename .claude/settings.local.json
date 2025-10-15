@@ -1,8 +1,11 @@
 {
-  "outputStyle": "default",
   "permissions": {
     "allow": [
-      "Bash(dotnet --version)"
+      "Bash(dotnet --version)",
+      "Bash(dotnet restore)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet build:*)"
     ]
-  }
+  },
+  "outputStyle": "default"
 }

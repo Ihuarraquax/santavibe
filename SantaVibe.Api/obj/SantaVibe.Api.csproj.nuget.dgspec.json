@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\P\\Edu\\santavibe\\src\\SantaVibe\\SantaVibe.Api.csproj": {}
+    "C:\\P\\Edu\\santavibe\\SantaVibe.Api\\SantaVibe.Api.csproj": {}
   },
   "projects": {
-    "C:\\P\\Edu\\santavibe\\src\\SantaVibe\\SantaVibe.Api.csproj": {
+    "C:\\P\\Edu\\santavibe\\SantaVibe.Api\\SantaVibe.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\P\\Edu\\santavibe\\src\\SantaVibe\\SantaVibe.Api.csproj",
+        "projectUniqueName": "C:\\P\\Edu\\santavibe\\SantaVibe.Api\\SantaVibe.Api.csproj",
         "projectName": "SantaVibe.Api",
-        "projectPath": "C:\\P\\Edu\\santavibe\\src\\SantaVibe\\SantaVibe.Api.csproj",
+        "projectPath": "C:\\P\\Edu\\santavibe\\SantaVibe.Api\\SantaVibe.Api.csproj",
         "packagesPath": "C:\\Users\\HubertZabłocki\\.nuget\\packages\\",
-        "outputPath": "C:\\P\\Edu\\santavibe\\src\\SantaVibe\\obj\\",
+        "outputPath": "C:\\P\\Edu\\santavibe\\SantaVibe.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -50,6 +50,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.9, )"
@@ -88,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.110/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.111/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

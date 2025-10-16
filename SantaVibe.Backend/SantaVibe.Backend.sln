@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaVibe.Api", "SantaVibe.Api.csproj", "{B3089A55-2CA3-4828-8615-D07AF89CC87C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaVibe.Api", "SantaVibe.Api\SantaVibe.Api.csproj", "{B3089A55-2CA3-4828-8615-D07AF89CC87C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaVibe.Tests", "SantaVibe.Tests\SantaVibe.Tests.csproj", "{214EA56C-ACC1-44E4-87FE-7132D8BFEA0E}"
 EndProject

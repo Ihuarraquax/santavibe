@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using SantaVibe.Api.DTOs.Common;
+using SantaVibe.Api.Common;
 using SantaVibe.Api.Features.Authentication.Register;
 using SantaVibe.Tests.Infrastructure;
 

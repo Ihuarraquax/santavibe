@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using SantaVibe.Api.DTOs.Common;
+using SantaVibe.Api.Common;
 
 namespace SantaVibe.Api.Features.Authentication.Register;
 

@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using SantaVibe.Api.Data;
 using SantaVibe.Api.Data.Entities;
 using SantaVibe.Api.Features.Authentication.Register;
 using SantaVibe.Api.Middleware;
+using Serilog;
 
 // Configure Serilog (basic configuration, will be enhanced with app configuration later)
 Log.Logger = new LoggerConfiguration()
@@ -191,4 +191,7 @@ finally
 }
 
 // Make Program accessible for integration testing
-public partial class Program { }
+namespace SantaVibe.Api
+{
+    public partial class Program { }
+}

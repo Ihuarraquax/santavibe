@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using SantaVibe.Api.Validators;
 
-namespace SantaVibe.Api.DTOs.Auth;
+namespace SantaVibe.Api.Features.Authentication.Register;
 
 /// <summary>
 /// Request model for user registration
@@ -21,7 +20,7 @@ public class RegisterUserRequest
     /// </summary>
     [Required(ErrorMessage = "Password is required")]
     [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
-    [PasswordComplexity]
+    [Validators.PasswordComplexity]
     public required string Password { get; set; }
 
     /// <summary>
@@ -41,6 +40,6 @@ public class RegisterUserRequest
     /// <summary>
     /// GDPR consent flag (must be true to register)
     /// </summary>
-    [MustBeTrue(ErrorMessage = "GDPR consent is required")]
+    [Validators.MustBeTrue(ErrorMessage = "GDPR consent is required")]
     public bool GdprConsent { get; set; }
 }

@@ -1,4 +1,4 @@
-namespace SantaVibe.Api.DTOs.Common;
+namespace SantaVibe.Api.Common;
 
 /// <summary>
 /// Standard error response model for API errors

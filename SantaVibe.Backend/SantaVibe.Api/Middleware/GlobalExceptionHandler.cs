@@ -1,6 +1,6 @@
 using System.Net;
 using System.Text.Json;
-using SantaVibe.Api.DTOs.Common;
+using SantaVibe.Api.Common;
 
 namespace SantaVibe.Api.Middleware;
 

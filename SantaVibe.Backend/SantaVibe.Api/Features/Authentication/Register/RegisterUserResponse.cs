@@ -1,4 +1,4 @@
-namespace SantaVibe.Api.DTOs.Auth;
+namespace SantaVibe.Api.Features.Authentication.Register;
 
 /// <summary>
 /// Response model for successful user registration

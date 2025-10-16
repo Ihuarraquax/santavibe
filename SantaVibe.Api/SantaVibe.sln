@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaVibe.Api", "SantaVibe.Api.csproj", "{B3089A55-2CA3-4828-8615-D07AF89CC87C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaVibe.Tests", "SantaVibe.Tests\SantaVibe.Tests.csproj", "{214EA56C-ACC1-44E4-87FE-7132D8BFEA0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{B3089A55-2CA3-4828-8615-D07AF89CC87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3089A55-2CA3-4828-8615-D07AF89CC87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3089A55-2CA3-4828-8615-D07AF89CC87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{214EA56C-ACC1-44E4-87FE-7132D8BFEA0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{214EA56C-ACC1-44E4-87FE-7132D8BFEA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{214EA56C-ACC1-44E4-87FE-7132D8BFEA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{214EA56C-ACC1-44E4-87FE-7132D8BFEA0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

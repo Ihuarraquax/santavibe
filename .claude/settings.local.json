@@ -5,7 +5,8 @@
       "Bash(dotnet restore)",
       "Bash(dotnet restore:*)",
       "Bash(dotnet build:*)",
-      "Bash(docker compose ps)"
+      "Bash(docker compose ps)",
+      "Bash(dir /s /b c:PEdusantavibeSantaVibe.Api*.cs)"
     ]
   },
   "outputStyle": "default"

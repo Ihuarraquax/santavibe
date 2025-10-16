@@ -1,0 +1,150 @@
+### Test Registration Endpoint
+
+# Local development base URLs
+@baseUrl = https://localhost:7201
+@baseUrlHttp = http://localhost:5017
+@contentType = application/json
+
+### 1. Successful Registration
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "john.doe@example.com",
+  "password": "SecurePass123!",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gdprConsent": true
+}
+
+### 2. Registration with Missing Required Field (Email)
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "password": "SecurePass123!",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": true
+}
+
+### 3. Registration with Invalid Email Format
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "invalid-email",
+  "password": "SecurePass123!",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": true
+}
+
+### 4. Registration with Weak Password (No Special Character)
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "jane.smith@example.com",
+  "password": "WeakPass123",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": true
+}
+
+### 5. Registration with Weak Password (No Uppercase)
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "jane.smith@example.com",
+  "password": "weakpass123!",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": true
+}
+
+### 6. Registration with Weak Password (No Lowercase)
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "jane.smith@example.com",
+  "password": "WEAKPASS123!",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": true
+}
+
+### 7. Registration with Weak Password (No Digit)
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "jane.smith@example.com",
+  "password": "WeakPass!",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": true
+}
+
+### 8. Registration with Short Password (Less than 8 characters)
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "jane.smith@example.com",
+  "password": "Pass1!",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": true
+}
+
+### 9. Registration without GDPR Consent
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "jane.smith@example.com",
+  "password": "SecurePass123!",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gdprConsent": false
+}
+
+### 10. Duplicate Registration (Email Already Exists)
+# First run test #1, then run this test
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "john.doe@example.com",
+  "password": "AnotherPass123!",
+  "firstName": "Johnny",
+  "lastName": "Doe",
+  "gdprConsent": true
+}
+
+### 11. Registration with Long Names
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "long.name@example.com",
+  "password": "SecurePass123!",
+  "firstName": "VeryLongFirstNameThatExceedsTheMaximumLengthOfOneHundredCharactersAndShouldFailValidationBecauseItIsTooLong",
+  "lastName": "Doe",
+  "gdprConsent": true
+}
+
+### 12. Rate Limiting Test - Run this 6 times rapidly
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "test{{$randomInt}}@example.com",
+  "password": "SecurePass123!",
+  "firstName": "Test",
+  "lastName": "User",
+  "gdprConsent": true
+}

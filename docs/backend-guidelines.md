@@ -7,6 +7,7 @@
 - Implement domain entities that encapsulate {{business_rules}} without framework dependencies
 - Use interfaces (ports) and implementations (adapters) to isolate external dependencies
 - Create use cases that orchestrate entity interactions for specific business operations
+- Use 'vertical slice' approach to keep project structure oriented for use cases instead of technicalities like 'Validators', 'DTOs' etc.
 - Implement mappers to transform data between layers to maintain separation of concerns
 
 #### ADR
@@ -25,7 +26,8 @@
 
 ### Guidelines for DOTNET
 
-####
+#### C#
+- Use primary constructors
 
 #### ENTITY_FRAMEWORK
 

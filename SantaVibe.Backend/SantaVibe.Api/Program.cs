@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using SantaVibe.Api.Data;
 using SantaVibe.Api.Data.Entities;
 using SantaVibe.Api.Features.Authentication.Register;
+using SantaVibe.Api.Features.Authentication.Login;
 using SantaVibe.Api.Middleware;
 using Serilog;
 
@@ -106,10 +107,22 @@ try
                     QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst,
                     QueueLimit = 0 // No queueing
                 }));
+
+        options.AddPolicy("login", context =>
+            System.Threading.RateLimiting.RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                factory: _ => new System.Threading.RateLimiting.FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 5, // 5 attempts
+                    Window = TimeSpan.FromMinutes(15), // per 15 minutes
+                    QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 0 // No queueing
+                }));
     });
 
     // Register application services (Vertical Slice Architecture)
     builder.Services.AddScoped<IRegisterService, RegisterService>();
+    builder.Services.AddScoped<ILoginService, LoginService>();
 
     builder.Services.AddOpenApi();
 
@@ -178,6 +191,7 @@ try
 
     // Map endpoints (Vertical Slice Architecture)
     app.MapRegisterEndpoint();
+    app.MapLoginEndpoint();
 
     await app.RunAsync();
 }

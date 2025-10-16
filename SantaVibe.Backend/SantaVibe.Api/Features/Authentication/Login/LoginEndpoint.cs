@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using SantaVibe.Api.Common;
 
@@ -57,10 +58,10 @@ public static class LoginEndpoint
         }
 
         // Validate model state manually (minimal APIs don't auto-validate)
-        var validationResults = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
-        var validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(request);
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(request);
 
-        if (!System.ComponentModel.DataAnnotations.Validator.TryValidateObject(
+        if (!Validator.TryValidateObject(
             request, validationContext, validationResults, validateAllProperties: true))
         {
             var errors = validationResults

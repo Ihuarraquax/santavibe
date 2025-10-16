@@ -9,7 +9,8 @@
       "Bash(dir /s /b c:PEdusantavibeSantaVibe.Api*.cs)",
       "Bash(dotnet clean:*)",
       "Bash(timeout 10 dotnet run:*)",
-      "Bash(dotnet test:*)"
+      "Bash(dotnet test:*)",
+      "Bash(dir /s /b c:PEdusantavibeSantaVibe.BackendSantaVibe.ApiFeaturesAuthenticationLogin*.cs)"
     ]
   },
   "outputStyle": "default"

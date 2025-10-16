@@ -12,34 +12,34 @@ namespace SantaVibe.Tests.Features.Authentication.Register;
 /// </summary>
 public class RegisterServiceUnitTests
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IConfiguration _configuration;
-    private readonly ILogger<RegisterService> _logger;
-    private readonly RegisterService _sut; // System Under Test
+    private readonly UserManager<ApplicationUser> userManager;
+    private readonly IConfiguration configuration;
+    private readonly ILogger<RegisterService> logger;
+    private readonly RegisterService sut; // System Under Test
 
     public RegisterServiceUnitTests()
     {
         // Create substitute for UserManager
         var userStore = Substitute.For<IUserStore<ApplicationUser>>();
-        _userManager = Substitute.For<UserManager<ApplicationUser>>(
+        userManager = Substitute.For<UserManager<ApplicationUser>>(
             userStore,
             null, null, null, null, null, null, null, null);
 
         // Create substitute for Configuration with JWT settings
-        _configuration = Substitute.For<IConfiguration>();
+        configuration = Substitute.For<IConfiguration>();
         var jwtSection = Substitute.For<IConfigurationSection>();
         jwtSection["Secret"].Returns("test-secret-key-with-at-least-256-bits-length-for-jwt-token-signing");
         jwtSection["Issuer"].Returns("TestIssuer");
         jwtSection["Audience"].Returns("TestAudience");
         jwtSection["ExpirationInDays"].Returns("7");
 
-        _configuration.GetSection("Jwt").Returns(jwtSection);
+        configuration.GetSection("Jwt").Returns(jwtSection);
 
         // Create substitute for Logger
-        _logger = Substitute.For<ILogger<RegisterService>>();
+        logger = Substitute.For<ILogger<RegisterService>>();
 
         // Create system under test
-        _sut = new RegisterService(_userManager, _configuration, _logger);
+        sut = new RegisterService(userManager, configuration, logger);
     }
 
     [Fact]
@@ -55,8 +55,8 @@ public class RegisterServiceUnitTests
             GdprConsent = true
         };
 
-        _userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
-        _userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
+        userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
+        userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
             .Returns(callInfo =>
             {
                 var user = callInfo.ArgAt<ApplicationUser>(0);
@@ -65,7 +65,7 @@ public class RegisterServiceUnitTests
             });
 
         // Act
-        var result = await _sut.RegisterUserAsync(request);
+        var result = await sut.RegisterUserAsync(request);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -77,8 +77,8 @@ public class RegisterServiceUnitTests
         Assert.NotEmpty(result.Value.Token);
         Assert.True(result.Value.ExpiresAt > DateTimeOffset.UtcNow);
 
-        await _userManager.Received(1).FindByEmailAsync(request.Email);
-        await _userManager.Received(1).CreateAsync(Arg.Any<ApplicationUser>(), request.Password);
+        await userManager.Received(1).FindByEmailAsync(request.Email);
+        await userManager.Received(1).CreateAsync(Arg.Any<ApplicationUser>(), request.Password);
     }
 
     [Fact]
@@ -103,10 +103,10 @@ public class RegisterServiceUnitTests
             LastName = "User"
         };
 
-        _userManager.FindByEmailAsync(request.Email).Returns(existingUser);
+        userManager.FindByEmailAsync(request.Email).Returns(existingUser);
 
         // Act
-        var result = await _sut.RegisterUserAsync(request);
+        var result = await sut.RegisterUserAsync(request);
 
         // Assert
         Assert.False(result.IsSuccess);
@@ -114,8 +114,8 @@ public class RegisterServiceUnitTests
         Assert.Equal("An account with this email address already exists", result.Message);
         Assert.Null(result.Value);
 
-        await _userManager.Received(1).FindByEmailAsync(request.Email);
-        await _userManager.DidNotReceive().CreateAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>());
+        await userManager.Received(1).FindByEmailAsync(request.Email);
+        await userManager.DidNotReceive().CreateAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>());
     }
 
     [Fact]
@@ -131,7 +131,7 @@ public class RegisterServiceUnitTests
             GdprConsent = true
         };
 
-        _userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
+        userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
 
         var identityErrors = new[]
         {
@@ -139,11 +139,11 @@ public class RegisterServiceUnitTests
             new IdentityError { Code = "PasswordRequiresDigit", Description = "Password must contain a digit" }
         };
 
-        _userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
+        userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
             .Returns(IdentityResult.Failed(identityErrors));
 
         // Act
-        var result = await _sut.RegisterUserAsync(request);
+        var result = await sut.RegisterUserAsync(request);
 
         // Assert
         Assert.False(result.IsSuccess);
@@ -152,8 +152,8 @@ public class RegisterServiceUnitTests
         Assert.Contains("PasswordTooShort", result.ValidationErrors.Keys);
         Assert.Contains("PasswordRequiresDigit", result.ValidationErrors.Keys);
 
-        await _userManager.Received(1).FindByEmailAsync(request.Email);
-        await _userManager.Received(1).CreateAsync(Arg.Any<ApplicationUser>(), request.Password);
+        await userManager.Received(1).FindByEmailAsync(request.Email);
+        await userManager.Received(1).CreateAsync(Arg.Any<ApplicationUser>(), request.Password);
     }
 
     [Fact]
@@ -171,8 +171,8 @@ public class RegisterServiceUnitTests
 
         ApplicationUser? capturedUser = null;
 
-        _userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
-        _userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
+        userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
+        userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
             .Returns(callInfo =>
             {
                 capturedUser = callInfo.ArgAt<ApplicationUser>(0);
@@ -181,7 +181,7 @@ public class RegisterServiceUnitTests
             });
 
         // Act
-        await _sut.RegisterUserAsync(request);
+        await sut.RegisterUserAsync(request);
 
         // Assert
         Assert.NotNull(capturedUser);
@@ -205,8 +205,8 @@ public class RegisterServiceUnitTests
             GdprConsent = true
         };
 
-        _userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
-        _userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
+        userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
+        userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
             .Returns(callInfo =>
             {
                 var user = callInfo.ArgAt<ApplicationUser>(0);
@@ -215,7 +215,7 @@ public class RegisterServiceUnitTests
             });
 
         // Act
-        var result = await _sut.RegisterUserAsync(request);
+        var result = await sut.RegisterUserAsync(request);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -241,8 +241,8 @@ public class RegisterServiceUnitTests
             GdprConsent = true
         };
 
-        _userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
-        _userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
+        userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
+        userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
             .Returns(callInfo =>
             {
                 var user = callInfo.ArgAt<ApplicationUser>(0);
@@ -251,7 +251,7 @@ public class RegisterServiceUnitTests
             });
 
         // Act
-        var result = await _sut.RegisterUserAsync(request);
+        var result = await sut.RegisterUserAsync(request);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -277,8 +277,8 @@ public class RegisterServiceUnitTests
             GdprConsent = true
         };
 
-        _userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
-        _userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
+        userManager.FindByEmailAsync(request.Email).Returns((ApplicationUser?)null);
+        userManager.CreateAsync(Arg.Any<ApplicationUser>(), request.Password)
             .Returns(callInfo =>
             {
                 var user = callInfo.ArgAt<ApplicationUser>(0);
@@ -287,17 +287,17 @@ public class RegisterServiceUnitTests
             });
 
         // Act
-        await _sut.RegisterUserAsync(request);
+        await sut.RegisterUserAsync(request);
 
         // Assert
-        _logger.Received().Log(
+        logger.Received().Log(
             LogLevel.Information,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString()!.Contains("Attempting to register user")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
 
-        _logger.Received().Log(
+        logger.Received().Log(
             LogLevel.Information,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString()!.Contains("Registration completed successfully")),
@@ -327,13 +327,13 @@ public class RegisterServiceUnitTests
             LastName = "User"
         };
 
-        _userManager.FindByEmailAsync(request.Email).Returns(existingUser);
+        userManager.FindByEmailAsync(request.Email).Returns(existingUser);
 
         // Act
-        await _sut.RegisterUserAsync(request);
+        await sut.RegisterUserAsync(request);
 
         // Assert
-        _logger.Received().Log(
+        logger.Received().Log(
             LogLevel.Warning,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString()!.Contains("Email already exists")),

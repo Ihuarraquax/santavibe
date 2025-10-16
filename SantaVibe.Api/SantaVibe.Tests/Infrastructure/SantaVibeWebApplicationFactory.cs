@@ -14,7 +14,7 @@ namespace SantaVibe.Tests.Infrastructure;
 /// </summary>
 public class SantaVibeWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _postgresContainer = new PostgreSqlBuilder()
+    private readonly PostgreSqlContainer postgresContainer = new PostgreSqlBuilder()
         .WithImage("postgres:16-alpine")
         .WithDatabase("santavibe_test")
         .WithUsername("test_user")
@@ -24,7 +24,7 @@ public class SantaVibeWebApplicationFactory : WebApplicationFactory<Program>, IA
     /// <summary>
     /// PostgreSQL connection string for tests
     /// </summary>
-    public string ConnectionString => _postgresContainer.GetConnectionString();
+    public string ConnectionString => postgresContainer.GetConnectionString();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -71,7 +71,7 @@ public class SantaVibeWebApplicationFactory : WebApplicationFactory<Program>, IA
     /// </summary>
     public async Task InitializeAsync()
     {
-        await _postgresContainer.StartAsync();
+        await postgresContainer.StartAsync();
     }
 
     /// <summary>
@@ -79,8 +79,8 @@ public class SantaVibeWebApplicationFactory : WebApplicationFactory<Program>, IA
     /// </summary>
     public new async Task DisposeAsync()
     {
-        await _postgresContainer.StopAsync();
-        await _postgresContainer.DisposeAsync();
+        await postgresContainer.StopAsync();
+        await postgresContainer.DisposeAsync();
         await base.DisposeAsync();
     }
 }

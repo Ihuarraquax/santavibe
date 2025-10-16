@@ -11,13 +11,13 @@ namespace SantaVibe.Tests.Features.Authentication.Register;
 /// </summary>
 public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplicationFactory>
 {
-    private readonly HttpClient _client;
-    private readonly SantaVibeWebApplicationFactory _factory;
+    private readonly HttpClient client;
+    private readonly SantaVibeWebApplicationFactory factory;
 
     public RegisterEndpointIntegrationTests(SantaVibeWebApplicationFactory factory)
     {
-        _factory = factory;
-        _client = factory.CreateClient();
+        this.factory = factory;
+        client = factory.CreateClient();
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -69,7 +69,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // First registration (should succeed)
-        var firstResponse = await _client.PostAsJsonAsync("/api/auth/register", firstRequest);
+        var firstResponse = await client.PostAsJsonAsync("/api/auth/register", firstRequest);
         Assert.Equal(HttpStatusCode.Created, firstResponse.StatusCode);
 
         // Second registration with same email
@@ -83,7 +83,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", secondRequest);
+        var response = await client.PostAsJsonAsync("/api/auth/register", secondRequest);
 
         // Assert
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
@@ -108,7 +108,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         // Model binding fails when required properties are missing, returns 400
@@ -142,7 +142,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -168,7 +168,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -194,7 +194,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -220,7 +220,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -246,7 +246,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -272,7 +272,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -298,7 +298,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -330,13 +330,13 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
         // Try to register again with the same email - should fail (proves it's in DB)
-        var duplicateResponse = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var duplicateResponse = await client.PostAsJsonAsync("/api/auth/register", request);
         Assert.Equal(HttpStatusCode.Conflict, duplicateResponse.StatusCode);
     }
 
@@ -354,7 +354,7 @@ public class RegisterEndpointIntegrationTests : IClassFixture<SantaVibeWebApplic
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/auth/register", request);
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

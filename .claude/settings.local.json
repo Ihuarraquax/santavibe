@@ -10,7 +10,16 @@
       "Bash(dotnet clean:*)",
       "Bash(timeout 10 dotnet run:*)",
       "Bash(dotnet test:*)",
-      "Bash(dir /s /b c:PEdusantavibeSantaVibe.BackendSantaVibe.ApiFeaturesAuthenticationLogin*.cs)"
+      "Bash(dir /s /b c:PEdusantavibeSantaVibe.BackendSantaVibe.ApiFeaturesAuthenticationLogin*.cs)",
+      "Bash(dir \"c:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\\app\" /AD /B)",
+      "Bash(mkdir:*)",
+      "WebSearch",
+      "WebFetch(domain:angular.schule)",
+      "WebFetch(domain:openapi-generator.tech)",
+      "Bash(npm install)",
+      "Bash(npx openapi-generator-cli version)",
+      "Bash(test:*)",
+      "Bash(npx openapi-generator-cli:*)"
     ]
   },
   "outputStyle": "default"

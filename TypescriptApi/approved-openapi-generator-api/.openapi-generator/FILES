@@ -4,11 +4,17 @@ README.md
 api.base.service.ts
 api.module.ts
 api/api.ts
+api/authentication.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/errorResponse.ts
+model/loginRequest.ts
+model/loginResponse.ts
 model/models.ts
+model/registerRequest.ts
+model/registerResponse.ts
 ng-package.json
 package.json
 param.ts

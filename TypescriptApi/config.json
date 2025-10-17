@@ -1,9 +1,11 @@
 {
     "npmName": "@zablodev/santa-vibe",
-    "ngVersion": "16.2.11",
+    "ngVersion": "20.0.0",
     "npmVersion": "1.0.0",
     "snapshot": false,
     "apiModulePrefix": "SantaVibe",
     "modelPropertyNaming": "original",
-    "useSingleRequestParameter": "true"
+    "useSingleRequestParameter": "true",
+    "providedIn": "root",
+    "fileNaming": "kebab-case"
 }

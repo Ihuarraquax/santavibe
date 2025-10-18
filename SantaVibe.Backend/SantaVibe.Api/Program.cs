@@ -9,6 +9,7 @@ using SantaVibe.Api.Data.Entities;
 using SantaVibe.Api.Features.Authentication.Register;
 using SantaVibe.Api.Features.Authentication.Login;
 using SantaVibe.Api.Features.Groups.GetUserGroups;
+using SantaVibe.Api.Features.Groups.Create;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -140,7 +141,10 @@ try
     builder.Services.AddScoped<IUserAccessor, UserAccessor>();
     builder.Services.AddScoped<IRegisterService, RegisterService>();
     builder.Services.AddScoped<ILoginService, LoginService>();
-    
+
+    // Register validation filter
+    builder.Services.AddScoped(typeof(ValidationFilter<>));
+
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
     builder.Services.AddOpenApi();
 
@@ -235,7 +239,10 @@ try
     // Map endpoints (Vertical Slice Architecture)
     app.MapRegisterEndpoint();
     app.MapLoginEndpoint();
-    app.MapGetUserGroupsEndpoint();    await app.RunAsync();
+    app.MapGetUserGroupsEndpoint();
+    app.MapCreateGroupEndpoint();
+
+    await app.RunAsync();
 }
 catch (Exception ex)
 {

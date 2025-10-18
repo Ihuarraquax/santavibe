@@ -38,6 +38,7 @@ public class SantaVibeWebApplicationFactory : WebApplicationFactory<Program>, IA
             config.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["ConnectionStrings:DefaultConnection"] = ConnectionString,
+                ["App:BaseUrl"] = "http://localhost:4200",
                 ["Jwt:Secret"] = "test-secret-key-with-at-least-256-bits-length-for-jwt-token-signing-in-tests",
                 ["Jwt:Issuer"] = "SantaVibe.Api.Tests",
                 ["Jwt:Audience"] = "SantaVibe.Web.Tests",

@@ -1,26 +1,27 @@
-using System;
-using System.Collections.Generic;
-
 namespace SantaVibe.Api.Features.Groups.GetUserGroups;
 
-// The main response object
-public class GetUserGroupsResponse
+/// <summary>
+/// Response containing a list of groups the user is a participant in
+/// </summary>
+public record GetUserGroupsResponse
 {
-    public List<GroupDto> Groups { get; set; } = new();
-    public int TotalCount { get; set; }
+    public required List<GroupDto> Groups { get; init; }
+    public required int TotalCount { get; init; }
 }
 
-// Represents a single group in the list
-public class GroupDto
+/// <summary>
+/// Represents a single group in the user's group list
+/// </summary>
+public record GroupDto
 {
-    public Guid GroupId { get; set; }
-    public required string Name { get; set; }
-    public required string OrganizerId { get; set; }
-    public required string OrganizerName { get; set; }
-    public bool IsOrganizer { get; set; }
-    public int ParticipantCount { get; set; }
-    public decimal? Budget { get; set; }
-    public bool DrawCompleted { get; set; }
-    public DateTimeOffset JoinedAt { get; set; }
-    public DateTimeOffset? DrawCompletedAt { get; set; }
+    public required Guid GroupId { get; init; }
+    public required string Name { get; init; }
+    public required string OrganizerId { get; init; }
+    public required string OrganizerName { get; init; }
+    public required bool IsOrganizer { get; init; }
+    public required int ParticipantCount { get; init; }
+    public decimal? Budget { get; init; }
+    public required bool DrawCompleted { get; init; }
+    public required DateTimeOffset JoinedAt { get; init; }
+    public DateTimeOffset? DrawCompletedAt { get; init; }
 }

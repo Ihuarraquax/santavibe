@@ -26,7 +26,8 @@
       "Bash(npm run build:*)",
       "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\")",
       "Bash(npm start)",
-      "Bash(netstat -ano)"
+      "Bash(netstat -ano)",
+      "Bash(dir \"C:\\P\\Edu\\santavibe\\SantaVibe.Backend\\SantaVibe.Api\\Features\\Groups\\GetUserGroups\" /B)"
     ]
   },
   "outputStyle": "default"

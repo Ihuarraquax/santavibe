@@ -40,6 +40,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
 - Use the async pipe to handle observables
 
+## Forms
+
+- Important: Always use Angular Reactive Forms
+
 ## Services
 
 - Design services around a single responsibility

@@ -1,11 +1,14 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AuthenticationService } from '@api/api/authentication.service';
 import { RegisterRequest } from '@api/model/register-request';
 import { RegisterResponse } from '@api/model/register-response';
+import { LoginRequest } from '@api/model/login-request';
+import { LoginResponse } from '@api/model/login-response';
 import { ErrorResponse } from '@api/model/error-response';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthUser } from '../models/login.types';
 
 /**
  * Authentication service that handles user registration, login, and session management.
@@ -26,7 +29,7 @@ export class AuthService {
   /**
    * Signal that stores the current user's information.
    */
-  private currentUserSignal = signal<RegisterResponse | null>(null);
+  private currentUserSignal = signal<AuthUser | null>(null);
 
   /**
    * Public readonly access to authentication state.
@@ -37,6 +40,15 @@ export class AuthService {
    * Public readonly access to current user information.
    */
   readonly currentUser = this.currentUserSignal.asReadonly();
+
+  /**
+   * Computed signal that checks if the current token is expired.
+   */
+  readonly isTokenExpired = computed(() => {
+    const user = this.currentUser();
+    if (!user || !user.expiresAt) return true;
+    return new Date() >= user.expiresAt;
+  });
 
   constructor() {
     // Check for existing token on service initialization
@@ -54,12 +66,45 @@ export class AuthService {
         // Store token and user information
         if (response.token) {
           this.storeToken(response.token, response.expiresAt);
-          this.currentUserSignal.set(response);
+          const authUser = this.mapToAuthUser(response);
+          this.currentUserSignal.set(authUser);
           this.isAuthenticatedSignal.set(true);
+          localStorage.setItem('current_user', JSON.stringify(authUser));
         }
       }),
       catchError((error: HttpErrorResponse) => {
         return throwError(() => this.handleApiError(error));
+      })
+    );
+  }
+
+  /**
+   * Logs in an existing user.
+   * @param request - Login request data
+   * @returns Observable of login response
+   */
+  login(request: LoginRequest): Observable<LoginResponse> {
+    return this.authenticationService.login({ loginRequest: request }).pipe(
+      tap((response: LoginResponse) => {
+        // Store token and user information
+        if (response.token && response.userId && response.email &&
+            response.firstName && response.lastName) {
+          this.storeToken(response.token, response.expiresAt);
+          const authUser: AuthUser = {
+            userId: response.userId,
+            email: response.email,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            token: response.token,
+            expiresAt: response.expiresAt ? new Date(response.expiresAt) : new Date()
+          };
+          this.currentUserSignal.set(authUser);
+          this.isAuthenticatedSignal.set(true);
+          localStorage.setItem('current_user', JSON.stringify(authUser));
+        }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => new Error(this.handleLoginError(error)));
       })
     );
   }
@@ -131,7 +176,11 @@ export class AuthService {
 
     if (token && storedUser) {
       try {
-        const user = JSON.parse(storedUser) as RegisterResponse;
+        const user = JSON.parse(storedUser) as AuthUser;
+        // Convert expiresAt string back to Date object
+        if (user.expiresAt) {
+          user.expiresAt = new Date(user.expiresAt);
+        }
         this.currentUserSignal.set(user);
         this.isAuthenticatedSignal.set(true);
       } catch (error) {
@@ -187,5 +236,38 @@ export class AuthService {
    */
   isUserAuthenticated(): boolean {
     return this.isAuthenticatedSignal() && this.getToken() !== null;
+  }
+
+  /**
+   * Handles login-specific API errors and returns user-friendly messages in Polish.
+   * @param error - HTTP error response
+   * @returns User-friendly error message
+   */
+  private handleLoginError(error: HttpErrorResponse): string {
+    if (error.status === 401) {
+      return 'Nieprawidłowy email lub hasło';
+    } else if (error.status === 429) {
+      return 'Zbyt wiele prób logowania. Spróbuj ponownie później.';
+    } else if (error.status === 0) {
+      return 'Błąd połączenia. Sprawdź swoje połączenie internetowe.';
+    } else {
+      return 'Wystąpił błąd. Spróbuj ponownie później.';
+    }
+  }
+
+  /**
+   * Maps registration response to AuthUser model.
+   * @param response - Registration response from API
+   * @returns AuthUser object
+   */
+  private mapToAuthUser(response: RegisterResponse): AuthUser {
+    return {
+      userId: response.userId || '',
+      email: response.email || '',
+      firstName: response.firstName || '',
+      lastName: response.lastName || '',
+      token: response.token || '',
+      expiresAt: response.expiresAt ? new Date(response.expiresAt) : new Date()
+    };
   }
 }

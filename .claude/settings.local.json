@@ -19,7 +19,11 @@
       "Bash(npm install)",
       "Bash(npx openapi-generator-cli version)",
       "Bash(test:*)",
-      "Bash(npx openapi-generator-cli:*)"
+      "Bash(npx openapi-generator-cli:*)",
+      "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\\app\")",
+      "Bash(findstr:*)",
+      "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Backend\\SantaVibe.Api\")",
+      "Bash(npm run build:*)"
     ]
   },
   "outputStyle": "default"

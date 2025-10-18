@@ -24,7 +24,9 @@
       "Bash(findstr:*)",
       "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Backend\\SantaVibe.Api\")",
       "Bash(npm run build:*)",
-      "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\")"
+      "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\")",
+      "Bash(npm start)",
+      "Bash(netstat -ano)"
     ]
   },
   "outputStyle": "default"

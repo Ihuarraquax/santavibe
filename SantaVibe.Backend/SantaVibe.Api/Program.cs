@@ -92,6 +92,18 @@ try
 
     builder.Services.AddAuthorization();
 
+    // Add CORS services
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("DevelopmentPolicy", policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        });
+    });
+
     // Add rate limiting services
     builder.Services.AddRateLimiter(options =>
     {
@@ -164,6 +176,24 @@ try
 
     var app = builder.Build();
 
+    // Apply database migrations automatically on startup
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            Log.Information("Applying database migrations...");
+            await context.Database.MigrateAsync();
+            Log.Information("Database migrations applied successfully");
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while migrating the database");
+            throw;
+        }
+    }
+
     // Configure global exception handling (must be early in pipeline)
     app.UseGlobalExceptionHandler();
 
@@ -180,6 +210,12 @@ try
 
     app.UseHttpsRedirection();
 
+    // Apply CORS middleware (must be before authentication and authorization)
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseCors("DevelopmentPolicy");
+    }
+
     // Apply rate limiting middleware (skip in testing environment)
     if (!app.Configuration.GetValue<bool>("DisableRateLimiting"))
     {
@@ -189,6 +225,7 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
 
+    app.UseSerilogRequestLogging();
     // Map endpoints (Vertical Slice Architecture)
     app.MapRegisterEndpoint();
     app.MapLoginEndpoint();

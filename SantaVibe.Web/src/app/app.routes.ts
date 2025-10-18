@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
 import { guestGuard } from './features/auth/guards/guest.guard';
+import { authGuard } from './features/auth/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/groups',
     pathMatch: 'full'
   },
   {
@@ -20,7 +21,13 @@ export const routes: Routes = [
     title: 'Rejestracja - SantaVibe'
   },
   {
+    path: 'groups',
+    loadComponent: () => import('./features/groups/pages/groups-list/groups-list.component').then(m => m.GroupsListComponent),
+    canActivate: [authGuard],
+    title: 'Moje Grupy - SantaVibe'
+  },
+  {
     path: '**',
-    redirectTo: '/login'
+    redirectTo: '/groups'
   }
 ];

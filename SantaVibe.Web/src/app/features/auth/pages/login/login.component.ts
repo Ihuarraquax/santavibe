@@ -35,12 +35,12 @@ export class LoginComponent implements OnInit {
   /**
    * Destination URL after successful login.
    */
-  returnUrl = signal<string>('/dashboard');
+  returnUrl = signal<string>('/groups');
 
   ngOnInit(): void {
     // Redirect if already authenticated
     if (this.authService.isAuthenticated() && !this.authService.isTokenExpired()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/groups']);
       return;
     }
 
@@ -96,7 +96,7 @@ export class LoginComponent implements OnInit {
   onNavigateToRegister(): void {
     const returnUrl = this.returnUrl();
     this.router.navigate(['/register'], {
-      queryParams: returnUrl !== '/dashboard' ? { returnUrl } : {}
+      queryParams: returnUrl !== '/groups' ? { returnUrl } : {}
     });
   }
 }

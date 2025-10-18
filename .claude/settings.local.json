@@ -27,7 +27,9 @@
       "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\")",
       "Bash(npm start)",
       "Bash(netstat -ano)",
-      "Bash(dir \"C:\\P\\Edu\\santavibe\\SantaVibe.Backend\\SantaVibe.Api\\Features\\Groups\\GetUserGroups\" /B)"
+      "Bash(dir \"C:\\P\\Edu\\santavibe\\SantaVibe.Backend\\SantaVibe.Api\\Features\\Groups\\GetUserGroups\" /B)",
+      "Bash(dir \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\\app\" /AD /B)",
+      "Bash(npm install date-fns)"
     ]
   },
   "outputStyle": "default"

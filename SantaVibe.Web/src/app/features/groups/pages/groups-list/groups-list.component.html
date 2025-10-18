@@ -1,0 +1,74 @@
+<div class="container mx-auto px-4 py-6 max-w-7xl">
+  <!-- Header -->
+  <header class="mb-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900">Moje Grupy</h1>
+    <div class="flex items-center gap-4">
+      @if (lastUpdated()) {
+        <span class="text-sm text-gray-500">
+          Ostatnia aktualizacja: {{ formatRelativeTime(lastUpdated()) }}
+        </span>
+      }
+      <button
+        (click)="handleRefresh()"
+        [disabled]="isRefreshing()"
+        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (isRefreshing()) {
+          <app-loading-spinner [size]="'sm'" />
+        } @else {
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        }
+        Odśwież
+      </button>
+    </div>
+  </header>
+
+  <!-- Error Alert -->
+  @if (error()) {
+    <app-error-alert-retry
+      [message]="error()!"
+      (retry)="handleRefresh()"
+      (dismiss)="clearError()" />
+  }
+
+  <!-- Loading Skeleton -->
+  @if (isLoading() && groups().length === 0) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (item of [1, 2, 3]; track item) {
+        <app-skeleton-loader [type]="'card'" />
+      }
+    </div>
+  }
+
+  <!-- Groups Grid -->
+  @if (groups().length > 0) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (group of groupViewModels(); track group.groupId) {
+        <app-group-card
+          [group]="group"
+          (cardClick)="navigateToGroup($event)" />
+      }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading() && groups().length === 0 && !error()) {
+    <app-empty-state
+      [message]="'Nie jesteś jeszcze członkiem żadnej grupy.'"
+      [description]="'Stwórz nową grupę lub poproś organizatora o link zaproszenia.'"
+      [actionLabel]="'Utwórz Pierwszą Grupę'"
+      [actionIcon]="'plus'"
+      (action)="navigateToCreate()" />
+  }
+
+  <!-- Create Group FAB (Floating Action Button) -->
+  <button
+    (click)="navigateToCreate()"
+    class="fixed bottom-6 right-6 inline-flex items-center justify-center w-14 h-14 text-white bg-blue-700 rounded-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg transition-all hover:scale-110">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+    </svg>
+    <span class="sr-only">Utwórz nową grupę</span>
+  </button>
+</div>

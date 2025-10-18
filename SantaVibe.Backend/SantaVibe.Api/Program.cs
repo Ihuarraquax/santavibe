@@ -8,7 +8,10 @@ using SantaVibe.Api.Data;
 using SantaVibe.Api.Data.Entities;
 using SantaVibe.Api.Features.Authentication.Register;
 using SantaVibe.Api.Features.Authentication.Login;
+using SantaVibe.Api.Features.Groups.GetUserGroups;
 using SantaVibe.Api.Middleware;
+using SantaVibe.Api.Services;
+using SantaVibe.Api.Common;
 using Serilog;
 
 // Configure Serilog (basic configuration, will be enhanced with app configuration later)
@@ -63,11 +66,6 @@ try
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-    // Add JWT authentication
-    var jwtSettings = builder.Configuration.GetSection("Jwt");
-    var secretKey = jwtSettings["Secret"]
-        ?? throw new InvalidOperationException("JWT Secret not configured");
-
     builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -75,18 +73,23 @@ try
     })
     .AddJwtBearer(options =>
     {
+        var jwtSettings = builder.Configuration.GetSection("Jwt");
+        var secretKey = jwtSettings["Secret"]
+                        ?? throw new InvalidOperationException("JWT Secret not configured");
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+        {
+            KeyId = "my-app-signing-key-id" // <-- ADD THIS
+        };
+        
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(secretKey)
-            ),
-            ClockSkew = TimeSpan.Zero // No tolerance for token expiration
+            ClockSkew = TimeSpan.Zero, // No tolerance for token expiration
+            IssuerSigningKey = securityKey
         };
     });
 
@@ -133,9 +136,12 @@ try
     });
 
     // Register application services (Vertical Slice Architecture)
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddScoped<IUserAccessor, UserAccessor>();
     builder.Services.AddScoped<IRegisterService, RegisterService>();
     builder.Services.AddScoped<ILoginService, LoginService>();
-
+    
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
     builder.Services.AddOpenApi();
 
     builder.Services.AddSwaggerGen(c =>
@@ -224,13 +230,12 @@ try
 
     app.UseAuthentication();
     app.UseAuthorization();
-
+    Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
     app.UseSerilogRequestLogging();
     // Map endpoints (Vertical Slice Architecture)
     app.MapRegisterEndpoint();
     app.MapLoginEndpoint();
-
-    await app.RunAsync();
+    app.MapGetUserGroupsEndpoint();    await app.RunAsync();
 }
 catch (Exception ex)
 {

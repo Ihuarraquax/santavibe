@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PasswordStrengthResult } from '../models/registration.types';
+import { PasswordStrengthResult, PasswordStrength } from '../models/registration.types';
 
 /**
  * Centralized validation service for reusable validation logic.
@@ -120,11 +120,27 @@ export class ValidationService {
   /**
    * Calculates password strength based on requirements met.
    * @param password - Password string to analyze
-   * @returns PasswordStrengthResult with level and individual checks
+   * @returns PasswordStrengthResult with strength, score, feedback, and individual checks
    */
   calculatePasswordStrength(password: string): PasswordStrengthResult {
-    const checks = {
-      hasMinLength: password.length >= 8,
+    if (!password) {
+      return {
+        strength: PasswordStrength.WEAK,
+        score: 0,
+        feedback: 'Wprowadź hasło',
+        meetsRequirements: false,
+        requirements: {
+          minLength: false,
+          hasUppercase: false,
+          hasLowercase: false,
+          hasDigit: false,
+          hasSpecialChar: false
+        }
+      };
+    }
+
+    const requirements = {
+      minLength: password.length >= 8,
       hasUppercase: this.passwordRegex.uppercase.test(password),
       hasLowercase: this.passwordRegex.lowercase.test(password),
       hasDigit: this.passwordRegex.digit.test(password),
@@ -132,23 +148,29 @@ export class ValidationService {
     };
 
     // Count how many requirements are met
-    const checksCount = Object.values(checks).filter(Boolean).length;
+    const satisfiedCount = Object.values(requirements).filter(Boolean).length;
+    const score = (satisfiedCount / 5) * 100;
 
-    // Determine strength level based on checks met
-    let level: 'weak' | 'fair' | 'good' | 'strong';
-    if (checksCount < 2) {
-      level = 'weak';
-    } else if (checksCount < 4) {
-      level = 'fair';
-    } else if (checksCount < 5) {
-      level = 'good';
+    let strength: PasswordStrength;
+    let feedback: string;
+
+    if (score < 60) {
+      strength = PasswordStrength.WEAK;
+      feedback = 'Słabe hasło 😟 Dodaj więcej znaków!';
+    } else if (score < 100) {
+      strength = PasswordStrength.MEDIUM;
+      feedback = 'Niezłe hasło 😊 Jeszcze trochę!';
     } else {
-      level = 'strong';
+      strength = PasswordStrength.STRONG;
+      feedback = 'Świetne hasło! 🎉 Twoje dane są bezpieczne!';
     }
 
     return {
-      level,
-      checks
+      strength,
+      score,
+      feedback,
+      meetsRequirements: satisfiedCount === 5,
+      requirements
     };
   }
 

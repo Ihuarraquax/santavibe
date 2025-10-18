@@ -38,13 +38,25 @@ export interface FormValidationErrors {
 }
 
 /**
+ * Password strength levels enum.
+ */
+export enum PasswordStrength {
+  WEAK = 'weak',
+  MEDIUM = 'medium',
+  STRONG = 'strong'
+}
+
+/**
  * Track password strength requirements.
- * `level` represents overall strength, while `checks` shows which individual requirements are met.
+ * Includes overall strength level, score percentage, and individual requirement checks.
  */
 export interface PasswordStrengthResult {
-  level: 'weak' | 'fair' | 'good' | 'strong';
-  checks: {
-    hasMinLength: boolean;
+  strength: PasswordStrength;
+  score: number; // 0-100 percentage
+  feedback: string; // Polish feedback text with friendly tone
+  meetsRequirements: boolean; // All requirements satisfied
+  requirements: {
+    minLength: boolean;
     hasUppercase: boolean;
     hasLowercase: boolean;
     hasDigit: boolean;
@@ -56,10 +68,11 @@ export interface PasswordStrengthResult {
  * Structure for API error responses.
  * `details` contains field-specific validation errors from the backend.
  */
-export interface ApiError {
+export interface ApiErrorResponse {
   error: string;
-  message: string;
-  details?: Record<string, string[]>;
+  message?: string;
+  details?: Record<string, string[]>; // Field-mapped errors
+  statusCode?: number;
 }
 
 /**

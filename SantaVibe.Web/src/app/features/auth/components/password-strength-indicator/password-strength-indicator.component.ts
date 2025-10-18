@@ -1,6 +1,6 @@
 import { Component, input, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PasswordStrengthResult } from '../../models/registration.types';
+import { PasswordStrengthResult, PasswordStrength } from '../../models/registration.types';
 import { ValidationService } from '../../services/validation.service';
 
 /**
@@ -33,40 +33,18 @@ export class PasswordStrengthIndicatorComponent {
    * Returns CSS classes for the strength meter bar based on strength level.
    */
   get strengthMeterClasses(): string {
-    const level = this.strengthResult().level;
+    const strength = this.strengthResult().strength;
     const baseClasses = 'h-2 rounded-full transition-all duration-300';
 
-    switch (level) {
-      case 'weak':
-        return `${baseClasses} bg-red-500 w-1/4`;
-      case 'fair':
-        return `${baseClasses} bg-yellow-500 w-2/4`;
-      case 'good':
-        return `${baseClasses} bg-blue-500 w-3/4`;
-      case 'strong':
-        return `${baseClasses} bg-green-500 w-full`;
+    switch (strength) {
+      case PasswordStrength.WEAK:
+        return `${baseClasses} bg-red-500`;
+      case PasswordStrength.MEDIUM:
+        return `${baseClasses} bg-yellow-500`;
+      case PasswordStrength.STRONG:
+        return `${baseClasses} bg-green-500`;
       default:
-        return `${baseClasses} bg-gray-300 w-0`;
-    }
-  }
-
-  /**
-   * Returns text label for current strength level.
-   */
-  get strengthLabel(): string {
-    const level = this.strengthResult().level;
-
-    switch (level) {
-      case 'weak':
-        return 'Słabe';
-      case 'fair':
-        return 'Średnie';
-      case 'good':
-        return 'Dobre';
-      case 'strong':
-        return 'Silne';
-      default:
-        return '';
+        return `${baseClasses} bg-gray-300`;
     }
   }
 
@@ -74,16 +52,14 @@ export class PasswordStrengthIndicatorComponent {
    * Returns CSS classes for the strength label text based on strength level.
    */
   get strengthLabelClasses(): string {
-    const level = this.strengthResult().level;
+    const strength = this.strengthResult().strength;
 
-    switch (level) {
-      case 'weak':
+    switch (strength) {
+      case PasswordStrength.WEAK:
         return 'text-red-600 dark:text-red-400';
-      case 'fair':
+      case PasswordStrength.MEDIUM:
         return 'text-yellow-600 dark:text-yellow-400';
-      case 'good':
-        return 'text-blue-600 dark:text-blue-400';
-      case 'strong':
+      case PasswordStrength.STRONG:
         return 'text-green-600 dark:text-green-400';
       default:
         return 'text-gray-600 dark:text-gray-400';

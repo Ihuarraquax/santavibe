@@ -1,0 +1,58 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <!-- Card container -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+          Dołącz do magii Świąt! 🎄
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Stwórz konto i zacznij świąteczną zabawę z SantaVibe
+        </p>
+      </div>
+
+      <!-- Registration Form -->
+      <app-registration-form />
+
+      <!-- Login link -->
+      <div class="text-center mt-6">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          Masz już konto?
+          <a
+            routerLink="/login"
+            class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400 font-medium ml-1"
+          >
+            Zaloguj się
+          </a>
+        </p>
+      </div>
+
+      <!-- Footer links -->
+      <div class="text-center mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
+          <a
+            routerLink="/terms"
+            class="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+          >
+            Regulamin
+          </a>
+          <span>•</span>
+          <a
+            routerLink="/privacy"
+            class="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+          >
+            Polityka prywatności
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional decoration (optional) -->
+    <div class="text-center mt-6">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        🎅 Ho ho ho! Witamy w rodzinie SantaVibe! 🎁
+      </p>
+    </div>
+  </div>
+</div>

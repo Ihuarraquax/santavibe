@@ -14,6 +14,12 @@ export const routes: Routes = [
     title: 'Logowanie - SantaVibe'
   },
   {
+    path: 'register',
+    loadComponent: () => import('./features/auth/pages/registration/registration.component').then(m => m.RegistrationComponent),
+    canActivate: [guestGuard],
+    title: 'Rejestracja - SantaVibe'
+  },
+  {
     path: '**',
     redirectTo: '/login'
   }

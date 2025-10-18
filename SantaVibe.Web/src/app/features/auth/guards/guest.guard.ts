@@ -12,8 +12,8 @@ export const guestGuard: CanActivateFn = () => {
 
   // Check if user is authenticated and token is not expired
   if (authService.isAuthenticated() && !authService.isTokenExpired()) {
-    // User is already logged in, redirect to dashboard
-    router.navigate(['/dashboard']);
+    // User is already logged in, redirect to groups list
+    router.navigate(['/groups']);
     return false;
   }
 

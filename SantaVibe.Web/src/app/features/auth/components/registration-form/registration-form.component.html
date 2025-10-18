@@ -1,0 +1,180 @@
+<form [formGroup]="registrationForm" (ngSubmit)="submitForm()" class="space-y-6">
+  <!-- Form-level error -->
+  @if (formLevelError()) {
+    <app-error-alert
+      [error]="formLevelError()"
+      [dismissible]="true"
+      [severity]="'error'"
+      (dismiss)="dismissFormError()"
+    />
+  }
+
+  <!-- Email field -->
+  <div>
+    <label
+      for="email"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      Email ✉️
+    </label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      [class]="hasFieldError('email')
+        ? 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
+        : 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500'"
+      placeholder="twoj.email@example.com"
+      autofocus
+    />
+    @if (hasFieldError('email')) {
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+        {{ getEmailErrorMessage() }}
+      </p>
+    }
+  </div>
+
+  <!-- Password field with toggle -->
+  <div>
+    <label
+      for="password"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      Hasło 🔒
+    </label>
+    <div class="relative">
+      <input
+        [type]="showPassword() ? 'text' : 'password'"
+        id="password"
+        formControlName="password"
+        [class]="hasFieldError('password')
+          ? 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 pr-10 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
+          : 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500'"
+        placeholder="••••••••"
+      />
+      <button
+        type="button"
+        (click)="togglePasswordVisibility()"
+        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        [attr.aria-label]="showPassword() ? 'Ukryj hasło' : 'Pokaż hasło'"
+      >
+        @if (showPassword()) {
+          <!-- Eye slash icon (hide) -->
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"></path>
+            <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"></path>
+          </svg>
+        } @else {
+          <!-- Eye icon (show) -->
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+          </svg>
+        }
+      </button>
+    </div>
+
+    <!-- Password strength indicator -->
+    <app-password-strength-indicator [password]="registrationForm.get('password')?.value || ''" />
+
+    @if (hasFieldError('password')) {
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+        {{ getPasswordErrorMessage() }}
+      </p>
+    }
+  </div>
+
+  <!-- First name field -->
+  <div>
+    <label
+      for="firstName"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      Imię 🎅
+    </label>
+    <input
+      type="text"
+      id="firstName"
+      formControlName="firstName"
+      [class]="hasFieldError('firstName')
+        ? 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
+        : 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500'"
+      placeholder="Jan"
+    />
+    @if (hasFieldError('firstName')) {
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+        {{ getFirstNameErrorMessage() }}
+      </p>
+    }
+  </div>
+
+  <!-- Last name field -->
+  <div>
+    <label
+      for="lastName"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      Nazwisko 🎄
+    </label>
+    <input
+      type="text"
+      id="lastName"
+      formControlName="lastName"
+      [class]="hasFieldError('lastName')
+        ? 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
+        : 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500'"
+      placeholder="Kowalski"
+    />
+    @if (hasFieldError('lastName')) {
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+        {{ getLastNameErrorMessage() }}
+      </p>
+    }
+  </div>
+
+  <!-- GDPR consent checkbox -->
+  <div class="flex items-start">
+    <div class="flex items-center h-5">
+      <input
+        id="gdprConsent"
+        type="checkbox"
+        formControlName="gdprConsent"
+        [class]="hasFieldError('gdprConsent')
+          ? 'w-4 h-4 border border-red-300 rounded bg-red-50 focus:ring-3 focus:ring-red-300 dark:bg-red-700 dark:border-red-600 dark:focus:ring-red-600 dark:ring-offset-gray-800'
+          : 'w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-red-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-red-600 dark:ring-offset-gray-800'"
+      />
+    </div>
+    <label for="gdprConsent" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+      Akceptuję
+      <a routerLink="/terms" class="text-red-600 hover:underline dark:text-red-500">regulamin</a>
+      i
+      <a routerLink="/privacy" class="text-red-600 hover:underline dark:text-red-500">politykę prywatności</a>
+      📜
+    </label>
+  </div>
+  @if (hasFieldError('gdprConsent')) {
+    <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+      {{ getGdprErrorMessage() }}
+    </p>
+  }
+
+  <!-- Submit button -->
+  <button
+    type="submit"
+    [class]="canSubmit()
+      ? 'text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800'
+      : 'text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-gray-600 pointer-events-none'"
+  >
+    @if (isSubmitting()) {
+      <span class="flex items-center justify-center">
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Tworzenie konta... 🎅
+      </span>
+    } @else {
+      <span>Utwórz konto 🎄</span>
+    }
+  </button>
+</form>

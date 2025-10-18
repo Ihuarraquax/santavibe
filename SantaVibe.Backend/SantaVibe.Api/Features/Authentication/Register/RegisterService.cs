@@ -101,7 +101,10 @@ public class RegisterService(
         var secretKey = jwtSettings["Secret"]
             ?? throw new InvalidOperationException("JWT Secret not configured");
 
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+        {
+            KeyId = "my-app-signing-key-id" // <-- ADD THIS
+        };
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]

@@ -23,7 +23,8 @@
       "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\\app\")",
       "Bash(findstr:*)",
       "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Backend\\SantaVibe.Api\")",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(dir /s /b \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\")"
     ]
   },
   "outputStyle": "default"

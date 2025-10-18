@@ -5,6 +5,7 @@ import { Configuration } from '@api/configuration';
 import { BASE_PATH } from '@api/variables';
 
 import { routes } from './app.routes';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,12 +15,12 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: BASE_PATH,
-      useValue: 'https://localhost:5001'
+      useValue: environment.apiUrl
     },
     {
       provide: Configuration,
       useFactory: () => new Configuration({
-        basePath: 'https://localhost:5001'
+        basePath: environment.apiUrl
       })
     }
   ]

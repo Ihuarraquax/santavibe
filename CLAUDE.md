@@ -142,28 +142,6 @@ dotnet restore
 - Use tags to group related endpoints by resource or functional area
 - Implement examples for all endpoints to facilitate easier integration by consumers
 
-
-### Guidelines for VERSION_CONTROL
-
-#### GIT
-
-- Use conventional commits to create meaningful commit messages
-- Use feature branches with descriptive names following {{branch_naming_convention}}
-- Write meaningful commit messages that explain why changes were made, not just what
-- Keep commits focused on single logical changes to facilitate code review and bisection
-- Use interactive rebase to clean up history before merging feature branches
-- Leverage git hooks to enforce code quality checks before commits and pushes
-
-#### GITHUB
-
-- Use pull request templates to standardize information provided for code reviews
-- Implement branch protection rules for {{protected_branches}} to enforce quality checks
-- Configure required status checks to prevent merging code that fails tests or linting
-- Use GitHub Actions for CI/CD workflows to automate testing and deployment
-- Implement CODEOWNERS files to automatically assign reviewers based on code paths
-- Use GitHub Projects for tracking work items and connecting them to code changes
-
-
 ### Guidelines for ARCHITECTURE
 
 #### CLEAN_ARCHITECTURE
@@ -225,6 +203,7 @@ dotnet restore
 - Use TypeScript decorators with explicit visibility modifiers (public, private)
 - Leverage Angular CLI for schematics and code generation
 - Implement proper lazy loading with loadComponent and loadChildren
+- Always use FormControl and FormGroup instead of manual signal management for form state.
 
 
 ### Guidelines for STYLING
@@ -246,8 +225,6 @@ dotnet restore
 
 ### Guidelines for DOTNET
 
-####
-
 #### ENTITY_FRAMEWORK
 
 - Use the repository and unit of work patterns to abstract data access logic and simplify testing
@@ -265,16 +242,6 @@ dotnet restore
 - Apply proper response caching with cache profiles and ETags for improved performance on {{high_traffic_endpoints}}
 - Implement proper exception handling with ExceptionFilter or middleware to provide consistent error responses
 - Use dependency injection with scoped lifetime for request-specific services and singleton for stateless services
-
-## DATABASE
-
-### Guidelines for SQL
-
-#### POSTGRES
-
-- Use connection pooling to manage database connections efficiently
-- Implement JSONB columns for semi-structured data instead of creating many tables for {{flexible_data}}
-- Use materialized views for complex, frequently accessed read-only data
 
 ## DEVOPS
 

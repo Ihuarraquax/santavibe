@@ -13,6 +13,7 @@ using SantaVibe.Api.Features.Groups.GetGroupDetails;
 using SantaVibe.Api.Features.Groups.Create;
 using SantaVibe.Api.Features.Invitations;
 using SantaVibe.Api.Features.Invitations.GetInvitationDetails;
+using SantaVibe.Api.Features.Invitations.AcceptInvitation;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -247,6 +248,7 @@ try
     app.MapGetGroupDetailsEndpoint();
     app.MapCreateGroupEndpoint();
     app.MapGetInvitationDetailsEndpoint();
+    app.MapAcceptInvitationEndpoint();
 
     await app.RunAsync();
 }

@@ -118,3 +118,4 @@ dotnet restore
 
 
 
+- follow DDD principles with business logic in the domain model and a cleaner handler that focuses on orchestration

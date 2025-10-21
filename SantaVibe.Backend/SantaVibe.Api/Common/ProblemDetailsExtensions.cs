@@ -20,6 +20,10 @@ public static class ProblemDetailsExtensions
             "Forbidden" => StatusCodes.Status403Forbidden,
             "Unauthorized" => StatusCodes.Status401Unauthorized,
             "ValidationError" => StatusCodes.Status400BadRequest,
+            "InvalidInvitation" => StatusCodes.Status404NotFound,
+            "AlreadyParticipant" => StatusCodes.Status409Conflict,
+            "InvitationExpired" => StatusCodes.Status410Gone,
+            "InternalServerError" => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest // Default for unknown errors
         };
 

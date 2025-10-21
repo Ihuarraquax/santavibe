@@ -1,3 +1,5 @@
+using SantaVibe.Api.Common;
+
 namespace SantaVibe.Api.Data.Entities;
 
 /// <summary>
@@ -52,4 +54,61 @@ public class Group
     public ICollection<ExclusionRule> ExclusionRules { get; set; } = new List<ExclusionRule>();
     public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     public ICollection<EmailNotification> EmailNotifications { get; set; } = new List<EmailNotification>();
+
+    // Domain logic methods
+
+    /// <summary>
+    /// Checks if the draw has been completed
+    /// </summary>
+    public bool IsDrawCompleted() => DrawCompletedAt.HasValue;
+
+    /// <summary>
+    /// Checks if a user is already a participant in this group
+    /// </summary>
+    public bool HasParticipant(string userId) =>
+        GroupParticipants.Any(gp => gp.UserId == userId);
+
+    /// <summary>
+    /// Adds a new participant to the group
+    /// </summary>
+    /// <param name="userId">User ID to add</param>
+    /// <param name="budgetSuggestion">Optional budget suggestion</param>
+    /// <returns>Result containing the new participant or error information</returns>
+    public Result<GroupParticipant> AddParticipant(string userId, decimal? budgetSuggestion)
+    {
+        // Business rule: Cannot join after draw is completed
+        if (IsDrawCompleted())
+        {
+            return Result<GroupParticipant>.Failure(
+                "InvitationExpired",
+                "This group has already completed the draw and is no longer accepting participants");
+        }
+
+        // Business rule: Cannot join if already a participant
+        if (HasParticipant(userId))
+        {
+            return Result<GroupParticipant>.Failure(
+                "AlreadyParticipant",
+                "You are already a participant in this group");
+        }
+
+        var participant = new GroupParticipant
+        {
+            GroupId = Id,
+            UserId = userId,
+            BudgetSuggestion = budgetSuggestion,
+            JoinedAt = DateTimeOffset.UtcNow,
+            WishlistContent = null,
+            WishlistLastModified = null
+        };
+
+        GroupParticipants.Add(participant);
+
+        return Result<GroupParticipant>.Success(participant);
+    }
+
+    /// <summary>
+    /// Gets the total count of participants including the organizer
+    /// </summary>
+    public int GetParticipantCount() => GroupParticipants.Count;
 }

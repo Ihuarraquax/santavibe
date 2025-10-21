@@ -9,6 +9,7 @@ using SantaVibe.Api.Data.Entities;
 using SantaVibe.Api.Features.Authentication.Register;
 using SantaVibe.Api.Features.Authentication.Login;
 using SantaVibe.Api.Features.Groups.GetUserGroups;
+using SantaVibe.Api.Features.Groups.GetGroupDetails;
 using SantaVibe.Api.Features.Groups.Create;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
@@ -240,6 +241,7 @@ try
     app.MapRegisterEndpoint();
     app.MapLoginEndpoint();
     app.MapGetUserGroupsEndpoint();
+    app.MapGetGroupDetailsEndpoint();
     app.MapCreateGroupEndpoint();
 
     await app.RunAsync();

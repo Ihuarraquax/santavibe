@@ -11,6 +11,8 @@ using SantaVibe.Api.Features.Authentication.Login;
 using SantaVibe.Api.Features.Groups.GetUserGroups;
 using SantaVibe.Api.Features.Groups.GetGroupDetails;
 using SantaVibe.Api.Features.Groups.Create;
+using SantaVibe.Api.Features.Invitations;
+using SantaVibe.Api.Features.Invitations.GetInvitationDetails;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -142,6 +144,7 @@ try
     builder.Services.AddScoped<IUserAccessor, UserAccessor>();
     builder.Services.AddScoped<IRegisterService, RegisterService>();
     builder.Services.AddScoped<ILoginService, LoginService>();
+    builder.Services.AddScoped<IInvitationService, InvitationService>();
 
     // Register validation filter
     builder.Services.AddScoped(typeof(ValidationFilter<>));
@@ -243,6 +246,7 @@ try
     app.MapGetUserGroupsEndpoint();
     app.MapGetGroupDetailsEndpoint();
     app.MapCreateGroupEndpoint();
+    app.MapGetInvitationDetailsEndpoint();
 
     await app.RunAsync();
 }

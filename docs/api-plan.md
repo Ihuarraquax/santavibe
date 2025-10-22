@@ -320,16 +320,16 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
       "firstName": "Jan",
       "lastName": "Kowalski",
       "joinedAt": "2025-10-15T10:00:00Z",
-      "hasBudgetSuggestion": true,
-      "hasWishlist": true
+      "hasWishlist": true,
+      "isOrganizer": true
     },
     {
       "userId": "660f9511-f30c-52f5-b827-557766551111",
       "firstName": "Anna",
       "lastName": "Nowak",
       "joinedAt": "2025-10-15T11:30:00Z",
-      "hasBudgetSuggestion": true,
-      "hasWishlist": false
+      "hasWishlist": false,
+      "isOrganizer": false
     }
   ],
   "participantCount": 2,
@@ -467,54 +467,6 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 ---
 
 ### 3.5 Participant Management
-
-#### Get Group Participants
-
-**Endpoint**: `GET /api/groups/{groupId}/participants`
-
-**Description**: Retrieve list of all participants in a group. Available to all group members.
-
-**Authentication**: Required (JWT Bearer token)
-
-**Path Parameters**:
-- `groupId` (UUID): Group identifier
-
-**Authorization**: User must be a participant in the group
-
-**Success Response** (200 OK):
-```json
-{
-  "groupId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-  "participants": [
-    {
-      "userId": "550e8400-e29b-41d4-a716-446655440000",
-      "firstName": "Jan",
-      "lastName": "Kowalski",
-      "joinedAt": "2025-10-15T10:00:00Z",
-      "hasBudgetSuggestion": true,
-      "hasWishlist": true,
-      "isOrganizer": true
-    },
-    {
-      "userId": "660f9511-f30c-52f5-b827-557766551111",
-      "firstName": "Anna",
-      "lastName": "Nowak",
-      "joinedAt": "2025-10-15T11:30:00Z",
-      "hasBudgetSuggestion": true,
-      "hasWishlist": false,
-      "isOrganizer": false
-    }
-  ],
-  "totalCount": 2
-}
-```
-
-**Error Responses**:
-- `401 Unauthorized`: Missing or invalid token
-- `403 Forbidden`: User is not a participant
-- `404 Not Found`: Group does not exist
-
----
 
 #### Remove Participant from Group
 
@@ -1283,7 +1235,6 @@ These endpoints require the authenticated user to be the group organizer:
 #### Participant-Only Endpoints
 These endpoints require the authenticated user to be a participant in the group:
 - `GET /api/groups/{groupId}`
-- `GET /api/groups/{groupId}/participants`
 - `GET /api/groups/{groupId}/exclusion-rules`
 - `GET /api/groups/{groupId}/participants/me/wishlist`
 - `PUT /api/groups/{groupId}/participants/me/wishlist`
@@ -1483,7 +1434,6 @@ These endpoints require draw to be completed:
 For MVP, pagination is not implemented as group sizes are expected to be small (5-30 participants). Future endpoints that may need pagination:
 
 - `GET /api/groups` (if users participate in many groups)
-- `GET /api/groups/{groupId}/participants` (if groups grow large)
 
 **Recommended Pagination Format**:
 ```

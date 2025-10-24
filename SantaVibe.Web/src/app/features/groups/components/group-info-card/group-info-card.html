@@ -1,0 +1,27 @@
+<div class="bg-white shadow rounded-lg p-6 mb-6">
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ groupName() }}</h2>
+
+  <div class="space-y-3">
+    <div class="flex items-center">
+      <span class="text-gray-600 min-w-[120px]">Organizator:</span>
+      <span class="ml-2 font-medium text-gray-900">{{ organizerName() }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <span class="text-gray-600 min-w-[120px]">Uczestnicy:</span>
+      <span class="ml-2 font-medium text-gray-900">{{ participantCount() }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <span class="text-gray-600 min-w-[120px]">Utworzono:</span>
+      <span class="ml-2 text-gray-700">{{ createdAt() | date:'medium':'':'pl' }}</span>
+    </div>
+
+    @if (drawCompletedAt()) {
+      <div class="flex items-center">
+        <span class="text-gray-600 min-w-[120px]">Losowanie:</span>
+        <span class="ml-2 text-gray-700">{{ drawCompletedAt() | date:'medium':'':'pl' }}</span>
+      </div>
+    }
+  </div>
+</div>

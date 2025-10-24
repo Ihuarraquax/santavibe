@@ -35,6 +35,12 @@ export const routes: Routes = [
     title: 'Utwórz Grupę - SantaVibe'
   },
   {
+    path: 'groups/:groupId',
+    loadComponent: () => import('./features/groups/pages/group-details/group-details').then(m => m.GroupDetailsComponent),
+    canActivate: [authGuard],
+    title: 'Szczegóły Grupy - SantaVibe'
+  },
+  {
     path: 'invite/:token',
     loadComponent: () => import('./features/invitations/pages/invitation/invitation.component').then(m => m.InvitationComponent),
     title: 'Zaproszenie do grupy - SantaVibe'

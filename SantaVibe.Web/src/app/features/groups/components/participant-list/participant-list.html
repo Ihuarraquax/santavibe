@@ -1,0 +1,43 @@
+<div class="bg-white shadow rounded-lg p-6">
+  <h2 class="text-xl font-semibold text-gray-900 mb-4">Uczestnicy</h2>
+
+  <div class="space-y-3">
+    @for (participant of participants(); track participant.userId) {
+      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <div class="flex-1">
+          <div class="font-medium text-gray-900">
+            {{ participant.fullName }}
+            @if (participant.isOrganizer) {
+              <span class="ml-2 text-sm text-blue-600 font-semibold">(Organizator)</span>
+            }
+          </div>
+          <div class="text-sm text-gray-600 mt-1">
+            Dołączył: {{ participant.joinedAt | date:'short':'':'pl' }}
+          </div>
+          <div class="text-sm mt-1">
+            @if (participant.hasWishlist) {
+              <span class="text-green-600">✓ Lista życzeń dodana</span>
+            } @else {
+              <span class="text-gray-400">Brak listy życzeń</span>
+            }
+          </div>
+        </div>
+
+        @if (canRemove() && participant.canRemove) {
+          <button
+            (click)="removeParticipant.emit(participant.userId)"
+            class="ml-4 px-3 py-1.5 text-sm font-medium text-red-700 bg-red-50 border border-red-300 rounded-lg hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+            type="button">
+            Usuń
+          </button>
+        }
+      </div>
+    }
+
+    @if (participants().length === 0) {
+      <div class="text-center py-8 text-gray-500">
+        <p>Brak uczestników w grupie</p>
+      </div>
+    }
+  </div>
+</div>

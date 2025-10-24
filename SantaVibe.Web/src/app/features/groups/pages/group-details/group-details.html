@@ -1,0 +1,93 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="flex justify-center items-center min-h-[400px]">
+      <app-loading-spinner size="lg" message="Ładowanie szczegółów grupy..." />
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !isLoading()) {
+    <div class="mb-6">
+      <app-error-alert
+        [error]="error()"
+        [dismissible]="true"
+        (dismiss)="onDismissError()" />
+    </div>
+  }
+
+  <!-- Main Content -->
+  @if (groupDetails() && !isLoading()) {
+    <!-- Header with Refresh Button -->
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">{{ groupDetails()!.name }}</h1>
+      <button
+        (click)="onRefresh()"
+        [disabled]="isRefreshing()"
+        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        type="button">
+        @if (isRefreshing()) {
+          <app-loading-spinner size="sm" />
+        } @else {
+          <span>Odśwież</span>
+        }
+      </button>
+    </div>
+
+    <!-- Group Info Card (Always Visible) -->
+    <app-group-info-card
+      [groupName]="groupDetails()!.name"
+      [organizerName]="groupDetails()!.organizerName"
+      [participantCount]="groupDetails()!.participantCount"
+      [createdAt]="groupDetails()!.createdAt"
+      [drawCompletedAt]="groupDetails()!.drawCompletedAt" />
+
+    <!-- Pre-Draw View -->
+    @if (isPreDraw()) {
+      <div class="space-y-6">
+        <!-- Participant List -->
+        <app-participant-list
+          [participants]="groupDetails()!.participants || []"
+          [canRemove]="isOrganizer()" />
+        <!-- Wishlist Editor -->
+        <app-wishlist-editor
+          [initialContent]="myWishlist()"
+          [isEditable]="true"
+          [isSaving]="isSavingWishlist()"
+          (save)="onSaveWishlist($event)" />
+
+        <!-- Budget Suggestion -->
+        <app-budget-suggestion
+          [initialAmount]="myBudgetSuggestion()"
+          [isEditable]="true"
+          [isSaving]="isSavingBudget()"
+          (save)="onSaveBudget($event)" />
+
+        @if (!isOrganizer()) {
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+            <p class="text-blue-800">
+              Oczekiwanie na organizatora w celu rozpoczęcia losowania...
+            </p>
+          </div>
+        }
+
+        @if (isOrganizer()) {
+          <!-- TODO: Add InvitationLinkCardComponent -->
+          <!-- TODO: Add BudgetManagementComponent -->
+          <!-- TODO: Add ExclusionRulesComponent -->
+          <!-- TODO: Add DrawValidationComponent -->
+          <!-- TODO: Add DrawExecutionComponent -->
+        }
+      </div>
+    }
+
+    <!-- Post-Draw View -->
+    @if (isPostDraw()) {
+      <div class="space-y-6">
+        <!-- TODO: Add AssignmentCardComponent -->
+        <!-- TODO: Add GiftSuggestionsComponent -->
+        <!-- TODO: Add WishlistEditorComponent (with update notification) -->
+      </div>
+    }
+  }
+</div>

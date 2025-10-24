@@ -31,7 +31,9 @@
       "Bash(dir \"C:\\P\\Edu\\santavibe\\SantaVibe.Web\\src\\app\" /AD /B)",
       "Bash(npm install date-fns)",
       "Bash(npm install:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(npx ng generate:*)",
+      "Bash(taskkill:*)"
     ]
   },
   "outputStyle": "default"

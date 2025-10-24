@@ -1,17 +1,17 @@
 <div class="container mx-auto px-4 py-6 max-w-7xl">
   <!-- Header -->
   <header class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-    <h1 class="text-2xl font-bold text-gray-900">Moje Grupy</h1>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Moje Grupy</h1>
     <div class="flex items-center gap-3 flex-wrap">
       @if (lastUpdated()) {
-        <span class="text-sm text-gray-500">
+        <span class="text-sm text-gray-500 dark:text-gray-400">
           Ostatnia aktualizacja: {{ formatRelativeTime(lastUpdated()) }}
         </span>
       }
       <button
         (click)="handleRefresh()"
         [disabled]="isRefreshing()"
-        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 disabled:opacity-50 disabled:cursor-not-allowed">
         @if (isRefreshing()) {
           <app-loading-spinner [size]="'sm'" />
         } @else {
@@ -23,7 +23,7 @@
       </button>
       <button
         (click)="navigateToCreate()"
-        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300">
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
@@ -73,7 +73,7 @@
   <!-- Create Group FAB (Floating Action Button) -->
   <button
     (click)="navigateToCreate()"
-    class="fixed bottom-6 right-6 inline-flex items-center justify-center w-14 h-14 text-white bg-blue-700 rounded-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg transition-all hover:scale-110">
+    class="fixed bottom-6 right-6 inline-flex items-center justify-center w-14 h-14 text-white bg-blue-700 rounded-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg transition-all hover:scale-110">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
     </svg>

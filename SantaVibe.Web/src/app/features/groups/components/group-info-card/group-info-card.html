@@ -1,26 +1,26 @@
-<div class="bg-white shadow rounded-lg p-6 mb-6">
-  <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ groupName() }}</h2>
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6">
+  <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{{ groupName() }}</h2>
 
   <div class="space-y-3">
     <div class="flex items-center">
-      <span class="text-gray-600 min-w-[120px]">Organizator:</span>
-      <span class="ml-2 font-medium text-gray-900">{{ organizerName() }}</span>
+      <span class="text-gray-600 dark:text-gray-400 min-w-[120px]">Organizator:</span>
+      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ organizerName() }}</span>
     </div>
 
     <div class="flex items-center">
-      <span class="text-gray-600 min-w-[120px]">Uczestnicy:</span>
-      <span class="ml-2 font-medium text-gray-900">{{ participantCount() }}</span>
+      <span class="text-gray-600 dark:text-gray-400 min-w-[120px]">Uczestnicy:</span>
+      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ participantCount() }}</span>
     </div>
 
     <div class="flex items-center">
-      <span class="text-gray-600 min-w-[120px]">Utworzono:</span>
-      <span class="ml-2 text-gray-700">{{ createdAt() | date:'medium':'':'pl' }}</span>
+      <span class="text-gray-600 dark:text-gray-400 min-w-[120px]">Utworzono:</span>
+      <span class="ml-2 text-gray-700 dark:text-gray-300">{{ createdAt() | date:'medium':'':'pl' }}</span>
     </div>
 
     @if (drawCompletedAt()) {
       <div class="flex items-center">
-        <span class="text-gray-600 min-w-[120px]">Losowanie:</span>
-        <span class="ml-2 text-gray-700">{{ drawCompletedAt() | date:'medium':'':'pl' }}</span>
+        <span class="text-gray-600 dark:text-gray-400 min-w-[120px]">Losowanie:</span>
+        <span class="ml-2 text-gray-700 dark:text-gray-300">{{ drawCompletedAt() | date:'medium':'':'pl' }}</span>
       </div>
     }
   </div>

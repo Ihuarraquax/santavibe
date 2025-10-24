@@ -1,24 +1,24 @@
-<div class="bg-white shadow rounded-lg p-6">
-  <h2 class="text-xl font-semibold text-gray-900 mb-4">Uczestnicy</h2>
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Uczestnicy</h2>
 
   <div class="space-y-3">
     @for (participant of participants(); track participant.userId) {
-      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+      <div class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
         <div class="flex-1">
-          <div class="font-medium text-gray-900">
+          <div class="font-medium text-gray-900 dark:text-white">
             {{ participant.fullName }}
             @if (participant.isOrganizer) {
-              <span class="ml-2 text-sm text-blue-600 font-semibold">(Organizator)</span>
+              <span class="ml-2 text-sm text-blue-600 dark:text-blue-400 font-semibold">(Organizator)</span>
             }
           </div>
-          <div class="text-sm text-gray-600 mt-1">
+          <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
             Dołączył: {{ participant.joinedAt | date:'short':'':'pl' }}
           </div>
           <div class="text-sm mt-1">
             @if (participant.hasWishlist) {
-              <span class="text-green-600">✓ Lista życzeń dodana</span>
+              <span class="text-green-600 dark:text-green-400">✓ Lista życzeń dodana</span>
             } @else {
-              <span class="text-gray-400">Brak listy życzeń</span>
+              <span class="text-gray-400 dark:text-gray-500">Brak listy życzeń</span>
             }
           </div>
         </div>
@@ -26,7 +26,7 @@
         @if (canRemove() && participant.canRemove) {
           <button
             (click)="removeParticipant.emit(participant.userId)"
-            class="ml-4 px-3 py-1.5 text-sm font-medium text-red-700 bg-red-50 border border-red-300 rounded-lg hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+            class="ml-4 px-3 py-1.5 text-sm font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:focus:ring-red-600 transition-colors"
             type="button">
             Usuń
           </button>
@@ -35,7 +35,7 @@
     }
 
     @if (participants().length === 0) {
-      <div class="text-center py-8 text-gray-500">
+      <div class="text-center py-8 text-gray-500 dark:text-gray-400">
         <p>Brak uczestników w grupie</p>
       </div>
     }

@@ -114,14 +114,14 @@ public record ParticipantDto
     public required DateTimeOffset JoinedAt { get; init; }
 
     /// <summary>
-    /// Whether the user has provided a budget suggestion
-    /// </summary>
-    public required bool HasBudgetSuggestion { get; init; }
-
-    /// <summary>
     /// Whether the user has created a wishlist
     /// </summary>
     public required bool HasWishlist { get; init; }
+
+    /// <summary>
+    /// Whether the user is the organizer
+    /// </summary>
+    public required bool IsOrganizer { get; init; }
 }
 
 /// <summary>

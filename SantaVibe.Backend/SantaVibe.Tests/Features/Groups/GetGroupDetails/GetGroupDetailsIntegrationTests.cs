@@ -218,20 +218,20 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
         var organizerParticipant = result.Participants.First(p => p.UserId == organizer.Id);
         Assert.Equal("Jan", organizerParticipant.FirstName);
         Assert.Equal("Kowalski", organizerParticipant.LastName);
-        Assert.True(organizerParticipant.HasBudgetSuggestion);
         Assert.True(organizerParticipant.HasWishlist);
+        Assert.True(organizerParticipant.IsOrganizer);
 
         var participant1Details = result.Participants.First(p => p.UserId == participant1.Id);
         Assert.Equal("Anna", participant1Details.FirstName);
         Assert.Equal("Nowak", participant1Details.LastName);
-        Assert.True(participant1Details.HasBudgetSuggestion);
         Assert.False(participant1Details.HasWishlist);
+        Assert.False(participant1Details.IsOrganizer);
 
         var participant2Details = result.Participants.First(p => p.UserId == participant2.Id);
         Assert.Equal("Piotr", participant2Details.FirstName);
         Assert.Equal("Wiśniewski", participant2Details.LastName);
-        Assert.False(participant2Details.HasBudgetSuggestion);
         Assert.True(participant2Details.HasWishlist);
+        Assert.False(participant2Details.IsOrganizer);
 
         // After draw fields should be null
         Assert.Null(result.MyAssignment);

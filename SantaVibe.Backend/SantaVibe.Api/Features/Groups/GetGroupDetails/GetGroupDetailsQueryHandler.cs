@@ -101,8 +101,8 @@ public class GetGroupDetailsQueryHandler(
                 FirstName = gp.User.FirstName,
                 LastName = gp.User.LastName,
                 JoinedAt = gp.JoinedAt,
-                HasBudgetSuggestion = gp.BudgetSuggestion.HasValue,
-                HasWishlist = !string.IsNullOrWhiteSpace(gp.WishlistContent)
+                HasWishlist = !string.IsNullOrWhiteSpace(gp.WishlistContent),
+                IsOrganizer = gp.UserId == group.OrganizerUserId
             })
             .OrderBy(p => p.JoinedAt)
             .ToList();

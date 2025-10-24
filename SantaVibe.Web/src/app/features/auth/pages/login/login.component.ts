@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { LoginFormComponent } from '../../components/login-form/login-form.component';
-import { ErrorAlertComponent } from '../../components/error-alert/error-alert.component';
+import { ErrorAlertComponent } from '../../../../shared/components/error-alert/error-alert.component';
 import { AuthService } from '../../services/auth.service';
 import { LoginFormData } from '../../models/login.types';
 import { LoginRequest } from '@api/model/login-request';

@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { GroupsService } from '@api/api/groups.service';
 import { CreateGroupRequest } from '@api/model/create-group-request';
 import { CreateGroupResponse } from '@api/model/create-group-response';
-import { ErrorAlertComponent } from '../../../auth/components/error-alert/error-alert.component';
+import { ErrorAlertComponent } from '../../../../shared/components/error-alert/error-alert.component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 
 /**

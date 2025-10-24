@@ -33,6 +33,10 @@ export const appConfig: ApplicationConfig = {
       closeButton: true
     }),
     {
+      provide: LOCALE_ID,
+      useValue: 'pl'
+    },
+    {
       provide: BASE_PATH,
       useValue: environment.apiUrl
     },

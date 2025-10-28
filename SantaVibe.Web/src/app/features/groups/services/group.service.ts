@@ -1,6 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { firstValueFrom, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { GroupsService } from '@api/api/groups.service';
+import { WishlistsService } from '@api/api/wishlists.service';
 import { GroupDto } from '@api/model/group-dto';
 import { GetUserGroupsResponse } from '@api/model/get-user-groups-response';
 import {
@@ -24,6 +26,7 @@ import {
 })
 export class GroupService {
   private groupsService = inject(GroupsService);
+  private wishlistsService = inject(WishlistsService);
 
   // State signals
   private groupsSignal = signal<GroupDto[]>([]);
@@ -66,18 +69,23 @@ export class GroupService {
 
   /**
    * Fetches the current user's wishlist for a group.
-   * TODO: Implement when API endpoint is ready
    */
   fetchMyWishlist(groupId: string): Observable<string | null> {
-    return of(null);
+    return this.wishlistsService.getMyWishlist({ groupId }).pipe(
+      map(response => response.wishlistContent ?? null)
+    );
   }
 
   /**
    * Updates the current user's wishlist.
-   * TODO: Implement when API endpoint is ready
    */
   updateWishlist(groupId: string, content: string): Observable<void> {
-    return of(undefined);
+    return this.wishlistsService.updateWishlist({
+      groupId,
+      updateWishlistRequest: { wishlistContent: content }
+    }).pipe(
+      map(() => undefined)
+    );
   }
 
   /**

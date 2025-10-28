@@ -7,6 +7,7 @@ export * from './draw-validation-dto';
 export * from './error-response';
 export * from './get-group-details-response';
 export * from './get-invitation-details-response';
+export * from './get-my-wishlist-response';
 export * from './get-user-groups-response';
 export * from './group-dto';
 export * from './login-request';

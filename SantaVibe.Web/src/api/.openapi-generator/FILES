@@ -21,6 +21,7 @@ model/draw-validation-dto.ts
 model/error-response.ts
 model/get-group-details-response.ts
 model/get-invitation-details-response.ts
+model/get-my-wishlist-response.ts
 model/get-user-groups-response.ts
 model/group-dto.ts
 model/login-request.ts

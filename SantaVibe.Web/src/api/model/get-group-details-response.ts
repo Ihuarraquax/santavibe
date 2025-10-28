@@ -25,6 +25,7 @@ export interface GetGroupDetailsResponse {
     participantCount: number;
     participants?: Array<ParticipantDto> | null;
     exclusionRuleCount?: number | null;
+    invitationLink?: string | null;
     canDraw?: boolean | null;
     drawValidation?: DrawValidationDto;
     myAssignment?: AssignmentDto;

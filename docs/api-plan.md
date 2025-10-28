@@ -334,6 +334,7 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
   ],
   "participantCount": 2,
   "exclusionRuleCount": 0,
+  "invitationLink": "https://santavibe.com/invite/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
   "canDraw": false,
   "drawValidation": {
     "isValid": false,
@@ -363,6 +364,14 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
   }
 }
 ```
+
+**Note on invitationLink field**:
+- The `invitationLink` field is only present in the response when:
+  - The draw has not been completed (`drawCompleted: false`)
+  - The requesting user is the organizer (`isOrganizer: true`)
+- Non-organizers and post-draw requests will receive `null` for this field
+- The invitation link is constructed using the configured `App:BaseUrl` and the group's `InvitationToken`
+- Format: `{baseUrl}/invite/{invitationToken}`
 
 **Error Responses**:
 - `401 Unauthorized`: Missing or invalid token

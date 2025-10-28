@@ -71,6 +71,11 @@ public record GetGroupDetailsResponse
     public int? ExclusionRuleCount { get; init; }
 
     /// <summary>
+    /// Shareable invitation link for inviting participants (only present before draw and only for organizer)
+    /// </summary>
+    public string? InvitationLink { get; init; }
+
+    /// <summary>
     /// Whether the draw can be performed (only present before draw)
     /// </summary>
     public bool? CanDraw { get; init; }

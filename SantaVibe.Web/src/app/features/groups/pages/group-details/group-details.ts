@@ -14,6 +14,7 @@ import { GroupInfoCardComponent } from '../../components/group-info-card/group-i
 import { ParticipantListComponent } from '../../components/participant-list/participant-list';
 import { WishlistEditorComponent } from '../../components/wishlist-editor/wishlist-editor';
 import { BudgetSuggestionComponent } from '../../components/budget-suggestion/budget-suggestion';
+import { InvitationLinkCard } from '../../components/invitation-link-card/invitation-link-card';
 
 /**
  * Main container component for the Group Details view.
@@ -28,7 +29,8 @@ import { BudgetSuggestionComponent } from '../../components/budget-suggestion/bu
     GroupInfoCardComponent,
     ParticipantListComponent,
     WishlistEditorComponent,
-    BudgetSuggestionComponent
+    BudgetSuggestionComponent,
+    InvitationLinkCard
   ],
   templateUrl: './group-details.html',
   styleUrl: './group-details.css',
@@ -58,7 +60,6 @@ export class GroupDetailsComponent implements OnInit {
   isSavingBudget = signal<boolean>(false);
 
   // Organizer states (pre-draw)
-  invitationLink = signal<string>('');
   budgetSuggestions = signal<number[]>([]);
   exclusionRules = signal<ExclusionRuleViewModel[]>([]);
   isExecutingDraw = signal<boolean>(false);
@@ -99,13 +100,6 @@ export class GroupDetailsComponent implements OnInit {
         switchMap(groupDto => {
           const viewModel = this.groupService.mapToViewModel(groupDto);
           this.groupDetails.set(viewModel);
-
-          // Generate invitation link if organizer and pre-draw
-          if (viewModel.isOrganizer && !viewModel.drawCompleted) {
-            this.invitationLink.set(
-              `${window.location.origin}/invite/${this.groupId()}`
-            );
-          }
 
           // Parallel fetch additional data based on state
           return this.fetchAdditionalData(viewModel);

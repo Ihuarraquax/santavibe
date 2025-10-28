@@ -689,14 +689,14 @@ These components receive data via inputs and emit events via outputs.
   - Helper text
 
 #### 5.2.5 InvitationLinkCardComponent
-- **Purpose:** Display and copy invitation link
-- **Inputs:** Invitation link
-- **Outputs:** Copy event
+- **Purpose:** Display and copy invitation link (organizer only, pre-draw)
+- **Inputs:** Invitation link (string)
+- **Outputs:** None (copy functionality handled internally)
 - **Visual Elements:**
-  - Prominent card styling
+  - Prominent green card styling
   - Read-only input with link
   - Copy to clipboard button
-  - Success feedback
+  - Success feedback ("Skopiowano!" shown for 2 seconds after copy)
 
 #### 5.2.6 BudgetManagementComponent
 - **Purpose:** Manage budget suggestions and final budget (organizer)
@@ -817,7 +817,9 @@ These components receive data via inputs and emit events via outputs.
   - Optional dismiss button
 
 #### 5.3.6 CopyToClipboardButtonComponent
-- **Purpose:** Copy text to clipboard
+**Note:** This component was originally planned but not implemented as a separate reusable component. The copy-to-clipboard functionality is currently built directly into the InvitationLinkCardComponent. This component may be extracted as a separate reusable component in the future if needed by other parts of the application.
+
+- **Purpose:** Copy text to clipboard (not currently implemented as separate component)
 - **Inputs:** Text to copy
 - **Outputs:** Copy event
 - **Visual Elements:**
@@ -1212,7 +1214,6 @@ App
     │   ├── GroupDetailsComponent
     │   │   ├── GroupInfoCardComponent
     │   │   ├── InvitationLinkCardComponent (organizer, pre-draw)
-    │   │   │   └── CopyToClipboardButtonComponent
     │   │   ├── ParticipantListComponent
     │   │   ├── BudgetManagementComponent (organizer, pre-draw)
     │   │   ├── ExclusionRulesComponent (organizer, pre-draw)

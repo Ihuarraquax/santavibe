@@ -12,7 +12,8 @@ namespace SantaVibe.Api.Features.Groups.GetGroupDetails;
 /// </summary>
 public class GetGroupDetailsQueryHandler(
     ApplicationDbContext context,
-    IUserAccessor userAccessor)
+    IUserAccessor userAccessor,
+    IConfiguration configuration)
     : IRequestHandler<GetGroupDetailsQuery, Result<GetGroupDetailsResponse>>
 {
     public async Task<Result<GetGroupDetailsResponse>> Handle(
@@ -111,6 +112,14 @@ public class GetGroupDetailsQueryHandler(
         var exclusionRuleCount = await context.ExclusionRules
             .CountAsync(er => er.GroupId == group.Id, cancellationToken);
 
+        // Build invitation link for organizer
+        string? invitationLink = null;
+        if (isOrganizer)
+        {
+            var baseUrl = configuration["App:BaseUrl"] ?? "https://santavibe.com";
+            invitationLink = $"{baseUrl}/invite/{group.InvitationToken}";
+        }
+
         // Validate draw feasibility
         var drawValidation = ValidateDraw(participantCount);
 
@@ -131,6 +140,7 @@ public class GetGroupDetailsQueryHandler(
             // Before draw fields
             Participants = participants,
             ExclusionRuleCount = exclusionRuleCount,
+            InvitationLink = invitationLink,
             CanDraw = drawValidation.IsValid,
             DrawValidation = drawValidation,
 
@@ -198,6 +208,7 @@ public class GetGroupDetailsQueryHandler(
             // Before draw fields (null)
             Participants = null,
             ExclusionRuleCount = null,
+            InvitationLink = null,
             CanDraw = null,
             DrawValidation = null,
 

@@ -82,6 +82,7 @@ export interface GroupDetailsViewModel {
   // Pre-draw specific fields (only when drawCompleted = false)
   participants?: ParticipantViewModel[];
   exclusionRuleCount?: number;
+  invitationLink?: string; // Shareable invitation link (only for organizer)
   canDraw?: boolean;
   drawValidation?: DrawValidationViewModel;
 

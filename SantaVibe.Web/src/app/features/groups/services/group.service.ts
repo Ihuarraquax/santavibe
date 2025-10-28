@@ -184,6 +184,7 @@ export class GroupService {
         ...base,
         participants: dto.participants?.map(p => this.mapParticipant(p)) || [],
         exclusionRuleCount: dto.exclusionRuleCount ?? 0,
+        invitationLink: dto.invitationLink ?? undefined,
         canDraw: dto.canDraw ?? false,
         drawValidation: dto.drawValidation ? this.mapDrawValidation(dto.drawValidation) : {
           isValid: false,

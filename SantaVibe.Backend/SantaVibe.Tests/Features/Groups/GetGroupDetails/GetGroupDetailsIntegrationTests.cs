@@ -208,6 +208,8 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
         Assert.Equal(3, result.Participants.Count);
         Assert.NotNull(result.ExclusionRuleCount);
         Assert.Equal(0, result.ExclusionRuleCount);
+        Assert.NotNull(result.InvitationLink);
+        Assert.Contains($"/invite/{group.InvitationToken}", result.InvitationLink);
         Assert.NotNull(result.CanDraw);
         Assert.True(result.CanDraw); // 3 participants is valid
         Assert.NotNull(result.DrawValidation);
@@ -273,6 +275,7 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
         Assert.NotNull(result);
         Assert.False(result.IsOrganizer);
         Assert.Equal(organizer.Id, result.OrganizerId);
+        Assert.Null(result.InvitationLink); // Non-organizers should not see invitation link
     }
 
     [Fact]
@@ -469,6 +472,7 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
         // Before draw fields should be null
         Assert.Null(result.Participants);
         Assert.Null(result.ExclusionRuleCount);
+        Assert.Null(result.InvitationLink);
         Assert.Null(result.CanDraw);
         Assert.Null(result.DrawValidation);
 

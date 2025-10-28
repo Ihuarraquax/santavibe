@@ -72,7 +72,10 @@
         }
 
         @if (isOrganizer()) {
-          <!-- TODO: Add InvitationLinkCardComponent -->
+          @if (groupDetails()?.invitationLink) {
+            <app-invitation-link-card [invitationLink]="groupDetails()!.invitationLink!" />
+          }
+
           <!-- TODO: Add BudgetManagementComponent -->
           <!-- TODO: Add ExclusionRulesComponent -->
           <!-- TODO: Add DrawValidationComponent -->

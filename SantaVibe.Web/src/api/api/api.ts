@@ -4,4 +4,6 @@ export * from './groups.service';
 import { GroupsService } from './groups.service';
 export * from './invitations.service';
 import { InvitationsService } from './invitations.service';
-export const APIS = [AuthenticationService, GroupsService, InvitationsService];
+export * from './wishlists.service';
+import { WishlistsService } from './wishlists.service';
+export const APIS = [AuthenticationService, GroupsService, InvitationsService, WishlistsService];

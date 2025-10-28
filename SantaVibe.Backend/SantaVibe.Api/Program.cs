@@ -16,6 +16,7 @@ using SantaVibe.Api.Features.Invitations.GetInvitationDetails;
 using SantaVibe.Api.Features.Invitations.AcceptInvitation;
 using SantaVibe.Api.Features.Wishlists.UpdateWishlist;
 using SantaVibe.Api.Features.Wishlists.GetMyWishlist;
+using SantaVibe.Api.Features.Groups.UpdateBudgetSuggestion;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -258,6 +259,7 @@ try
     app.MapAcceptInvitationEndpoint();
     app.MapUpdateWishlistEndpoint();
     app.MapGetMyWishlistEndpoint();
+    app.MapUpdateBudgetSuggestionEndpoint();
 
     await app.RunAsync();
 }

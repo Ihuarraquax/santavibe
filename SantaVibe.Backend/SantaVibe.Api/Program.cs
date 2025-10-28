@@ -14,6 +14,7 @@ using SantaVibe.Api.Features.Groups.Create;
 using SantaVibe.Api.Features.Invitations;
 using SantaVibe.Api.Features.Invitations.GetInvitationDetails;
 using SantaVibe.Api.Features.Invitations.AcceptInvitation;
+using SantaVibe.Api.Features.Wishlists.UpdateWishlist;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -150,7 +151,12 @@ try
     // Register validation filter
     builder.Services.AddScoped(typeof(ValidationFilter<>));
 
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+    builder.Services.AddMediatR(cfg =>
+    {
+        cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+        // Register transaction behavior for all commands implementing ITransactionalCommand
+        cfg.AddOpenBehavior(typeof(SantaVibe.Api.Common.Behaviors.TransactionBehavior<,>));
+    });
     builder.Services.AddOpenApi();
 
     builder.Services.AddSwaggerGen(c =>
@@ -249,6 +255,7 @@ try
     app.MapCreateGroupEndpoint();
     app.MapGetInvitationDetailsEndpoint();
     app.MapAcceptInvitationEndpoint();
+    app.MapUpdateWishlistEndpoint();
 
     await app.RunAsync();
 }

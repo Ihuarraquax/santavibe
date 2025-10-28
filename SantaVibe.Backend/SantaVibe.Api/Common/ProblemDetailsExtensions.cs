@@ -23,6 +23,7 @@ public static class ProblemDetailsExtensions
             "InvalidInvitation" => StatusCodes.Status404NotFound,
             "AlreadyParticipant" => StatusCodes.Status409Conflict,
             "InvitationExpired" => StatusCodes.Status410Gone,
+            "NotParticipant" => StatusCodes.Status403Forbidden,
             "InternalServerError" => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest // Default for unknown errors
         };

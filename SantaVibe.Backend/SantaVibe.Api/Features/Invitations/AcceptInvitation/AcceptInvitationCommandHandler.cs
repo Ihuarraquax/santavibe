@@ -25,88 +25,79 @@ public class AcceptInvitationCommandHandler : IRequestHandler<AcceptInvitationCo
         AcceptInvitationCommand command,
         CancellationToken cancellationToken)
     {
-        // Use execution strategy to handle retries with transactions
-        var strategy = _context.Database.CreateExecutionStrategy();
+        // Query group with invitation token and eager load related data
+        var group = await _context.Groups
+            .Include(g => g.Organizer)
+            .Include(g => g.GroupParticipants)
+            .FirstOrDefaultAsync(g => g.InvitationToken == command.Token, cancellationToken);
 
-        return await strategy.ExecuteAsync(async () =>
+        // Validate: Token must exist
+        if (group == null)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+            _logger.LogWarning(
+                "Invalid invitation token {Token} used by user {UserId}",
+                command.Token,
+                command.UserId);
 
-            // Query group with invitation token and eager load related data
-            var group = await _context.Groups
-                .Include(g => g.Organizer)
-                .Include(g => g.GroupParticipants)
-                .FirstOrDefaultAsync(g => g.InvitationToken == command.Token, cancellationToken);
+            return Result<AcceptInvitationResponse>.Failure(
+                "InvalidInvitation",
+                "This invitation link is invalid or has expired");
+        }
 
-            // Validate: Token must exist
-            if (group == null)
-            {
-                _logger.LogWarning(
-                    "Invalid invitation token {Token} used by user {UserId}",
-                    command.Token,
-                    command.UserId);
+        // Verify user exists and is active
+        var userExists = await _context.Users
+            .AsNoTracking()
+            .AnyAsync(u => u.Id == command.UserId && !u.IsDeleted, cancellationToken);
 
-                return Result<AcceptInvitationResponse>.Failure(
-                    "InvalidInvitation",
-                    "This invitation link is invalid or has expired");
-            }
+        if (!userExists)
+        {
+            _logger.LogWarning(
+                "User {UserId} not found or deleted when accepting invitation",
+                command.UserId);
 
-            // Verify user exists and is active
-            var userExists = await _context.Users
-                .AsNoTracking()
-                .AnyAsync(u => u.Id == command.UserId && !u.IsDeleted, cancellationToken);
+            return Result<AcceptInvitationResponse>.Failure(
+                "Unauthorized",
+                "User not found or account is inactive");
+        }
 
-            if (!userExists)
-            {
-                _logger.LogWarning(
-                    "User {UserId} not found or deleted when accepting invitation",
-                    command.UserId);
+        // Delegate business logic to the domain model (aggregate root)
+        var addParticipantResult = group.AddParticipant(command.UserId, command.BudgetSuggestion);
 
-                return Result<AcceptInvitationResponse>.Failure(
-                    "Unauthorized",
-                    "User not found or account is inactive");
-            }
-
-            // Delegate business logic to the domain model (aggregate root)
-            var addParticipantResult = group.AddParticipant(command.UserId, command.BudgetSuggestion);
-
-            if (!addParticipantResult.IsSuccess)
-            {
-                _logger.LogWarning(
-                    "User {UserId} failed to join group {GroupId}: {Error}",
-                    command.UserId,
-                    group.Id,
-                    addParticipantResult.Error);
-
-                return Result<AcceptInvitationResponse>.Failure(
-                    addParticipantResult.Error!,
-                    addParticipantResult.Message!);
-            }
-
-            var participant = addParticipantResult.Value!;
-
-            // Save changes and commit transaction
-            await _context.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-
-            _logger.LogInformation(
-                "User {UserId} successfully joined group {GroupId} '{GroupName}'",
+        if (!addParticipantResult.IsSuccess)
+        {
+            _logger.LogWarning(
+                "User {UserId} failed to join group {GroupId}: {Error}",
                 command.UserId,
                 group.Id,
-                group.Name);
+                addParticipantResult.Error);
 
-            // Build response DTO
-            var response = new AcceptInvitationResponse(
-                GroupId: group.Id,
-                GroupName: group.Name,
-                OrganizerName: $"{group.Organizer.FirstName} {group.Organizer.LastName}",
-                ParticipantCount: group.GetParticipantCount(),
-                Budget: group.Budget,
-                DrawCompleted: group.IsDrawCompleted(),
-                JoinedAt: participant.JoinedAt
-            );
+            return Result<AcceptInvitationResponse>.Failure(
+                addParticipantResult.Error!,
+                addParticipantResult.Message!);
+        }
 
-            return Result<AcceptInvitationResponse>.Success(response);
-        });
+        var participant = addParticipantResult.Value!;
+
+        // Save changes
+        await _context.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation(
+            "User {UserId} successfully joined group {GroupId} '{GroupName}'",
+            command.UserId,
+            group.Id,
+            group.Name);
+
+        // Build response DTO
+        var response = new AcceptInvitationResponse(
+            GroupId: group.Id,
+            GroupName: group.Name,
+            OrganizerName: $"{group.Organizer.FirstName} {group.Organizer.LastName}",
+            ParticipantCount: group.GetParticipantCount(),
+            Budget: group.Budget,
+            DrawCompleted: group.IsDrawCompleted(),
+            JoinedAt: participant.JoinedAt
+        );
+
+        return Result<AcceptInvitationResponse>.Success(response);
     }
 }

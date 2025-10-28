@@ -13,4 +13,4 @@ public record AcceptInvitationCommand(
     Guid Token,
     string UserId,
     decimal? BudgetSuggestion
-) : IRequest<Result<AcceptInvitationResponse>>;
+) : IRequest<Result<AcceptInvitationResponse>>, ITransactionalCommand;

@@ -17,6 +17,9 @@ using SantaVibe.Api.Features.Invitations.AcceptInvitation;
 using SantaVibe.Api.Features.Wishlists.UpdateWishlist;
 using SantaVibe.Api.Features.Wishlists.GetMyWishlist;
 using SantaVibe.Api.Features.Groups.UpdateBudgetSuggestion;
+using SantaVibe.Api.Features.ExclusionRules.GetExclusionRules;
+using SantaVibe.Api.Features.ExclusionRules.CreateExclusionRule;
+using SantaVibe.Api.Features.ExclusionRules.DeleteExclusionRule;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -149,6 +152,7 @@ try
     builder.Services.AddScoped<IRegisterService, RegisterService>();
     builder.Services.AddScoped<ILoginService, LoginService>();
     builder.Services.AddScoped<IInvitationService, InvitationService>();
+    builder.Services.AddScoped<SantaVibe.Api.Services.DrawValidation.IDrawValidationService, SantaVibe.Api.Services.DrawValidation.DrawValidationService>();
 
     // Register validation filter
     builder.Services.AddScoped(typeof(ValidationFilter<>));
@@ -260,6 +264,9 @@ try
     app.MapUpdateWishlistEndpoint();
     app.MapGetMyWishlistEndpoint();
     app.MapUpdateBudgetSuggestionEndpoint();
+    app.MapGetExclusionRulesEndpoint();
+    app.MapCreateExclusionRuleEndpoint();
+    app.MapDeleteExclusionRuleEndpoint();
 
     await app.RunAsync();
 }

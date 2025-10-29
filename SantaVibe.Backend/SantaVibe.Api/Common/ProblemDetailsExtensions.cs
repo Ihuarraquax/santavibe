@@ -25,6 +25,9 @@ public static class ProblemDetailsExtensions
             "InvitationExpired" => StatusCodes.Status410Gone,
             "NotParticipant" => StatusCodes.Status403Forbidden,
             "DrawAlreadyCompleted" => StatusCodes.Status400BadRequest,
+            "SameUser" => StatusCodes.Status400BadRequest,
+            "DuplicateExclusionRule" => StatusCodes.Status409Conflict,
+            "InvalidExclusionRule" => StatusCodes.Status400BadRequest,
             "InternalServerError" => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest // Default for unknown errors
         };

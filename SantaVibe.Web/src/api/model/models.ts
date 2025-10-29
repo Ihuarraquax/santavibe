@@ -16,5 +16,7 @@ export * from './participant-dto';
 export * from './problem-details';
 export * from './register-request';
 export * from './register-response';
+export * from './update-budget-suggestion-request';
+export * from './update-budget-suggestion-response';
 export * from './update-wishlist-request';
 export * from './update-wishlist-response';

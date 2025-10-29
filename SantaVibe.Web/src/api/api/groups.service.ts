@@ -26,6 +26,10 @@ import { GetGroupDetailsResponse } from '../model/get-group-details-response';
 import { GetUserGroupsResponse } from '../model/get-user-groups-response';
 // @ts-ignore
 import { ProblemDetails } from '../model/problem-details';
+// @ts-ignore
+import { UpdateBudgetSuggestionRequest } from '../model/update-budget-suggestion-request';
+// @ts-ignore
+import { UpdateBudgetSuggestionResponse } from '../model/update-budget-suggestion-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -43,6 +47,11 @@ export interface GetGroupDetailsRequestParams {
 
 export interface GetUserGroupsRequestParams {
     includeCompleted?: boolean;
+}
+
+export interface UpdateBudgetSuggestionRequestParams {
+    groupId: string;
+    updateBudgetSuggestionRequest: UpdateBudgetSuggestionRequest;
 }
 
 
@@ -230,6 +239,78 @@ export class GroupsService extends BaseService {
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Update or set the authenticated user\&#39;s budget suggestion for a group
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateBudgetSuggestion(requestParameters: UpdateBudgetSuggestionRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UpdateBudgetSuggestionResponse>;
+    public updateBudgetSuggestion(requestParameters: UpdateBudgetSuggestionRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UpdateBudgetSuggestionResponse>>;
+    public updateBudgetSuggestion(requestParameters: UpdateBudgetSuggestionRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UpdateBudgetSuggestionResponse>>;
+    public updateBudgetSuggestion(requestParameters: UpdateBudgetSuggestionRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const groupId = requestParameters?.groupId;
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling updateBudgetSuggestion.');
+        }
+        const updateBudgetSuggestionRequest = requestParameters?.updateBudgetSuggestionRequest;
+        if (updateBudgetSuggestionRequest === null || updateBudgetSuggestionRequest === undefined) {
+            throw new Error('Required parameter updateBudgetSuggestionRequest was null or undefined when calling updateBudgetSuggestion.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('Bearer', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/participants/me/budget-suggestion`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<UpdateBudgetSuggestionResponse>('put', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: updateBudgetSuggestionRequest,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

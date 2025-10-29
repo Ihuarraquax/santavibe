@@ -5,6 +5,7 @@ api.base.service.ts
 api.module.ts
 api/api.ts
 api/authentication.service.ts
+api/budget.service.ts
 api/groups.service.ts
 api/invitations.service.ts
 api/wishlists.service.ts
@@ -31,6 +32,8 @@ model/participant-dto.ts
 model/problem-details.ts
 model/register-request.ts
 model/register-response.ts
+model/update-budget-suggestion-request.ts
+model/update-budget-suggestion-response.ts
 model/update-wishlist-request.ts
 model/update-wishlist-response.ts
 ng-package.json

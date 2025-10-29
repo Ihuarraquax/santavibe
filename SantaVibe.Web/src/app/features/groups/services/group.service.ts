@@ -3,6 +3,7 @@ import { firstValueFrom, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GroupsService } from '@api/api/groups.service';
 import { WishlistsService } from '@api/api/wishlists.service';
+import { BudgetService } from '@api/api/budget.service';
 import { GroupDto } from '@api/model/group-dto';
 import { GetUserGroupsResponse } from '@api/model/get-user-groups-response';
 import {
@@ -27,6 +28,7 @@ import {
 export class GroupService {
   private groupsService = inject(GroupsService);
   private wishlistsService = inject(WishlistsService);
+  private budgetService = inject(BudgetService);
 
   // State signals
   private groupsSignal = signal<GroupDto[]>([]);
@@ -98,10 +100,14 @@ export class GroupService {
 
   /**
    * Updates the current user's budget suggestion.
-   * TODO: Implement when API endpoint is ready
    */
   updateBudgetSuggestion(groupId: string, amount: number | null): Observable<void> {
-    return of(undefined);
+    return this.budgetService.updateBudgetSuggestion({
+      groupId,
+      updateBudgetSuggestionRequest: { suggestedBudget: amount }
+    }).pipe(
+      map(() => undefined)
+    );
   }
 
   /**

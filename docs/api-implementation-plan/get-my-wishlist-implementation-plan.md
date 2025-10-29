@@ -14,6 +14,7 @@
 - Users can view their own wishlist to review what they've shared with their Secret Santa
 - Wishlist can be empty (null content and timestamp)
 - Only participants in the group can access this endpoint
+- **IMPORTANT**: Only available after draw completion - users create wishlists post-draw when final budget is known
 
 ---
 
@@ -32,6 +33,11 @@
 - `Authorization` (required): Bearer JWT token containing user identity
 
 **Request Body**: None (GET request)
+
+**Authorization Requirements**:
+- User must be authenticated (JWT token)
+- User must be a participant in the group
+- Draw must be completed for the group
 
 ---
 
@@ -158,6 +164,27 @@ public static class GetMyWishlistEndpoint
 
 ---
 
+### Error Response (403 Forbidden) - Draw Not Completed
+
+**Trigger**: Draw has not been completed for the group
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.4",
+  "title": "Forbidden",
+  "status": 403,
+  "detail": "Wishlist can only be viewed after the draw has been completed",
+  "extensions": {
+    "error": "DrawNotCompleted"
+  }
+}
+```
+
+**Error Code**: `DrawNotCompleted`
+**Handler Logic**: Return `Result<GetMyWishlistResponse>.Failure("DrawNotCompleted", "Wishlist can only be viewed after the draw has been completed")`
+
+---
+
 ### Error Response (404 Not Found)
 
 **Trigger**: Group with specified groupId does not exist
@@ -237,6 +264,7 @@ public static class GetMyWishlistEndpoint
 7. Handler validates authorization:
    - Group exists? → No: Return 404 GroupNotFound
    - User is participant? → No: Return 403 NotParticipant
+   - Draw completed? → No: Return 403 DrawNotCompleted
    ↓
 8. Handler maps entity to response DTO:
    - groupId from Group.Id
@@ -293,6 +321,7 @@ var group = await _context.Groups
 1. User must be authenticated (handled by middleware)
 2. Group must exist (404 if not found)
 3. User must be a participant in the group (403 if not)
+4. Draw must be completed (403 if not) - wishlists can only be created/viewed post-draw
 
 **Implementation**:
 - Authorization logic in handler (not middleware)
@@ -338,6 +367,7 @@ var group = await _context.Groups
 | Invalid groupId format | N/A | 400 Bad Request | Model Binding | "The value 'X' is not valid." |
 | Group not found | `GroupNotFound` | 404 Not Found | Handler | "Group not found" |
 | User not participant | `NotParticipant` | 403 Forbidden | Handler | "You are not a participant in this group" |
+| Draw not completed | `DrawNotCompleted` | 403 Forbidden | Handler | "Wishlist can only be viewed after the draw has been completed" |
 | Unexpected exception | N/A | 500 Internal Server Error | GlobalExceptionHandler | "An unexpected error occurred..." |
 
 ---
@@ -362,6 +392,16 @@ if (participant == null)
         "User {UserId} attempted to access wishlist for group {GroupId} but is not a participant",
         userId, query.GroupId);
     return Result<GetMyWishlistResponse>.Failure("NotParticipant", "You are not a participant in this group");
+}
+
+// Draw not completed
+if (!group.DrawCompletedAt.HasValue)
+{
+    _logger.LogWarning(
+        "User {UserId} attempted to access wishlist for group {GroupId} before draw completion",
+        userId, query.GroupId);
+    return Result<GetMyWishlistResponse>.Failure("DrawNotCompleted",
+        "Wishlist can only be viewed after the draw has been completed");
 }
 ```
 
@@ -548,6 +588,16 @@ public class GetMyWishlistQueryHandler : IRequestHandler<GetMyWishlistQuery, Res
                 "User {UserId} attempted to access wishlist for group {GroupId} but is not a participant",
                 userId, query.GroupId);
             return Result<GetMyWishlistResponse>.Failure("NotParticipant", "You are not a participant in this group");
+        }
+
+        // Validate draw is completed (wishlists can only be created/viewed after draw)
+        if (!group.DrawCompletedAt.HasValue)
+        {
+            _logger.LogWarning(
+                "User {UserId} attempted to access wishlist for group {GroupId} before draw completion",
+                userId, query.GroupId);
+            return Result<GetMyWishlistResponse>.Failure("DrawNotCompleted",
+                "Wishlist can only be viewed after the draw has been completed");
         }
 
         // Map to response DTO

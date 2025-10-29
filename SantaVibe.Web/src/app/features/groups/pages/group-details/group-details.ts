@@ -119,16 +119,8 @@ export class GroupDetailsComponent implements OnInit {
   private fetchAdditionalData(viewModel: GroupDetailsViewModel) {
     const requests: any[] = [];
 
-    // Always fetch user's wishlist
-    requests.push(
-      this.groupService.fetchMyWishlist(this.groupId()).pipe(
-        tap(wishlist => this.myWishlist.set(wishlist ?? '')),
-        catchError(() => of(null))
-      )
-    );
-
     if (!viewModel.drawCompleted) {
-      // Pre-draw: fetch budget suggestion
+      // Pre-draw: fetch budget suggestion only
       requests.push(
         this.groupService.fetchMyBudgetSuggestion(this.groupId()).pipe(
           tap(suggestion => this.myBudgetSuggestion.set(suggestion)),
@@ -152,7 +144,13 @@ export class GroupDetailsComponent implements OnInit {
         );
       }
     } else {
-      // Post-draw: fetch recipient wishlist
+      // Post-draw: fetch user's wishlist and recipient wishlist
+      requests.push(
+        this.groupService.fetchMyWishlist(this.groupId()).pipe(
+          tap(wishlist => this.myWishlist.set(wishlist ?? '')),
+          catchError(() => of(null))
+        )
+      );
       requests.push(
         this.groupService.fetchRecipientWishlist(this.groupId()).pipe(
           tap(wishlist => this.recipientWishlist.set(wishlist)),

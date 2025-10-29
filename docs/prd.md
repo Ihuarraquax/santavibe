@@ -71,7 +71,8 @@ FR-003: User Profile
 FR-004: Wishlist Creation and Editing
 - Users can create and edit a personal wishlist ("list do Mikołaja")
 - Wishlist is a single optional text field
-- Wishlist can be edited at any time, including after the draw
+- Wishlist can ONLY be created and edited after the draw is completed
+- Users must know the final budget before creating their wishlist to avoid unrealistic expectations
 - Wishlist is visible only to the person who drew that user as their gift recipient
 - No character limit specified for MVP
 
@@ -611,32 +612,33 @@ Acceptance Criteria:
 - And I see the organizer's name
 - And I see participants
 - And I see a message indicating "Waiting for organizer to start the draw"
-- And I can access my own wishlist to create or edit it
+- And I see a message that I can create my wishlist after the draw when the final budget is known
 
 Edge cases:
 - Status updates requires page refresh
 - Clear indication that no action is required from participant
-- Link to wishlist management is visible and accessible
+- Wishlist creation is not available until after the draw
 
-US-019: Create Personal Wishlist
-Title: Prepare wishlist for my Secret Santa
+US-019: Create Personal Wishlist After Draw
+Title: Prepare wishlist after knowing the final budget
 
 Description:
-As a participant, I want to create my wishlist so that whoever draws me will know what I'd like to receive.
+As a participant after the draw, I want to create my wishlist once I know the final budget so that whoever draws me will know what I'd like to receive within the budget constraints.
 
 Acceptance Criteria:
-- Given I am a participant
-- When I access my wishlist section
-- Then I can enter free-form text describing my gift preferences
-- And I can save my wishlist at any time
+- Given I am a participant and the draw has been completed
+- When I access my wishlist section and see the final budget
+- Then I can enter free-form text describing my gift preferences appropriate for the budget
+- And I can save my wishlist at any time after the draw
 - And I receive confirmation that wishlist was saved
 - And my wishlist is optional (I can leave it empty)
+- And if I attempt to create wishlist before draw, I see a message that wishlists can only be created after the draw
 
 Edge cases:
 - Wishlist can include links, specific product names, general ideas, or size information
 - No character limit enforced in MVP
-- Wishlist is not visible to anyone before the draw
-- Multiple saves are allowed without restriction
+- Wishlist CANNOT be created before the draw - only after draw completion when final budget is known
+- Multiple saves are allowed without restriction after draw
 
 US-020: View Assignment After Draw
 Title: Discover who I'm buying a gift for
@@ -677,18 +679,19 @@ Edge cases:
 - Empty wishlist shows suggestion to use AI gift ideas feature
 - Wishlist content is displayed with proper formatting (line breaks, etc.)
 
-US-022: Edit Personal Wishlist After Draw
-Title: Update my wishlist after assignments are made
+US-022: Create and Edit Personal Wishlist After Draw
+Title: Create and update my wishlist after knowing the budget
 
 Description:
-As a participant after the draw, I want to edit my wishlist so that I can provide better guidance or change my preferences even after assignments are made.
+As a participant after the draw, I want to create and edit my wishlist once I know the final budget so that I can provide appropriate gift guidance within budget constraints and update my preferences as needed.
 
 Acceptance Criteria:
 - Given I am a participant and the draw is complete
-- When I edit and save my wishlist
+- When I create or edit and save my wishlist
 - Then my changes are saved successfully
-- And my Secret Santa receives an email notification after ~1 hour delay
-- And I receive confirmation that my wishlist was updated
+- And the final budget is displayed prominently before the wishlist creation area
+- And my Secret Santa receives an email notification after ~1 hour delay (if wishlist was already created)
+- And I receive confirmation that my wishlist was created/updated
 - And I can make multiple changes (notifications are batched)
 
 Edge cases:
@@ -696,6 +699,7 @@ Edge cases:
 - Notification email is sent only to my Secret Santa, not all participants
 - I can completely clear my wishlist if I change my mind
 - Changes are visible immediately to my Santa when they refresh
+- Wishlists cannot be created or viewed before the draw
 
 US-023: Request AI Gift Suggestions
 Title: Get AI-powered gift ideas for my recipient
@@ -756,7 +760,7 @@ Acceptance Criteria:
 - And multiple updates within 1 hour result in only one email
 
 Edge cases:
-- No notification is sent if recipient's wishlist change is made before draw
+- Wishlists cannot be created before the draw, so all notifications are for post-draw updates
 - Notification is sent only to the assigned Santa, not to all participants
 - Email includes direct link to view the updated wishlist
 - If recipient makes multiple rapid changes, only the final version triggers notification
@@ -798,8 +802,8 @@ Acceptance Criteria:
 - And if multiple updates occurred within the hour, only one email is sent
 
 Edge cases:
-- Email is not sent if wishlist update happens before draw
-- Delay timer does not resets with each new edit within the 1-hour window - first one counts for delay
+- Wishlists can only be created/updated after draw completion, so all notifications are post-draw
+- Delay timer does not reset with each new edit within the 1-hour window - first one counts for delay
 - System tracks pending notifications to avoid duplicates
 - Email includes timestamp of when wishlist was last updated
 
@@ -965,134 +969,3 @@ Edge cases:
 - AI service rate limiting (implement exponential backoff)
 - Partial response from AI (fewer than 3 suggestions) is still shown
 - User can retry immediately or wait
-
-## 6. Success Metrics
-
-### 6.1 Primary Success Criteria
-
-MVP Validation:
-- Metric: Number of complete group cycles successfully executed
-- Target: 1-2 groups complete the full process from creation to draw completion
-- Measurement: Direct observation and feedback collection from participating groups
-- Definition of "complete": Group created → participants invited → participants joined → organizer set budget and rules → draw executed → all participants viewed assignments
-
-Quality Criteria:
-- No critical bugs or technical failures during the complete cycle
-- All participants understand the process without external assistance
-- Draw results are correct (all rules respected, everyone has one assignment)
-- Email notifications delivered successfully
-- Process completion time reasonable (within the timeframe expected by users)
-
-### 6.2 User Experience Metrics
-
-Ease of Use:
-- Metric: Percentage of invited participants who successfully join groups
-- Target: >80% of invited users successfully join and complete profile
-- Measurement: Track invitation link clicks vs successful group joins
-
-Organizer Satisfaction:
-- Metric: Organizer feedback on ease of group management
-- Target: Positive feedback on invitation system, rule definition, and draw execution
-- Measurement: Post-draw survey with 5-point scale questions
-- Key questions: "How easy was it to set up the group?", "Were exclusion rules clear?", "Did the draw work as expected?"
-
-Participant Satisfaction:
-- Metric: Participant feedback on process clarity and usefulness
-- Target: Positive feedback on assignment clarity and wishlist functionality
-- Measurement: Post-draw survey with 5-point scale questions
-- Key questions: "Was your assignment clear?", "Was the recipient's wishlist helpful?", "Would you use this again?"
-
-### 6.3 Technical Performance Metrics
-
-System Reliability:
-- Metric: System uptime during active group cycles
-- Target: 99% uptime during test period
-- Measurement: Server monitoring and logging
-- Critical periods: During draws and when participants are viewing assignments
-
-Draw Algorithm Success:
-- Metric: Percentage of draws that complete successfully on first attempt
-- Target: 100% of draws complete without errors (after validation passes)
-- Measurement: System logs of draw executions
-- Validation: All exclusion rules respected, all participants assigned correctly
-
-Email Delivery:
-- Metric: Percentage of emails successfully delivered
-- Target: >95% successful delivery within 5 minutes of trigger
-- Measurement: Email service delivery reports
-- Types: Draw completion notifications, wishlist update notifications
-
-### 6.4 Feature Adoption Metrics
-
-Wishlist Usage:
-- Metric: Percentage of participants who create a wishlist
-- Target: >60% of participants provide a wishlist
-- Measurement: Count of non-empty wishlists vs total participants
-
-AI Suggestions Usage:
-- Metric: Percentage of participants who request AI gift suggestions
-- Target: >30% of participants use the AI feature at least once
-- Measurement: Count of AI suggestion requests vs total participants after draw
-- Insight: Understand if AI feature provides value or needs improvement
-
-Exclusion Rules Usage:
-- Metric: Percentage of groups that define at least one exclusion rule
-- Target: >40% of groups use exclusion rules
-- Measurement: Count of groups with rules vs total groups created
-- Insight: Validates importance of this feature
-
-### 6.5 Secondary Metrics
-
-Time to Completion:
-- Metric: Average time from group creation to draw completion
-- Target: <30 days (typical holiday planning period)
-- Measurement: Timestamp difference between group creation and draw execution
-- Insight: Understand if timeline fits user needs
-
-Participant Engagement:
-- Metric: Percentage of participants who log in to view assignment within 24 hours of draw
-- Target: >70% of participants view assignment within 24 hours
-- Measurement: Login timestamps and assignment view timestamps after draw
-
-Wishlist Updates After Draw:
-- Metric: Percentage of participants who update wishlist after draw
-- Target: 10-20% update wishlist post-draw (indicates feature usefulness)
-- Measurement: Count of wishlist edits after draw vs during pre-draw period
-
-### 6.6 Feedback Collection Methods
-
-Qualitative Feedback:
-- Post-draw surveys for both organizers and participants
-- Open-ended questions about pain points and suggestions
-- Direct interviews with 1-2 test groups
-- Observation of users during first-time setup (if possible)
-
-Issues to Monitor:
-- Confusion points during setup or usage
-- Missing features that users expected
-- Technical problems or bugs encountered
-- Unclear messaging or instructions
-- Email notification clarity and usefulness
-
-Decision Criteria for MVP Success:
-- All 1-2 test groups complete the full cycle without critical failures
-- Majority of feedback is positive (>3.5 out of 5 on satisfaction scales)
-- No blocking bugs are identified
-- Users express willingness to use the product again
-- Process is understood without extensive hand-holding
-
-Follow-up Actions Based on Results:
-- Success: Plan for public launch with minimal changes
-- Partial success: Identify specific issues and iterate before wider release
-- Failure: Significant redesign or feature changes needed
-
-### 6.7 Long-term Success Indicators (Beyond MVP)
-
-While not primary MVP metrics, these indicators suggest product-market fit:
-- Organic growth: Users create multiple groups or invite new users unprompted
-- Repeat usage: Same users/groups return for future holiday seasons
-- Feature requests: Users suggest enhancements indicating engagement
-- Low support burden: Users successfully navigate the app without constant help
-- Positive word-of-mouth: Users recommend the app to others
-
-These long-term indicators will inform post-MVP roadmap priorities and validate the product concept for continued investment.

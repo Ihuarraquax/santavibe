@@ -62,6 +62,18 @@ public class UpdateWishlistCommandHandler : IRequestHandler<UpdateWishlistComman
                 "You are not a participant in this group");
         }
 
+        // Validate draw is completed (wishlists can only be created/modified after draw)
+        if (!group.DrawCompletedAt.HasValue)
+        {
+            _logger.LogWarning(
+                "User {UserId} attempted to update wishlist for group {GroupId} before draw completion",
+                userId,
+                command.GroupId);
+            return Result<UpdateWishlistResponse>.Failure(
+                "DrawNotCompleted",
+                "Wishlist can only be created/modified after the draw has been completed");
+        }
+
         var lastModified = DateTimeOffset.UtcNow;
 
         // Update wishlist content and timestamp
@@ -75,15 +87,12 @@ public class UpdateWishlistCommandHandler : IRequestHandler<UpdateWishlistComman
             userId,
             command.GroupId);
 
-        // Publish domain event if draw is completed
-        if (group.DrawCompletedAt.HasValue)
-        {
-            await _publisher.Publish(
-                new WishlistUpdatedNotification(
-                    command.GroupId,
-                    userId.ToString()),
-                cancellationToken);
-        }
+        // Publish domain event (draw is always completed at this point due to earlier validation)
+        await _publisher.Publish(
+            new WishlistUpdatedNotification(
+                command.GroupId,
+                userId.ToString()),
+            cancellationToken);
 
         return Result<UpdateWishlistResponse>.Success(
             new UpdateWishlistResponse

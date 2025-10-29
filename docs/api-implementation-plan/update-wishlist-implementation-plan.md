@@ -2,7 +2,7 @@
 
 ## 1. Endpoint Overview
 
-This endpoint allows an authenticated user to create or update their wishlist for a specific Secret Santa group they are participating in. The wishlist can be set, updated, or cleared (by providing null/empty content). If the Secret Santa draw has already been completed, updating the wishlist will trigger a delayed email notification to the user's assigned Santa (the person who will buy them a gift), informing them of the wishlist update. The notification is delayed by 1 hour and includes deduplication logic to prevent spam.
+This endpoint allows an authenticated user to create or update their wishlist for a specific Secret Santa group they are participating in. **IMPORTANT: This endpoint is only available after the draw has been completed** - users must know the final budget before creating their wishlists. The wishlist can be set, updated, or cleared (by providing null/empty content). Updating the wishlist will trigger a delayed email notification to the user's assigned Santa (the person who will buy them a gift), informing them of the wishlist update. The notification is delayed by 1 hour and includes deduplication logic to prevent spam.
 
 **Business Value:**
 - Enables participants to communicate their gift preferences
@@ -41,7 +41,8 @@ This endpoint allows an authenticated user to create or update their wishlist fo
 - **Claims Used**: User ID (extracted via `IUserAccessor`)
 
 ### Authorization
-User must be a participant in the specified group.
+- User must be a participant in the specified group
+- Draw must be completed (wishlists can only be created/modified post-draw)
 
 ## 3. Used Types
 
@@ -141,7 +142,7 @@ public record UpdateWishlistCommand(
 
 ---
 
-#### 403 Forbidden
+#### 403 Forbidden - Not a Participant
 **Scenario**: User is not a participant in the group
 
 **Response Body**:
@@ -149,6 +150,19 @@ public record UpdateWishlistCommand(
 {
   "error": "NotParticipant",
   "message": "You are not a participant in this group"
+}
+```
+
+---
+
+#### 403 Forbidden - Draw Not Completed
+**Scenario**: Draw has not been completed for the group
+
+**Response Body**:
+```json
+{
+  "error": "DrawNotCompleted",
+  "message": "Wishlist can only be created/modified after the draw has been completed"
 }
 ```
 
@@ -187,9 +201,9 @@ public record UpdateWishlistCommand(
 3. Endpoint creates UpdateWishlistCommand
 4. MediatR sends command to UpdateWishlistCommandHandler
 5. Handler validates group existence and user participation
-6. Handler updates GroupParticipant.WishlistContent and WishlistLastModified
-7. Handler checks if draw is completed (Group.DrawCompletedAt != null)
-8. If draw completed:
+6. Handler validates draw is completed (Group.DrawCompletedAt != null) - returns 403 if not
+7. Handler updates GroupParticipant.WishlistContent and WishlistLastModified
+8. Handler finds user's Santa:
    a. Query Assignment to find user's Santa (RecipientUserId = current user)
    b. Check for existing pending WishlistUpdated notification within 1-hour window
    c. If no pending notification, create EmailNotification with 1-hour delay
@@ -283,6 +297,7 @@ _context.EmailNotifications.Add(notification);
 | Missing JWT token | ASP.NET Core middleware | 401 | - | Automatic rejection before endpoint |
 | Group not found | `group == null` after query | 404 | GroupNotFound | Return Result.Failure |
 | User not participant | `group.GroupParticipants.Count == 0` | 403 | NotParticipant | Return Result.Failure |
+| Draw not completed | `!group.DrawCompletedAt.HasValue` | 403 | DrawNotCompleted | Return Result.Failure |
 | Database connection error | Exception during SaveChanges | 500 | InternalServerError | Log error, rollback, return Failure |
 | Transaction failure | Exception in transaction block | 500 | InternalServerError | Automatic rollback, log error |
 | General exception | Any unhandled exception | 500 | InternalServerError | Catch-all handler, log error |
@@ -407,6 +422,18 @@ Implement `IRequestHandler<UpdateWishlistCommand, Result<UpdateWishlistResponse>
            "NotParticipant",
            "You are not a participant in this group");
    }
+
+   // Validate draw is completed (wishlists can only be created/modified after draw)
+   if (!group.DrawCompletedAt.HasValue)
+   {
+       _logger.LogWarning(
+           "User {UserId} attempted to update wishlist for group {GroupId} before draw completion",
+           userId,
+           command.GroupId);
+       return Result<UpdateWishlistResponse>.Failure(
+           "DrawNotCompleted",
+           "Wishlist can only be created/modified after the draw has been completed");
+   }
    ```
 
 3. **Update Wishlist** (within transaction):
@@ -424,14 +451,11 @@ Implement `IRequestHandler<UpdateWishlistCommand, Result<UpdateWishlistResponse>
            participant.WishlistContent = command.WishlistContent;
            participant.WishlistLastModified = lastModified;
 
-           // Check if draw is completed and handle notification
-           if (group.DrawCompletedAt.HasValue)
-           {
-               await HandleWishlistUpdateNotificationAsync(
-                   command.GroupId,
-                   userId,
-                   cancellationToken);
-           }
+           // Handle notification (draw is always completed at this point due to earlier validation)
+           await HandleWishlistUpdateNotificationAsync(
+               command.GroupId,
+               userId,
+               cancellationToken);
 
            await _context.SaveChangesAsync(cancellationToken);
            await transaction.CommitAsync(cancellationToken);

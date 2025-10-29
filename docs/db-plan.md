@@ -55,7 +55,7 @@ Junction table for many-to-many relationship between Users and Groups.
 | UserId | VARCHAR(450) | PRIMARY KEY, FK → AspNetUsers(Id) | User reference |
 | BudgetSuggestion | NUMERIC(10,2) | NULL | Anonymous budget suggestion (FR-009) |
 | JoinedAt | TIMESTAMPTZ | NOT NULL, DEFAULT NOW() | Join timestamp |
-| WishlistContent | TEXT | NULL | User's wishlist (FR-004) |
+| WishlistContent | TEXT | NULL | User's wishlist (FR-004) - Can only be created/modified after draw completion |
 | WishlistLastModified | TIMESTAMPTZ | NULL | Last wishlist update timestamp |
 
 **Composite Primary Key:** `(GroupId, UserId)`
@@ -65,6 +65,7 @@ Junction table for many-to-many relationship between Users and Groups.
 - Budget suggestion is optional but recommended
 - Cascade delete when group is deleted
 - User removal before draw deletes this record (FR-008)
+- Wishlist can only be created/modified after draw completion (application layer enforces this)
 
 ### 4. ExclusionRules
 

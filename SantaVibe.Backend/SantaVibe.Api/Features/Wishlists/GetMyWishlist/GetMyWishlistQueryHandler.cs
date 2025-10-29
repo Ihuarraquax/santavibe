@@ -63,6 +63,18 @@ public class GetMyWishlistQueryHandler : IRequestHandler<GetMyWishlistQuery, Res
                 "You are not a participant in this group");
         }
 
+        // Validate draw is completed (wishlists can only be created/viewed after draw)
+        if (!group.DrawCompletedAt.HasValue)
+        {
+            _logger.LogWarning(
+                "User {UserId} attempted to access wishlist for group {GroupId} before draw completion",
+                userId,
+                query.GroupId);
+            return Result<GetMyWishlistResponse>.Failure(
+                "DrawNotCompleted",
+                "Wishlist can only be viewed after the draw has been completed");
+        }
+
         // Map to response DTO
         var response = new GetMyWishlistResponse
         {

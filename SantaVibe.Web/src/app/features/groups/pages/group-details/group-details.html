@@ -49,12 +49,6 @@
         <app-participant-list
           [participants]="groupDetails()!.participants || []"
           [canRemove]="isOrganizer()" />
-        <!-- Wishlist Editor -->
-        <app-wishlist-editor
-          [initialContent]="myWishlist()"
-          [isEditable]="true"
-          [isSaving]="isSavingWishlist()"
-          (save)="onSaveWishlist($event)" />
 
         <!-- Budget Suggestion -->
         <app-budget-suggestion
@@ -62,6 +56,23 @@
           [isEditable]="true"
           [isSaving]="isSavingBudget()"
           (save)="onSaveBudget($event)" />
+
+        <!-- Wishlist Information Message -->
+        <div class="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
+          <div class="flex items-start">
+            <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <h3 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                Lista życzeń
+              </h3>
+              <p class="text-yellow-700 dark:text-yellow-300">
+                Lista życzeń będzie dostępna po losowaniu, gdy poznasz finalny budżet. To pomoże Ci dostosować oczekiwania do ustalonej kwoty.
+              </p>
+            </div>
+          </div>
+        </div>
 
         @if (!isOrganizer()) {
           <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-6 text-center">
@@ -87,9 +98,46 @@
     <!-- Post-Draw View -->
     @if (isPostDraw()) {
       <div class="space-y-6">
+        <!-- Budget Display -->
+        @if (groupDetails()?.budget) {
+          <div class="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-6">
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div>
+                <h3 class="text-lg font-semibold text-green-800 dark:text-green-200">
+                  Finalny budżet
+                </h3>
+                <p class="text-2xl font-bold text-green-900 dark:text-green-100">
+                  {{ groupDetails()!.budget! | number:'1.2-2' }} PLN
+                </p>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- My Wishlist Editor (Post-Draw) -->
+        <div class="space-y-4">
+          <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div class="flex items-start">
+              <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <p class="text-sm text-blue-700 dark:text-blue-300">
+                Teraz możesz stworzyć lub zaktualizować swoją listę życzeń. Twój Mikołaj otrzyma powiadomienie o zmianach.
+              </p>
+            </div>
+          </div>
+          <app-wishlist-editor
+            [initialContent]="myWishlist()"
+            [isEditable]="true"
+            [isSaving]="isSavingWishlist()"
+            (save)="onSaveWishlist($event)" />
+        </div>
+
         <!-- TODO: Add AssignmentCardComponent -->
         <!-- TODO: Add GiftSuggestionsComponent -->
-        <!-- TODO: Add WishlistEditorComponent (with update notification) -->
       </div>
     }
   }

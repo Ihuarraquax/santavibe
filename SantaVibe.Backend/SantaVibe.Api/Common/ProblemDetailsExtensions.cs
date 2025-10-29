@@ -24,6 +24,7 @@ public static class ProblemDetailsExtensions
             "AlreadyParticipant" => StatusCodes.Status409Conflict,
             "InvitationExpired" => StatusCodes.Status410Gone,
             "NotParticipant" => StatusCodes.Status403Forbidden,
+            "DrawNotCompleted" => StatusCodes.Status403Forbidden,
             "DrawAlreadyCompleted" => StatusCodes.Status400BadRequest,
             "SameUser" => StatusCodes.Status400BadRequest,
             "DuplicateExclusionRule" => StatusCodes.Status409Conflict,

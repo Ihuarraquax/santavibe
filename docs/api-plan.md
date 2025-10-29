@@ -320,7 +320,6 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
       "firstName": "Jan",
       "lastName": "Kowalski",
       "joinedAt": "2025-10-15T10:00:00Z",
-      "hasWishlist": true,
       "isOrganizer": true
     },
     {
@@ -328,7 +327,6 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
       "firstName": "Anna",
       "lastName": "Nowak",
       "joinedAt": "2025-10-15T11:30:00Z",
-      "hasWishlist": false,
       "isOrganizer": false
     }
   ],
@@ -519,14 +517,14 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 
 **Endpoint**: `GET /api/groups/{groupId}/participants/me/wishlist`
 
-**Description**: Retrieve the authenticated user's wishlist for a specific group.
+**Description**: Retrieve the authenticated user's wishlist for a specific group. Only available after draw completion.
 
 **Authentication**: Required (JWT Bearer token)
 
 **Path Parameters**:
 - `groupId` (UUID): Group identifier
 
-**Authorization**: User must be a participant in the group
+**Authorization**: User must be a participant in the group and draw must be completed
 
 **Success Response** (200 OK):
 ```json
@@ -548,7 +546,13 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 
 **Error Responses**:
 - `401 Unauthorized`: Missing or invalid token
-- `403 Forbidden`: User is not a participant
+- `403 Forbidden`: User is not a participant or draw not completed
+  ```json
+  {
+    "error": "DrawNotCompleted",
+    "message": "Wishlist can only be viewed after the draw has been completed"
+  }
+  ```
 - `404 Not Found`: Group does not exist
 
 ---
@@ -557,14 +561,14 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 
 **Endpoint**: `PUT /api/groups/{groupId}/participants/me/wishlist`
 
-**Description**: Create or update the authenticated user's wishlist for a specific group. If draw is completed, triggers delayed email notification to the user's Santa.
+**Description**: Create or update the authenticated user's wishlist for a specific group. Only available after draw completion. Triggers delayed email notification to the user's Santa.
 
 **Authentication**: Required (JWT Bearer token)
 
 **Path Parameters**:
 - `groupId` (UUID): Group identifier
 
-**Authorization**: User must be a participant in the group
+**Authorization**: User must be a participant in the group and draw must be completed
 
 **Request Body**:
 ```json
@@ -586,13 +590,19 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 ```
 
 **Business Logic**:
-- If draw is completed, create EmailNotification record with 1-hour delay
+- Draw completion is required - endpoint only accessible post-draw
+- Create EmailNotification record with 1-hour delay to notify Santa of wishlist change
 - Implement deduplication: check for existing pending notification within 1-hour window
-- If draw not completed, no notification is scheduled
 
 **Error Responses**:
 - `401 Unauthorized`: Missing or invalid token
-- `403 Forbidden`: User is not a participant
+- `403 Forbidden`: User is not a participant or draw not completed
+  ```json
+  {
+    "error": "DrawNotCompleted",
+    "message": "Wishlist can only be created/modified after the draw has been completed"
+  }
+  ```
 - `404 Not Found`: Group does not exist
 
 ---
@@ -1245,13 +1255,13 @@ These endpoints require the authenticated user to be the group organizer:
 These endpoints require the authenticated user to be a participant in the group:
 - `GET /api/groups/{groupId}`
 - `GET /api/groups/{groupId}/exclusion-rules`
-- `GET /api/groups/{groupId}/participants/me/wishlist`
-- `PUT /api/groups/{groupId}/participants/me/wishlist`
 - `PUT /api/groups/{groupId}/participants/me/budget-suggestion`
 - `GET /api/groups/{groupId}/draw/validate`
 
 #### Post-Draw Endpoints
 These endpoints require draw to be completed:
+- `GET /api/groups/{groupId}/participants/me/wishlist`
+- `PUT /api/groups/{groupId}/participants/me/wishlist`
 - `GET /api/groups/{groupId}/my-assignment`
 - `GET /api/groups/{groupId}/my-assignment/wishlist`
 - `POST /api/groups/{groupId}/my-assignment/gift-suggestions`
@@ -1324,12 +1334,13 @@ These endpoints require draw to be completed:
 11. **Email Notifications**: Trigger EmailNotification records for all participants
 
 #### Wishlist Update Notification Logic
-1. **Trigger Condition**: Wishlist updated after draw completion
+1. **Trigger Condition**: Wishlist created or updated (only possible after draw completion)
 2. **Delay**: 1-hour delay before email sent
 3. **Deduplication**: Check for existing pending notification within 1-hour window
 4. **Recipient**: Only the user's assigned Santa receives notification
 5. **Content**: Email does not contain wishlist content, only notification of update
 6. **Background Job**: Handled by hosted service, not synchronous API call
+7. **Note**: Wishlists can only be created/updated after draw, so all notifications are post-draw
 
 #### Exclusion Rules Validation Logic
 1. **Real-Time Validation**: Validate upon creation/deletion of rule
@@ -1364,7 +1375,7 @@ These endpoints require draw to be completed:
 1. **Assignment Privacy**: Users can only see their own assignment (where they are Santa)
 2. **Organizer Restriction**: Organizer cannot see all assignments (participates like others)
 3. **Budget Anonymity**: Budget suggestions displayed without user attribution
-4. **Wishlist Privacy**: Wishlist only visible to assigned Santa after draw
+4. **Wishlist Privacy**: Wishlists can only be created/viewed after draw completion. Wishlist only visible to assigned Santa after draw
 5. **No Reverse Lookup**: No endpoint reveals who is buying for a specific user
 
 ### 5.4 Error Handling Strategy

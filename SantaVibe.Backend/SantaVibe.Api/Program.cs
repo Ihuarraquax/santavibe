@@ -17,6 +17,7 @@ using SantaVibe.Api.Features.Invitations.AcceptInvitation;
 using SantaVibe.Api.Features.Wishlists.UpdateWishlist;
 using SantaVibe.Api.Features.Wishlists.GetMyWishlist;
 using SantaVibe.Api.Features.Groups.UpdateBudgetSuggestion;
+using SantaVibe.Api.Features.Groups.GetBudgetSuggestions;
 using SantaVibe.Api.Features.ExclusionRules.GetExclusionRules;
 using SantaVibe.Api.Features.ExclusionRules.CreateExclusionRule;
 using SantaVibe.Api.Features.ExclusionRules.DeleteExclusionRule;
@@ -264,6 +265,7 @@ try
     app.MapUpdateWishlistEndpoint();
     app.MapGetMyWishlistEndpoint();
     app.MapUpdateBudgetSuggestionEndpoint();
+    app.MapGetBudgetSuggestionsEndpoint();
     app.MapGetExclusionRulesEndpoint();
     app.MapCreateExclusionRuleEndpoint();
     app.MapDeleteExclusionRuleEndpoint();

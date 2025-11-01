@@ -21,6 +21,8 @@ using SantaVibe.Api.Features.Groups.GetBudgetSuggestions;
 using SantaVibe.Api.Features.ExclusionRules.GetExclusionRules;
 using SantaVibe.Api.Features.ExclusionRules.CreateExclusionRule;
 using SantaVibe.Api.Features.ExclusionRules.DeleteExclusionRule;
+using SantaVibe.Api.Features.Groups.ValidateDraw;
+using SantaVibe.Api.Features.Groups.ExecuteDraw;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -154,6 +156,7 @@ try
     builder.Services.AddScoped<ILoginService, LoginService>();
     builder.Services.AddScoped<IInvitationService, InvitationService>();
     builder.Services.AddScoped<SantaVibe.Api.Services.DrawValidation.IDrawValidationService, SantaVibe.Api.Services.DrawValidation.DrawValidationService>();
+    builder.Services.AddScoped<IDrawAlgorithmService, DrawAlgorithmService>();
 
     // Register validation filter
     builder.Services.AddScoped(typeof(ValidationFilter<>));
@@ -163,6 +166,8 @@ try
         cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
         // Register transaction behavior for all commands implementing ITransactionalCommand
         cfg.AddOpenBehavior(typeof(SantaVibe.Api.Common.Behaviors.TransactionBehavior<,>));
+        // Register domain event dispatcher behavior
+        cfg.AddOpenBehavior(typeof(SantaVibe.Api.Common.Behaviors.DomainEventDispatcherBehavior<,>));
     });
     builder.Services.AddOpenApi();
 
@@ -269,6 +274,8 @@ try
     app.MapGetExclusionRulesEndpoint();
     app.MapCreateExclusionRuleEndpoint();
     app.MapDeleteExclusionRuleEndpoint();
+    app.MapValidateDrawEndpoint();
+    app.MapExecuteDrawEndpoint();
 
     await app.RunAsync();
 }

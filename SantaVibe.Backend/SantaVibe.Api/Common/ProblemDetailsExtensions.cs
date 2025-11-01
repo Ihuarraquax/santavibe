@@ -16,6 +16,7 @@ public static class ProblemDetailsExtensions
         // Map error codes to appropriate HTTP status codes
         var statusCode = result.Error switch
         {
+            "NotFound" => StatusCodes.Status404NotFound,
             "GroupNotFound" => StatusCodes.Status404NotFound,
             "Forbidden" => StatusCodes.Status403Forbidden,
             "Unauthorized" => StatusCodes.Status401Unauthorized,
@@ -26,6 +27,8 @@ public static class ProblemDetailsExtensions
             "NotParticipant" => StatusCodes.Status403Forbidden,
             "DrawNotCompleted" => StatusCodes.Status403Forbidden,
             "DrawAlreadyCompleted" => StatusCodes.Status400BadRequest,
+            "DrawValidationFailed" => StatusCodes.Status400BadRequest,
+            "DrawExecutionFailed" => StatusCodes.Status500InternalServerError,
             "SameUser" => StatusCodes.Status400BadRequest,
             "DuplicateExclusionRule" => StatusCodes.Status409Conflict,
             "InvalidExclusionRule" => StatusCodes.Status400BadRequest,

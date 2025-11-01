@@ -70,7 +70,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         var (user, token) = await CreateAndAuthenticateUser("John", "Doe");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-1) };
         var participant = new GroupParticipant { Group = group, UserId = user.Id };
 
         using (var scope = _factory.Services.CreateScope())
@@ -107,7 +107,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         var (user, token) = await CreateAndAuthenticateUser("Jane", "Smith");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-1) };
         var participant = new GroupParticipant
         {
             Group = group,
@@ -147,7 +147,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var oldTimestamp = DateTimeOffset.UtcNow.AddHours(-1);
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-2) };
         var participant = new GroupParticipant
         {
             Group = group,
@@ -186,7 +186,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         var (user, token) = await CreateAndAuthenticateUser("Alice", "Wonder");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-1) };
         var participant = new GroupParticipant { Group = group, UserId = user.Id };
 
         using (var scope = _factory.Services.CreateScope())
@@ -226,7 +226,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         var (user, token) = await CreateAndAuthenticateUser();
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-1) };
         var participant = new GroupParticipant
         {
             Group = group,
@@ -406,7 +406,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
     }
 
     [Fact]
-    public async Task PUT_Wishlist_WhenDrawNotCompleted_UpdatesSuccessfully()
+    public async Task PUT_Wishlist_WhenDrawNotCompleted_Returns403()
     {
         // Arrange
         var (user, token) = await CreateAndAuthenticateUser("Elf", "Helper");
@@ -436,12 +436,12 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         // Act
         var response = await _client.PutAsJsonAsync($"/api/groups/{group.Id}/participants/me/wishlist", request);
 
-        // Assert - Should succeed (no notification published since draw not completed)
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        // Assert - Should return 403 Forbidden since draw not completed (per PRD FR-004 and US-022)
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
 
-        var result = await response.Content.ReadFromJsonAsync<UpdateWishlistResponse>();
-        Assert.NotNull(result);
-        Assert.Equal("Wishlist before draw", result.WishlistContent);
+        var problemDetails = await response.Content.ReadAsStringAsync();
+        Assert.Contains("DrawNotCompleted", problemDetails);
+        Assert.Contains("Wishlist can only be created/modified after the draw has been completed", problemDetails);
     }
 
     [Fact]
@@ -451,7 +451,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         var (user, token) = await CreateAndAuthenticateUser("Rudolph", "Reindeer");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-1) };
         var participant = new GroupParticipant { Group = group, UserId = user.Id };
 
         using (var scope = _factory.Services.CreateScope())
@@ -506,7 +506,7 @@ public class UpdateWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicat
         var (organizer, _) = await CreateAndAuthenticateUser("Organizer", "User");
         var (participant, participantToken) = await CreateAndAuthenticateUser("Regular", "Participant");
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = organizer.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = organizer.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-1) };
         var organizerParticipant = new GroupParticipant { Group = group, UserId = organizer.Id };
         var regularParticipant = new GroupParticipant { Group = group, UserId = participant.Id };
 

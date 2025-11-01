@@ -69,7 +69,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
         var (user, token) = await CreateAndAuthenticateUser("John", "Doe");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-3) };
         var lastModified = DateTimeOffset.UtcNow.AddHours(-2);
         var participant = new GroupParticipant
         {
@@ -109,7 +109,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
         var (user, token) = await CreateAndAuthenticateUser("Jane", "Smith");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-1) };
         var participant = new GroupParticipant
         {
             Group = group,
@@ -146,7 +146,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
         var (user, token) = await CreateAndAuthenticateUser("Bob", "Johnson");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddDays(-2) };
         var lastModified = DateTimeOffset.UtcNow.AddDays(-1);
         var participant = new GroupParticipant
         {
@@ -184,7 +184,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
         var (organizer, _) = await CreateAndAuthenticateUser("Organizer", "User");
         var (participant, participantToken) = await CreateAndAuthenticateUser("Regular", "Participant");
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = organizer.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = organizer.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-4) };
         var organizerParticipant = new GroupParticipant
         {
             Group = group,
@@ -337,7 +337,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
         var (user, token) = await CreateAndAuthenticateUser("Alice", "Wonder");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddHours(-6) };
         var lastModified = DateTimeOffset.UtcNow.AddHours(-5);
         var participant = new GroupParticipant
         {
@@ -382,7 +382,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
         var (user, token) = await CreateAndAuthenticateUser("Charlie", "Brown");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id };
+        var group = new Group { Name = "Test Group", OrganizerUserId = user.Id, DrawCompletedAt = DateTimeOffset.UtcNow.AddDays(-3) };
         var lastModified = DateTimeOffset.UtcNow.AddDays(-2);
         var participant = new GroupParticipant
         {
@@ -430,7 +430,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
     #region Business Logic Tests
 
     [Fact]
-    public async Task GET_MyWishlist_BeforeAndAfterDraw_ReturnsSameData()
+    public async Task GET_MyWishlist_BeforeDraw_Returns403_AfterDraw_Returns200()
     {
         // Arrange
         var (user, token) = await CreateAndAuthenticateUser("Santa", "Claus");
@@ -446,7 +446,7 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
         {
             Group = group,
             UserId = user.Id,
-            WishlistContent = "Same wishlist content",
+            WishlistContent = "Wishlist content",
             WishlistLastModified = DateTimeOffset.UtcNow.AddHours(-1)
         };
 
@@ -458,9 +458,13 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
             await context.SaveChangesAsync();
         }
 
-        // Act - Get wishlist before draw
+        // Act - Get wishlist before draw - should fail with 403 (per PRD US-022 line 702)
         var response1 = await _client.GetAsync($"/api/groups/{group.Id}/participants/me/wishlist");
-        var result1 = await response1.Content.ReadFromJsonAsync<GetMyWishlistResponse>();
+
+        // Assert - Before draw should return 403 Forbidden
+        Assert.Equal(HttpStatusCode.Forbidden, response1.StatusCode);
+        var problemDetails1 = await response1.Content.ReadAsStringAsync();
+        Assert.Contains("DrawNotCompleted", problemDetails1);
 
         // Simulate draw completion
         using (var scope = _factory.Services.CreateScope())
@@ -471,15 +475,14 @@ public class GetMyWishlistIntegrationTests : IClassFixture<SantaVibeWebApplicati
             await context.SaveChangesAsync();
         }
 
-        // Act - Get wishlist after draw
+        // Act - Get wishlist after draw - should succeed
         var response2 = await _client.GetAsync($"/api/groups/{group.Id}/participants/me/wishlist");
         var result2 = await response2.Content.ReadFromJsonAsync<GetMyWishlistResponse>();
 
-        // Assert - Should return same data regardless of draw status
-        Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
+        // Assert - After draw should return 200 OK with wishlist data
         Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
-        Assert.Equal(result1.WishlistContent, result2.WishlistContent);
-        Assert.Equal(result1.LastModified, result2.LastModified);
+        Assert.NotNull(result2);
+        Assert.Equal("Wishlist content", result2.WishlistContent);
     }
 
     #endregion

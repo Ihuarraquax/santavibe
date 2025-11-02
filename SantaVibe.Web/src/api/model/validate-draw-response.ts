@@ -9,8 +9,13 @@
  */
 
 
-export interface DrawValidationDto { 
+export interface ValidateDrawResponse { 
+    groupId?: string;
     isValid?: boolean;
+    canDraw?: boolean;
+    participantCount?: number;
+    exclusionRuleCount?: number;
     errors?: Array<string> | null;
+    warnings?: Array<string> | null;
 }
 

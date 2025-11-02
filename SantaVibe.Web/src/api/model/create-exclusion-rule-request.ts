@@ -9,10 +9,8 @@
  */
 
 
-export interface AssignmentDto { 
-    recipientId?: string | null;
-    recipientFirstName?: string | null;
-    recipientLastName?: string | null;
-    hasWishlist?: boolean;
+export interface CreateExclusionRuleRequest { 
+    userId1?: string | null;
+    userId2?: string | null;
 }
 

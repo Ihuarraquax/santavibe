@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal, computed, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { forkJoin, switchMap, finalize, tap, catchError, of } from 'rxjs';
 import { GroupService } from '../../services/group.service';
@@ -24,6 +25,7 @@ import { InvitationLinkCard } from '../../components/invitation-link-card/invita
 @Component({
   selector: 'app-group-details',
   imports: [
+    DecimalPipe,
     LoadingSpinnerComponent,
     ErrorAlertComponent,
     GroupInfoCardComponent,

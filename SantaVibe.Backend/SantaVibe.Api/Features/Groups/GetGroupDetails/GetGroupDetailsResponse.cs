@@ -1,3 +1,6 @@
+using SantaVibe.Api.Features.ExclusionRules.CreateExclusionRule;
+using SantaVibe.Api.Features.Groups.ExecuteDraw;
+
 namespace SantaVibe.Api.Features.Groups.GetGroupDetails;
 
 /// <summary>
@@ -127,46 +130,4 @@ public record ParticipantDto
     /// Whether the user is the organizer
     /// </summary>
     public required bool IsOrganizer { get; init; }
-}
-
-/// <summary>
-/// Assignment information DTO (user's Secret Santa assignment)
-/// </summary>
-public record AssignmentDto
-{
-    /// <summary>
-    /// Recipient's user ID (who the current user is buying a gift for)
-    /// </summary>
-    public required string RecipientId { get; init; }
-
-    /// <summary>
-    /// Recipient's first name
-    /// </summary>
-    public required string RecipientFirstName { get; init; }
-
-    /// <summary>
-    /// Recipient's last name
-    /// </summary>
-    public required string RecipientLastName { get; init; }
-
-    /// <summary>
-    /// Whether the recipient has created a wishlist
-    /// </summary>
-    public required bool HasWishlist { get; init; }
-}
-
-/// <summary>
-/// Draw validation result DTO
-/// </summary>
-public record DrawValidationDto
-{
-    /// <summary>
-    /// Whether the draw can be performed (all validation rules passed)
-    /// </summary>
-    public required bool IsValid { get; init; }
-
-    /// <summary>
-    /// List of validation errors (empty if IsValid is true)
-    /// </summary>
-    public required List<string> Errors { get; init; }
 }

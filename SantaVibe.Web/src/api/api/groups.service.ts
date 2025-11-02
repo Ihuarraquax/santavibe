@@ -17,11 +17,19 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { BudgetSuggestionsResponse } from '../model/budget-suggestions-response';
+// @ts-ignore
 import { CreateGroupRequest } from '../model/create-group-request';
 // @ts-ignore
 import { CreateGroupResponse } from '../model/create-group-response';
 // @ts-ignore
+import { ExecuteDrawRequest } from '../model/execute-draw-request';
+// @ts-ignore
+import { ExecuteDrawResponse } from '../model/execute-draw-response';
+// @ts-ignore
 import { GetGroupDetailsResponse } from '../model/get-group-details-response';
+// @ts-ignore
+import { GetMyAssignmentResponse } from '../model/get-my-assignment-response';
 // @ts-ignore
 import { GetUserGroupsResponse } from '../model/get-user-groups-response';
 // @ts-ignore
@@ -30,6 +38,8 @@ import { ProblemDetails } from '../model/problem-details';
 import { UpdateBudgetSuggestionRequest } from '../model/update-budget-suggestion-request';
 // @ts-ignore
 import { UpdateBudgetSuggestionResponse } from '../model/update-budget-suggestion-response';
+// @ts-ignore
+import { ValidateDrawResponse } from '../model/validate-draw-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -41,7 +51,20 @@ export interface CreateGroupRequestParams {
     createGroupRequest: CreateGroupRequest;
 }
 
+export interface ExecuteDrawRequestParams {
+    groupId: string;
+    executeDrawRequest: ExecuteDrawRequest;
+}
+
+export interface GetBudgetSuggestionsRequestParams {
+    groupId: string;
+}
+
 export interface GetGroupDetailsRequestParams {
+    groupId: string;
+}
+
+export interface GetMyAssignmentRequestParams {
     groupId: string;
 }
 
@@ -52,6 +75,10 @@ export interface GetUserGroupsRequestParams {
 export interface UpdateBudgetSuggestionRequestParams {
     groupId: string;
     updateBudgetSuggestionRequest: UpdateBudgetSuggestionRequest;
+}
+
+export interface ValidateDrawRequestParams {
+    groupId: string;
 }
 
 
@@ -132,6 +159,138 @@ export class GroupsService extends BaseService {
     }
 
     /**
+     * Execute Secret Santa draw
+     * Executes the irreversible Secret Santa draw algorithm for the group. Creates assignments for all participants while respecting exclusion rules, sets the final budget, and schedules email notifications. Only the group organizer can execute the draw. This operation is transactional and cannot be undone.
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public executeDraw(requestParameters: ExecuteDrawRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ExecuteDrawResponse>;
+    public executeDraw(requestParameters: ExecuteDrawRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ExecuteDrawResponse>>;
+    public executeDraw(requestParameters: ExecuteDrawRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ExecuteDrawResponse>>;
+    public executeDraw(requestParameters: ExecuteDrawRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const groupId = requestParameters?.groupId;
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling executeDraw.');
+        }
+        const executeDrawRequest = requestParameters?.executeDrawRequest;
+        if (executeDrawRequest === null || executeDrawRequest === undefined) {
+            throw new Error('Required parameter executeDrawRequest was null or undefined when calling executeDraw.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('Bearer', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/draw`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<ExecuteDrawResponse>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: executeDrawRequest,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get anonymous budget suggestions
+     * Retrieves an anonymous, sorted list of budget suggestions from all participants in a Secret Santa group. Only the group organizer can access this endpoint. The response maintains participant anonymity by only returning the suggestion amounts without any user identification. Suggestions are sorted in ascending order.
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getBudgetSuggestions(requestParameters: GetBudgetSuggestionsRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<BudgetSuggestionsResponse>;
+    public getBudgetSuggestions(requestParameters: GetBudgetSuggestionsRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BudgetSuggestionsResponse>>;
+    public getBudgetSuggestions(requestParameters: GetBudgetSuggestionsRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BudgetSuggestionsResponse>>;
+    public getBudgetSuggestions(requestParameters: GetBudgetSuggestionsRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const groupId = requestParameters?.groupId;
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling getBudgetSuggestions.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('Bearer', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/budget/suggestions`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<BudgetSuggestionsResponse>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get group details
      * Retrieves detailed information about a Secret Santa group. Response structure varies based on draw status: before draw includes full participant list and validation, after draw includes only the current user\&#39;s assignment.
      * @param requestParameters
@@ -178,6 +337,65 @@ export class GroupsService extends BaseService {
         let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<GetGroupDetailsResponse>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get my Secret Santa assignment
+     * Retrieves the authenticated user\&#39;s Secret Santa assignment for a specific group. Shows who the user is buying a gift for (the recipient). This endpoint is only accessible after the draw has been completed. Users can only see their own assignment - privacy is strictly enforced.
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getMyAssignment(requestParameters: GetMyAssignmentRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetMyAssignmentResponse>;
+    public getMyAssignment(requestParameters: GetMyAssignmentRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetMyAssignmentResponse>>;
+    public getMyAssignment(requestParameters: GetMyAssignmentRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetMyAssignmentResponse>>;
+    public getMyAssignment(requestParameters: GetMyAssignmentRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const groupId = requestParameters?.groupId;
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling getMyAssignment.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('Bearer', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/my-assignment`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<GetMyAssignmentResponse>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -311,6 +529,65 @@ export class GroupsService extends BaseService {
             {
                 context: localVarHttpContext,
                 body: updateBudgetSuggestionRequest,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Validate draw feasibility
+     * Validates whether the Secret Santa draw can be executed for the group. Checks participant count, exclusion rules, and draw completion status. Only the group organizer can validate the draw.
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public validateDraw(requestParameters: ValidateDrawRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ValidateDrawResponse>;
+    public validateDraw(requestParameters: ValidateDrawRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ValidateDrawResponse>>;
+    public validateDraw(requestParameters: ValidateDrawRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ValidateDrawResponse>>;
+    public validateDraw(requestParameters: ValidateDrawRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const groupId = requestParameters?.groupId;
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling validateDraw.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('Bearer', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/draw/validate`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<ValidateDrawResponse>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

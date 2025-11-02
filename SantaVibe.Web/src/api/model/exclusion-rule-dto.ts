@@ -7,12 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserInfoDto } from './user-info-dto';
 
 
-export interface AssignmentDto { 
-    recipientId?: string | null;
-    recipientFirstName?: string | null;
-    recipientLastName?: string | null;
-    hasWishlist?: boolean;
+export interface ExclusionRuleDto { 
+    ruleId?: string;
+    user1?: UserInfoDto;
+    user2?: UserInfoDto;
+    createdAt?: string;
 }
 

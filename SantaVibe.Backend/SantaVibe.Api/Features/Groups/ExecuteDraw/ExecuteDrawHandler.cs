@@ -73,7 +73,8 @@ public sealed class ExecuteDrawHandler(
         var myAssignmentDto = new AssignmentDto(
             RecipientId: recipient.Id,
             RecipientFirstName: recipient.FirstName,
-            RecipientLastName: recipient.LastName);
+            RecipientLastName: recipient.LastName,
+            HasWishlist: false);
 
         var response = new ExecuteDrawResponse(
             GroupId: group.Id,

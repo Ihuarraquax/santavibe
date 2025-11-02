@@ -18,4 +18,5 @@ public sealed record ExecuteDrawResponse(
 public sealed record AssignmentDto(
     string RecipientId,
     string RecipientFirstName,
-    string RecipientLastName);
+    string RecipientLastName,
+    bool HasWishlist);

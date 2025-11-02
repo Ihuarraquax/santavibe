@@ -104,7 +104,7 @@ export class GroupService {
   updateBudgetSuggestion(groupId: string, amount: number | null): Observable<void> {
     return this.budgetService.updateBudgetSuggestion({
       groupId,
-      updateBudgetSuggestionRequest: { suggestedBudget: amount }
+      updateBudgetSuggestionRequest: { budgetSuggestion: amount }
     }).pipe(
       map(() => undefined)
     );
@@ -215,7 +215,7 @@ export class GroupService {
           recipientFirstName: dto.myAssignment.recipientFirstName || '',
           recipientLastName: dto.myAssignment.recipientLastName || '',
           recipientFullName: `${dto.myAssignment.recipientFirstName || ''} ${dto.myAssignment.recipientLastName || ''}`.trim(),
-          hasWishlist: dto.myAssignment.hasWishlist,
+          hasWishlist: dto.myAssignment.hasWishlist ?? false,
           budget: dto.budget || 0
         } : undefined
       };
@@ -244,7 +244,7 @@ export class GroupService {
   private mapDrawValidation(dto: DrawValidationDto): DrawValidationViewModel {
     const errors = dto.errors || [];
     return {
-      isValid: dto.isValid,
+      isValid: dto.isValid ?? false,
       errors,
       hasErrors: errors.length > 0
     };

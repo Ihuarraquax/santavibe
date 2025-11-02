@@ -2,6 +2,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SantaVibe.Api.Common;
 using SantaVibe.Api.Data;
+using SantaVibe.Api.Features.ExclusionRules.CreateExclusionRule;
+using SantaVibe.Api.Features.Groups.ExecuteDraw;
 using SantaVibe.Api.Services;
 
 namespace SantaVibe.Api.Features.Groups.GetGroupDetails;
@@ -181,14 +183,11 @@ public class GetGroupDetailsQueryHandler(
                     gp.UserId == assignment.RecipientUserId,
                     cancellationToken);
 
-            myAssignment = new AssignmentDto
-            {
-                RecipientId = assignment.RecipientUserId,
-                RecipientFirstName = assignment.Recipient.FirstName,
-                RecipientLastName = assignment.Recipient.LastName,
-                HasWishlist = recipientParticipant != null &&
-                             !string.IsNullOrWhiteSpace(recipientParticipant.WishlistContent)
-            };
+            myAssignment = new AssignmentDto(assignment.RecipientUserId,
+                assignment.Recipient.FirstName,
+                assignment.Recipient.LastName,
+                recipientParticipant != null &&
+                !string.IsNullOrWhiteSpace(recipientParticipant.WishlistContent));
         }
 
         return new GetGroupDetailsResponse
@@ -231,10 +230,6 @@ public class GetGroupDetailsQueryHandler(
             errors.Add("Minimum 3 participants required for draw");
         }
 
-        return new DrawValidationDto
-        {
-            IsValid = errors.Count == 0,
-            Errors = errors
-        };
+        return new DrawValidationDto(errors.Count == 0, errors);
     }
 }

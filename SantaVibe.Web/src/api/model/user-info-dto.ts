@@ -9,10 +9,9 @@
  */
 
 
-export interface AssignmentDto { 
-    recipientId?: string | null;
-    recipientFirstName?: string | null;
-    recipientLastName?: string | null;
-    hasWishlist?: boolean;
+export interface UserInfoDto { 
+    userId?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
 }
 

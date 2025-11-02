@@ -9,10 +9,11 @@
  */
 
 
-export interface AssignmentDto { 
-    recipientId?: string | null;
-    recipientFirstName?: string | null;
-    recipientLastName?: string | null;
+export interface RecipientDto { 
+    userId?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
     hasWishlist?: boolean;
+    wishlistLastModified?: string | null;
 }
 

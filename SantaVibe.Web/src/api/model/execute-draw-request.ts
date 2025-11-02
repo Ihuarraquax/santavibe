@@ -9,10 +9,7 @@
  */
 
 
-export interface AssignmentDto { 
-    recipientId?: string | null;
-    recipientFirstName?: string | null;
-    recipientLastName?: string | null;
-    hasWishlist?: boolean;
+export interface ExecuteDrawRequest { 
+    budget?: number;
 }
 

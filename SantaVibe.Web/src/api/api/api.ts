@@ -1,11 +1,17 @@
+export * from './assignments.service';
+import { AssignmentsService } from './assignments.service';
 export * from './authentication.service';
 import { AuthenticationService } from './authentication.service';
 export * from './budget.service';
 import { BudgetService } from './budget.service';
+export * from './draw.service';
+import { DrawService } from './draw.service';
+export * from './exclusion-rules.service';
+import { ExclusionRulesService } from './exclusion-rules.service';
 export * from './groups.service';
 import { GroupsService } from './groups.service';
 export * from './invitations.service';
 import { InvitationsService } from './invitations.service';
 export * from './wishlists.service';
 import { WishlistsService } from './wishlists.service';
-export const APIS = [AuthenticationService, BudgetService, GroupsService, InvitationsService, WishlistsService];
+export const APIS = [AssignmentsService, AuthenticationService, BudgetService, DrawService, ExclusionRulesService, GroupsService, InvitationsService, WishlistsService];

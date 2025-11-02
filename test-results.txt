@@ -1,0 +1,89 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  SantaVibe.Api -> C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\bin\Debug\net9.0\SantaVibe.Api.dll
+  SantaVibe.Tests -> C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\bin\Debug\net9.0\SantaVibe.Tests.dll
+Test run for C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\bin\Debug\net9.0\SantaVibe.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.12.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\bin\Debug\net9.0\SantaVibe.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.10)
+[xUnit.net 00:00:00.07]   Discovering: SantaVibe.Tests
+[xUnit.net 00:00:00.11]   Discovered:  SantaVibe.Tests
+[xUnit.net 00:00:00.12]   Starting:    SantaVibe.Tests
+[xUnit.net 00:00:00.22]     SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_3Participants_With1Exclusion_ReturnsValidAssignments [FAIL]
+[xUnit.net 00:00:00.22]       SantaVibe.Api.Services.DrawAlgorithmException : Failed to generate valid assignments after 100 attempts. This may indicate overly restrictive exclusion rules.
+[xUnit.net 00:00:00.22]       Stack Trace:
+[xUnit.net 00:00:00.22]         C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Services\DrawAlgorithmService.cs(124,0): at SantaVibe.Api.Services.DrawAlgorithmService.ExecuteDrawAlgorithm(List`1 participantIds, List`1 exclusionPairs)
+[xUnit.net 00:00:00.22]         C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\Services\DrawAlgorithmServiceUnitTests.cs(405,0): at SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_3Participants_With1Exclusion_ReturnsValidAssignments()
+[xUnit.net 00:00:00.22]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.22]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_3Participants_With1Exclusion_ReturnsValidAssignments [58 ms]
+  Error Message:
+   SantaVibe.Api.Services.DrawAlgorithmException : Failed to generate valid assignments after 100 attempts. This may indicate overly restrictive exclusion rules.
+  Stack Trace:
+     at SantaVibe.Api.Services.DrawAlgorithmService.ExecuteDrawAlgorithm(List`1 participantIds, List`1 exclusionPairs) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Services\DrawAlgorithmService.cs:line 124
+   at SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_3Participants_With1Exclusion_ReturnsValidAssignments() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\Services\DrawAlgorithmServiceUnitTests.cs:line 405
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_3Participants_NoExclusions_Multiple_Attempts [12 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_AlmostFullyConnectedGraph [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_EveryoneGetsExactlyOneRecipient [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_Randomness_ProducesDifferentResults [1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithOneExclusionPair_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_With4Participants_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_HallCondition_4Participants_OnlyOneValidRecipient_ReturnsInvalid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_With5Participants_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithParticipantExcludedFromAll_ReturnsInvalid [1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithChainedExclusions_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithEmptyParticipants_ReturnsInvalid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithTwoParticipants_ReturnsInvalid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_NoTwoPersonCircles_Verification [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithInvalidScenario_ThrowsException [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithMinimumParticipants_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_CircularExclusionChain [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithDuplicateParticipants_ReturnsInvalid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_4Participants_NoExclusions_Multiple_Attempts [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_VerifyNoTwoPersonCircles_WithMultiplePossibilities [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_3Participants_With2Exclusions_Challenging [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithImpossibleConstraint_ThrowsException [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithLargeGroup_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithMinimumParticipants_ReturnsValid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_ExactlyAtHallConditionBoundary_4Participants [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_ComplexExclusionPattern_6Participants [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_CompletelyDisconnected_ReturnsInvalid [< 1 ms]
+[xUnit.net 00:00:00.24]     SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_MaximumExclusionsStillValid_5Participants [FAIL]
+[xUnit.net 00:00:00.24]       SantaVibe.Api.Services.DrawAlgorithmException : Draw validation failed: Current exclusion rules prevent valid assignments
+[xUnit.net 00:00:00.24]       Stack Trace:
+[xUnit.net 00:00:00.24]         C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Services\DrawAlgorithmService.cs(92,0): at SantaVibe.Api.Services.DrawAlgorithmService.ExecuteDrawAlgorithm(List`1 participantIds, List`1 exclusionPairs)
+[xUnit.net 00:00:00.25]         C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\Services\DrawAlgorithmServiceUnitTests.cs(771,0): at SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_MaximumExclusionsStillValid_5Participants()
+[xUnit.net 00:00:00.25]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.25]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_MaximumExclusionsStillValid_5Participants [< 1 ms]
+  Error Message:
+   SantaVibe.Api.Services.DrawAlgorithmException : Draw validation failed: Current exclusion rules prevent valid assignments
+  Stack Trace:
+     at SantaVibe.Api.Services.DrawAlgorithmService.ExecuteDrawAlgorithm(List`1 participantIds, List`1 exclusionPairs) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Services\DrawAlgorithmService.cs:line 92
+   at SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_MaximumExclusionsStillValid_5Participants() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\Services\DrawAlgorithmServiceUnitTests.cs:line 771
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_LargeGroup_NoExclusions_ReturnsValid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_DenseExclusionGraph_StillSolvable [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithNoExclusions_ReturnsValid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithTwoExclusionPairs_3Participants_ReturnsInvalid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithStarPatternExclusions_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_BidirectionalExclusions_AreHandledCorrectly [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_LargeGroup_SomeExclusions_ReturnsValid [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithValidExclusions_ReturnsValid [< 1 ms]
+[xUnit.net 00:00:00.25]   Finished:    SantaVibe.Tests
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_WithMultipleExclusions_ReturnsValidAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_EveryoneReceivesExactlyOneGift [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ExecuteDrawAlgorithm_NoSelfAssignments [< 1 ms]
+  Passed SantaVibe.Tests.Services.DrawAlgorithmServiceUnitTests.ValidateDrawFeasibility_WithOneParticipant_ReturnsInvalid [< 1 ms]
+
+Test Run Failed.
+Total tests: 40
+     Passed: 38
+     Failed: 2
+ Total time: 0,6642 Seconds

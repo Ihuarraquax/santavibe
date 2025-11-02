@@ -34,7 +34,9 @@
       "Bash(dir:*)",
       "Bash(npx ng generate:*)",
       "Bash(taskkill:*)",
-      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:\")"
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:\")",
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)"
     ]
   },
   "outputStyle": "default"

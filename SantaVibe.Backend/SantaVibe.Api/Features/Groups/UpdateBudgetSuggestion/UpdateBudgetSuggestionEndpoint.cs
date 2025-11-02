@@ -26,7 +26,7 @@ public static class UpdateBudgetSuggestionEndpoint
                     : result.ToProblem();
             })
             .RequireAuthorization()
-            .WithTags("Groups", "Budget")
+            .WithTags("Budget")
             .WithName("UpdateBudgetSuggestion")
             .WithDescription("Update or set the authenticated user's budget suggestion for a group")
             .Produces<UpdateBudgetSuggestionResponse>(StatusCodes.Status200OK)

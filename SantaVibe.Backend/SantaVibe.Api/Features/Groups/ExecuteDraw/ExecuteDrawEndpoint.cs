@@ -28,7 +28,7 @@ public static class ExecuteDrawEndpoint
             })
             .RequireAuthorization()
             .AddEndpointFilter<ValidationFilter<ExecuteDrawRequest>>()
-            .WithTags("Groups", "Draw")
+            .WithTags("Draw")
             .WithName("ExecuteDraw")
             .WithOpenApi(operation =>
             {

@@ -26,7 +26,7 @@ public static class GetMyAssignmentEndpoint
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblem();
             })
             .RequireAuthorization()
-            .WithTags("Assignments", "Groups")
+            .WithTags("Assignments")
             .WithName("GetMyAssignment")
             .WithOpenApi(operation =>
             {

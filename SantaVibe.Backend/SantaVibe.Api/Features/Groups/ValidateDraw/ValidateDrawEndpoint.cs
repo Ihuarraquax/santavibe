@@ -26,7 +26,7 @@ public static class ValidateDrawEndpoint
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblem();
             })
             .RequireAuthorization()
-            .WithTags("Groups", "Draw")
+            .WithTags("Draw")
             .WithName("ValidateDraw")
             .WithOpenApi(operation =>
             {

@@ -1,6 +1,5 @@
 using SantaVibe.Api.Common;
 using SantaVibe.Api.Common.DomainEvents;
-using SantaVibe.Api.Data.Entities.Events;
 
 namespace SantaVibe.Api.Data.Entities;
 
@@ -125,72 +124,5 @@ public class Group : IHasDomainEvents
     /// Gets the total count of participants including the organizer
     /// </summary>
     public int GetParticipantCount() => GroupParticipants.Count;
-
-    /// <summary>
-    /// Executes the Secret Santa draw for this group
-    /// </summary>
-    /// <param name="budget">The budget for gifts</param>
-    /// <param name="santaToRecipientMap">Dictionary mapping Santa user IDs to recipient user IDs</param>
-    /// <returns>Result indicating success or failure</returns>
-    public Result<Dictionary<string, string>> ExecuteDraw(decimal budget, Dictionary<string, string> santaToRecipientMap)
-    {
-        // Business rule: Cannot execute draw if already completed
-        if (IsDrawCompleted())
-        {
-            return Result<Dictionary<string, string>>.Failure(
-                "DrawAlreadyCompleted",
-                "Draw has already been completed for this group");
-        }
-
-        // Business rule: Must have minimum 3 participants
-        if (GroupParticipants.Count < 3)
-        {
-            return Result<Dictionary<string, string>>.Failure(
-                "InsufficientParticipants",
-                "Minimum 3 participants required for draw");
-        }
-
-        // Validate budget
-        if (budget < 0.01m || budget > 99999999.99m)
-        {
-            return Result<Dictionary<string, string>>.Failure(
-                "InvalidBudget",
-                "Budget must be between 0.01 and 99999999.99");
-        }
-
-        // Update group state
-        Budget = budget;
-        DrawCompletedAt = DateTimeOffset.UtcNow;
-        UpdatedAt = DateTimeOffset.UtcNow;
-
-        // Create assignments (part of the aggregate)
-        var assignmentEntities = santaToRecipientMap.Select(pair => new Assignment
-        {
-            Id = Guid.NewGuid(),
-            GroupId = Id,
-            SantaUserId = pair.Key,
-            RecipientUserId = pair.Value,
-            AssignedAt = DrawCompletedAt.Value
-        }).ToList();
-
-        // Add assignments to the aggregate's collection
-        foreach (var assignment in assignmentEntities)
-        {
-            Assignments.Add(assignment);
-        }
-
-        // Get participant IDs for the event
-        var participantIds = GroupParticipants.Select(gp => gp.UserId).ToList();
-
-        // Raise domain event (only for email notifications - not part of aggregate)
-        var drawCompletedEvent = new DrawCompletedEvent(
-            GroupId: Id,
-            ParticipantIds: participantIds,
-            Assignments: santaToRecipientMap,
-            OccurredAt: DrawCompletedAt.Value);
-
-        AddDomainEvent(drawCompletedEvent);
-
-        return Result<Dictionary<string, string>>.Success(santaToRecipientMap);
-    }
+    
 }

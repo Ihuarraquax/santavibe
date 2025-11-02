@@ -166,8 +166,6 @@ try
         cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
         // Register transaction behavior for all commands implementing ITransactionalCommand
         cfg.AddOpenBehavior(typeof(SantaVibe.Api.Common.Behaviors.TransactionBehavior<,>));
-        // Register domain event dispatcher behavior
-        cfg.AddOpenBehavior(typeof(SantaVibe.Api.Common.Behaviors.DomainEventDispatcherBehavior<,>));
     });
     builder.Services.AddOpenApi();
 

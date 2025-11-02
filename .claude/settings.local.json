@@ -36,7 +36,10 @@
       "Bash(taskkill:*)",
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:\")",
       "Bash(git stash:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:|POST_ExecuteDraw_AsOrganizer_Returns200\")",
+      "Bash(cat:*)",
+      "Bash(timeout 120 dotnet test:*)"
     ]
   },
   "outputStyle": "default"

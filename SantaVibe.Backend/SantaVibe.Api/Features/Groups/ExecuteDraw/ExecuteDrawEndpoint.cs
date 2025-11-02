@@ -27,6 +27,7 @@ public static class ExecuteDrawEndpoint
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblem();
             })
             .RequireAuthorization()
+            .AddEndpointFilter<ValidationFilter<ExecuteDrawRequest>>()
             .WithTags("Groups", "Draw")
             .WithName("ExecuteDraw")
             .WithOpenApi(operation =>

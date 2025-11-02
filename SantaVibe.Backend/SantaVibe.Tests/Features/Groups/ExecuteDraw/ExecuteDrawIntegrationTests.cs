@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +9,6 @@ using SantaVibe.Api.Data.Entities;
 using SantaVibe.Api.Features.Authentication.Login;
 using SantaVibe.Api.Features.Groups.ExecuteDraw;
 using SantaVibe.Tests.Infrastructure;
-using Xunit;
 
 namespace SantaVibe.Tests.Features.Groups.ExecuteDraw;
 

@@ -23,6 +23,7 @@ using SantaVibe.Api.Features.ExclusionRules.CreateExclusionRule;
 using SantaVibe.Api.Features.ExclusionRules.DeleteExclusionRule;
 using SantaVibe.Api.Features.Groups.ValidateDraw;
 using SantaVibe.Api.Features.Groups.ExecuteDraw;
+using SantaVibe.Api.Features.Assignments.GetMyAssignment;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -274,6 +275,7 @@ try
     app.MapDeleteExclusionRuleEndpoint();
     app.MapValidateDrawEndpoint();
     app.MapExecuteDrawEndpoint();
+    app.MapGetMyAssignmentEndpoint();
 
     await app.RunAsync();
 }

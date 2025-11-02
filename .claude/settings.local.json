@@ -40,7 +40,8 @@
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:|POST_ExecuteDraw_AsOrganizer_Returns200\")",
       "Bash(cat:*)",
       "Bash(timeout 120 dotnet test:*)",
-      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|POST_ExecuteDraw_WithZeroBudget_Returns400|POST_ExecuteDraw_WithNegativeBudget_Returns400|POST_ExecuteDraw_WithExcessiveBudget_Returns400|POST_ExecuteDraw_WithThreeDecimalPlaces_Returns400\")"
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|POST_ExecuteDraw_WithZeroBudget_Returns400|POST_ExecuteDraw_WithNegativeBudget_Returns400|POST_ExecuteDraw_WithExcessiveBudget_Returns400|POST_ExecuteDraw_WithThreeDecimalPlaces_Returns400\")",
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|GetMyAssignment\" -Context 0,2)"
     ]
   },
   "outputStyle": "default"

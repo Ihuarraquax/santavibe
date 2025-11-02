@@ -12,11 +12,10 @@ public class ExclusionRuleConfiguration : IEntityTypeConfiguration<ExclusionRule
     public void Configure(EntityTypeBuilder<ExclusionRule> builder)
     {
         // Primary Key
-        builder.HasKey(er => er.Id);
-
-        builder.Property(er => er.Id)
-            .HasDefaultValueSql("gen_random_uuid()");
-
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever()
+            .IsRequired();
         // Properties
         builder.Property(er => er.UserId1)
             .IsRequired()

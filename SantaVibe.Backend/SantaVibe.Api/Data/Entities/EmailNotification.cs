@@ -9,7 +9,7 @@ public class EmailNotification
     /// <summary>
     /// Unique notification identifier
     /// </summary>
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Type of email notification

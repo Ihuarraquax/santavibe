@@ -1,5 +1,7 @@
 using SantaVibe.Api.Common;
 using SantaVibe.Api.Common.DomainEvents;
+using SantaVibe.Api.Data.Entities.Events;
+using SantaVibe.Api.Services;
 
 namespace SantaVibe.Api.Data.Entities;
 
@@ -23,7 +25,7 @@ public class Group : IHasDomainEvents
     /// <summary>
     /// Unique group identifier
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Group name (FR-006)
@@ -66,9 +68,6 @@ public class Group : IHasDomainEvents
     public ICollection<GroupParticipant> GroupParticipants { get; set; } = new List<GroupParticipant>();
     public ICollection<ExclusionRule> ExclusionRules { get; set; } = new List<ExclusionRule>();
     public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
-    public ICollection<EmailNotification> EmailNotifications { get; set; } = new List<EmailNotification>();
-
-    // Domain logic methods
 
     /// <summary>
     /// Checks if the draw has been completed
@@ -124,5 +123,94 @@ public class Group : IHasDomainEvents
     /// Gets the total count of participants including the organizer
     /// </summary>
     public int GetParticipantCount() => GroupParticipants.Count;
-    
+
+    /// <summary>
+    /// Executes the Secret Santa draw for this group
+    /// </summary>
+    /// <param name="budget">Budget for gift exchange</param>
+    /// <param name="drawAlgorithmService">Service to execute draw algorithm</param>
+    /// <returns>Result containing assignment details or error information</returns>
+    public Result<DrawResult> ExecuteDraw(decimal budget, IDrawAlgorithmService drawAlgorithmService)
+    {
+        // Business rule: Cannot execute draw if already completed
+        if (IsDrawCompleted())
+        {
+            return Result<DrawResult>.Failure(
+                "DrawAlreadyCompleted",
+                "The draw has already been completed for this group");
+        }
+
+        // Business rule: Minimum 3 participants required
+        var participantCount = GetParticipantCount();
+        if (participantCount < 3)
+        {
+            return Result<DrawResult>.Failure(
+                "InsufficientParticipants",
+                "Minimum 3 participants required for draw");
+        }
+
+        // Get participant IDs and exclusion pairs
+        var participantIds = GroupParticipants.Select(gp => gp.UserId).ToList();
+        var exclusionPairs = ExclusionRules
+            .Select(er => (er.UserId1, er.UserId2))
+            .ToList();
+
+        // Execute draw algorithm
+        Dictionary<string, string> assignmentMap;
+        try
+        {
+            assignmentMap = drawAlgorithmService.ExecuteDrawAlgorithm(participantIds, exclusionPairs);
+        }
+        catch (DrawAlgorithmException ex)
+        {
+            return Result<DrawResult>.Failure(
+                "DrawAlgorithmFailed",
+                ex.Message);
+        }
+
+        // Create assignment entities
+        var now = DateTimeOffset.UtcNow;
+        var assignments = assignmentMap.Select(kvp => new Assignment
+        {
+            Id = Guid.NewGuid(),
+            GroupId = Id,
+            SantaUserId = kvp.Key,
+            RecipientUserId = kvp.Value,
+            AssignedAt = now
+        }).ToList();
+
+        // Add assignments to the group
+        foreach (var assignment in assignments)
+        {
+            Assignments.Add(assignment);
+        }
+
+        // Update group state
+        Budget = budget;
+        DrawCompletedAt = now;
+        UpdatedAt = now;
+
+        // Raise domain event
+        var drawCompletedEvent = new DrawCompletedEvent(
+            GroupId: Id,
+            ParticipantIds: participantIds,
+            Assignments: assignmentMap,
+            OccurredAt: now);
+
+        AddDomainEvent(drawCompletedEvent);
+
+        // Return result
+        var result = new DrawResult(
+            Assignments: assignments,
+            DrawCompletedAt: now);
+
+        return Result<DrawResult>.Success(result);
+    }
 }
+
+/// <summary>
+/// Result of executing a Secret Santa draw
+/// </summary>
+public sealed record DrawResult(
+    List<Assignment> Assignments,
+    DateTimeOffset DrawCompletedAt);

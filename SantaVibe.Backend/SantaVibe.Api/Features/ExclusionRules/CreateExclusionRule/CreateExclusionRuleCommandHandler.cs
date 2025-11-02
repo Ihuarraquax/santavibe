@@ -125,7 +125,8 @@ public class CreateExclusionRuleCommandHandler
             UserId1 = request.UserId1,
             UserId2 = request.UserId2,
             CreatedByUserId = currentUserId,
-            CreatedAt = DateTimeOffset.UtcNow
+            CreatedAt = DateTimeOffset.UtcNow,
+            Id = Guid.NewGuid()
         };
 
         _context.ExclusionRules.Add(exclusionRule);

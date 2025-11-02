@@ -12,10 +12,10 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
     public void Configure(EntityTypeBuilder<Group> builder)
     {
         // Primary Key
-        builder.HasKey(g => g.Id);
-
-        builder.Property(g => g.Id)
-            .HasDefaultValueSql("gen_random_uuid()");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever()
+            .IsRequired();
 
         // Properties
         builder.Property(g => g.Name)
@@ -68,11 +68,6 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
         builder.HasMany(g => g.Assignments)
             .WithOne(a => a.Group)
             .HasForeignKey(a => a.GroupId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(g => g.EmailNotifications)
-            .WithOne(e => e.Group)
-            .HasForeignKey(e => e.GroupId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

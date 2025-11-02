@@ -129,7 +129,8 @@ public class GetExclusionRulesIntegrationTests : IClassFixture<SantaVibeWebAppli
             UserId1 = userId1,
             UserId2 = userId2,
             CreatedByUserId = createdBy,
-            CreatedAt = DateTimeOffset.UtcNow
+            CreatedAt = DateTimeOffset.UtcNow,
+            Id = Guid.NewGuid()
         };
 
         context.ExclusionRules.Add(rule);

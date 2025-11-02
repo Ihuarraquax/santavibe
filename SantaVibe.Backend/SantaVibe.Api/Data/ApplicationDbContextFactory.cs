@@ -19,6 +19,6 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             "Host=localhost;Database=santavibe_dev;Username=postgres;Password=example",
             b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
 
-        return new ApplicationDbContext(optionsBuilder.Options);
+        return new ApplicationDbContext(optionsBuilder.Options, null);
     }
 }

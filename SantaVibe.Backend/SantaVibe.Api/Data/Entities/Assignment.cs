@@ -9,7 +9,7 @@ public class Assignment
     /// <summary>
     /// Unique assignment identifier
     /// </summary>
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Group reference

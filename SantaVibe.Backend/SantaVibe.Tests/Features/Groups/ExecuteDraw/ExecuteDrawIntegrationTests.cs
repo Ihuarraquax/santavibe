@@ -162,7 +162,6 @@ public class ExecuteDrawIntegrationTests : IClassFixture<SantaVibeWebApplication
         Assert.InRange(result.DrawCompletedAt, DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(1));
         Assert.Equal(4, result.ParticipantCount);
         Assert.Equal(4, result.AssignmentsCreated);
-        Assert.Equal(4, result.EmailNotificationsScheduled);
         Assert.NotNull(result.MyAssignment);
         Assert.NotEqual(organizer.Id, result.MyAssignment.RecipientId); // Can't be assigned to self
     }
@@ -552,7 +551,7 @@ public class ExecuteDrawIntegrationTests : IClassFixture<SantaVibeWebApplication
             .Where(a => a.GroupId == group.Id)
             .ToListAsync();
 
-        Assert.Equal(4, assignments.Count);
+                    Assert.Equal(4, assignments.Count);
     }
 
     #endregion

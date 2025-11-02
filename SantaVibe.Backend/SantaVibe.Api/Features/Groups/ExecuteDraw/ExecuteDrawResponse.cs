@@ -10,7 +10,6 @@ public sealed record ExecuteDrawResponse(
     DateTimeOffset DrawCompletedAt,
     int ParticipantCount,
     int AssignmentsCreated,
-    int EmailNotificationsScheduled,
     AssignmentDto MyAssignment);
 
 /// <summary>

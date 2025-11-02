@@ -35,9 +35,6 @@ public sealed class ScheduleEmailNotificationsHandler(
             LastError = null
         }).ToList();
 
-        // Add notifications to database
-        // Note: Don't call SaveChangesAsync here - we're running within the same transaction
-        // as the ExecuteDrawHandler. The TransactionBehavior will commit the transaction.
         await context.EmailNotifications.AddRangeAsync(emailNotifications, cancellationToken);
 
         logger.LogInformation(

@@ -12,10 +12,10 @@ public class EmailNotificationConfiguration : IEntityTypeConfiguration<EmailNoti
     public void Configure(EntityTypeBuilder<EmailNotification> builder)
     {
         // Primary Key
-        builder.HasKey(e => e.Id);
-
-        builder.Property(e => e.Id)
-            .HasDefaultValueSql("gen_random_uuid()");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever()
+            .IsRequired();
 
         // Properties
         builder.Property(e => e.Type)
@@ -54,7 +54,7 @@ public class EmailNotificationConfiguration : IEntityTypeConfiguration<EmailNoti
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(e => e.Group)
-            .WithMany(g => g.EmailNotifications)
+            .WithMany()
             .HasForeignKey(e => e.GroupId)
             .OnDelete(DeleteBehavior.Cascade);
     }

@@ -12,10 +12,10 @@ public class AssignmentConfiguration : IEntityTypeConfiguration<Assignment>
     public void Configure(EntityTypeBuilder<Assignment> builder)
     {
         // Primary Key
-        builder.HasKey(a => a.Id);
-
-        builder.Property(a => a.Id)
-            .HasDefaultValueSql("gen_random_uuid()");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever()
+            .IsRequired();
 
         // Properties
         builder.Property(a => a.SantaUserId)

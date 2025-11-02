@@ -354,14 +354,16 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
                     GroupId = group.Id,
                     UserId1 = organizer.Id,
                     UserId2 = participant1.Id,
-                    CreatedByUserId = organizer.Id
+                    CreatedByUserId = organizer.Id,
+                    Id = Guid.NewGuid()
                 },
                 new ExclusionRule
                 {
                     GroupId = group.Id,
                     UserId1 = participant1.Id,
                     UserId2 = participant2.Id,
-                    CreatedByUserId = organizer.Id
+                    CreatedByUserId = organizer.Id,
+                    Id = Guid.NewGuid()
                 }
             );
 
@@ -441,7 +443,8 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
                 GroupId = group.Id,
                 SantaUserId = organizer.Id,
                 RecipientUserId = participant1.Id,
-                AssignedAt = group.DrawCompletedAt.Value
+                AssignedAt = group.DrawCompletedAt.Value,
+                Id = Guid.NewGuid()
             });
 
             await context.SaveChangesAsync();
@@ -516,7 +519,8 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
             {
                 GroupId = group.Id,
                 SantaUserId = organizer.Id,
-                RecipientUserId = participant2.Id
+                RecipientUserId = participant2.Id,
+                Id = Guid.NewGuid()
             });
 
             await context.SaveChangesAsync();
@@ -568,7 +572,8 @@ public class GetGroupDetailsIntegrationTests : IClassFixture<SantaVibeWebApplica
             {
                 GroupId = group.Id,
                 SantaUserId = participant1.Id,
-                RecipientUserId = organizer.Id
+                RecipientUserId = organizer.Id,
+                Id = Guid.NewGuid()
             });
 
             await context.SaveChangesAsync();

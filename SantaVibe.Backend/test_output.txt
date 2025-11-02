@@ -1,0 +1,348 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  SantaVibe.Api -> C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\bin\Debug\net9.0\SantaVibe.Api.dll
+  SantaVibe.Tests -> C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\bin\Debug\net9.0\SantaVibe.Tests.dll
+Test run for C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\bin\Debug\net9.0\SantaVibe.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.12.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\bin\Debug\net9.0\SantaVibe.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.10)
+[xUnit.net 00:00:00.06]   Discovering: SantaVibe.Tests
+[xUnit.net 00:00:00.09]   Discovered:  SantaVibe.Tests
+[xUnit.net 00:00:00.09]   Starting:    SantaVibe.Tests
+[testcontainers.org 00:00:00.07] Connected to Docker:
+  Host: npipe://./pipe/docker_engine
+  Server Version: 28.3.2
+  Kernel Version: 5.15.153.1-microsoft-standard-WSL2
+  API Version: 1.51
+  Operating System: Docker Desktop
+  Total Memory: 5.79 GB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+[testcontainers.org 00:00:00.21] Docker container acd258956c91 created
+[testcontainers.org 00:00:00.24] Start Docker container acd258956c91
+[testcontainers.org 00:00:00.42] Wait for Docker container acd258956c91 to complete readiness checks
+[testcontainers.org 00:00:00.42] Docker container acd258956c91 ready
+[testcontainers.org 00:00:00.61] Docker container 11876fba2ea1 created
+[testcontainers.org 00:00:00.62] Start Docker container 11876fba2ea1
+[testcontainers.org 00:00:00.78] Wait for Docker container 11876fba2ea1 to complete readiness checks
+[testcontainers.org 00:00:00.79] Execute "pg_isready --host localhost --dbname santavibe_test --username test_user" at Docker container 11876fba2ea1
+[testcontainers.org 00:00:01.90] Execute "pg_isready --host localhost --dbname santavibe_test --username test_user" at Docker container 11876fba2ea1
+[testcontainers.org 00:00:01.94] Docker container 11876fba2ea1 ready
+[12:57:56 INF] Starting SantaVibe API
+[12:57:57 ERR] Failed executing DbCommand (11ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+[12:57:57 INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+[12:57:57 INF] Applying migration '20251015172302_InitialCreate'.
+[12:57:57 INF] Applying database migrations...
+[12:57:57 INF] Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+[12:57:57 INF] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+[12:57:57 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+[12:57:57 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+[12:57:57 INF] No migrations were applied. The database is already up to date.
+[12:57:57 INF] Database migrations applied successfully
+[12:57:57 INF] User profile is available. Using 'C:\Users\HubertZab�ocki\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[12:57:58 INF] Executed DbCommand (6ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+[12:57:58 INF] Executed DbCommand (3ms) [Parameters=[@p0='?', @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = DateTime), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?' (DbType = DateTime), @p9='?', @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='Text', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DeletedAt", "Email", "EmailConfirmed", "FirstName", "LastLoginAt", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19)
+RETURNING "IsDeleted";
+[12:57:58 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 91
+[12:57:58 WRN] Failed to determine the https port for redirect.
+[12:57:58 INF] Executing endpoint 'HTTP: POST /api/auth/login => HandleLogin'
+[12:57:58 INF] Login attempt for email: user.263b9b0e-c98e-40e1-b7c6-84c2b64be52b@example.com
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+[12:57:58 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+[12:57:58 INF] Executed DbCommand (2ms) [Parameters=[@p20='?', @p0='?' (DbType = Int32), @p1='?', @p21='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = DateTime), @p4='?', @p5='?' (DbType = Boolean), @p6='?', @p7='?' (DbType = Boolean), @p8='?' (DbType = DateTime), @p9='?', @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='Text', CommandTimeout='30']
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p0, "ConcurrencyStamp" = @p1, "CreatedAt" = @p2, "DeletedAt" = @p3, "Email" = @p4, "EmailConfirmed" = @p5, "FirstName" = @p6, "IsDeleted" = @p7, "LastLoginAt" = @p8, "LastName" = @p9, "LockoutEnabled" = @p10, "LockoutEnd" = @p11, "NormalizedEmail" = @p12, "NormalizedUserName" = @p13, "PasswordHash" = @p14, "PhoneNumber" = @p15, "PhoneNumberConfirmed" = @p16, "SecurityStamp" = @p17, "TwoFactorEnabled" = @p18, "UserName" = @p19
+WHERE "Id" = @p20 AND "ConcurrencyStamp" = @p21;
+[12:57:58 INF] Login successful for user: d1bd0c3f-9d5f-4034-92c9-0419e7dbcfe4 - user.263b9b0e-c98e-40e1-b7c6-84c2b64be52b@example.com
+[12:57:58 INF] User logged in successfully: d1bd0c3f-9d5f-4034-92c9-0419e7dbcfe4
+[12:57:58 INF] Setting HTTP status code 200.
+[12:57:58 INF] Writing value of type 'LoginResponse' as Json.
+[12:57:58 INF] Executed endpoint 'HTTP: POST /api/auth/login => HandleLogin'
+[12:57:58 INF] HTTP POST /api/auth/login responded 200 in 125.9824 ms
+[12:57:58 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 192.5601ms
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+[12:57:58 INF] Executed DbCommand (4ms) [Parameters=[@p0='?', @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = DateTime), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?' (DbType = DateTime), @p9='?', @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?', @p20='?' (DbType = Guid), @p21='?' (DbType = Decimal), @p22='?' (DbType = DateTime), @p23='?' (DbType = DateTime), @p24='?' (DbType = Guid), @p25='?', @p26='?', @p27='?' (DbType = DateTime), @p28='?' (DbType = Guid), @p29='?', @p30='?' (DbType = Decimal), @p31='?' (DbType = DateTime), @p32='?', @p33='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DeletedAt", "Email", "EmailConfirmed", "FirstName", "LastLoginAt", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19)
+RETURNING "IsDeleted";
+INSERT INTO "Groups" ("Id", "Budget", "CreatedAt", "DrawCompletedAt", "InvitationToken", "Name", "OrganizerUserId", "UpdatedAt")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27);
+INSERT INTO "GroupParticipants" ("GroupId", "UserId", "BudgetSuggestion", "JoinedAt", "WishlistContent", "WishlistLastModified")
+VALUES (@p28, @p29, @p30, @p31, @p32, @p33);
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@p0='?', @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = DateTime), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?' (DbType = DateTime), @p9='?', @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?', @p20='?' (DbType = Guid), @p21='?', @p22='?' (DbType = Decimal), @p23='?' (DbType = DateTime), @p24='?', @p25='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DeletedAt", "Email", "EmailConfirmed", "FirstName", "LastLoginAt", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19)
+RETURNING "IsDeleted";
+INSERT INTO "GroupParticipants" ("GroupId", "UserId", "BudgetSuggestion", "JoinedAt", "WishlistContent", "WishlistLastModified")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25);
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@p0='?', @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = DateTime), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?' (DbType = DateTime), @p9='?', @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?', @p20='?' (DbType = Guid), @p21='?', @p22='?' (DbType = Decimal), @p23='?' (DbType = DateTime), @p24='?', @p25='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "DeletedAt", "Email", "EmailConfirmed", "FirstName", "LastLoginAt", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19)
+RETURNING "IsDeleted";
+INSERT INTO "GroupParticipants" ("GroupId", "UserId", "BudgetSuggestion", "JoinedAt", "WishlistContent", "WishlistLastModified")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25);
+[12:57:58 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?', @p5='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+INSERT INTO "GroupParticipants" ("GroupId", "UserId", "BudgetSuggestion", "JoinedAt", "WishlistContent", "WishlistLastModified")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+[12:57:58 INF] Request starting HTTP/1.1 POST http://localhost/api/groups/8f909244-2ed3-43de-8e0e-6bda1ebd0b8e/draw - application/json; charset=utf-8 16
+[12:57:59 INF] Executing endpoint 'HTTP: POST /api/groups/{groupId:guid}/draw'
+[12:57:59 WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+[12:57:59 INF] Executing draw for group 8f909244-2ed3-43de-8e0e-6bda1ebd0b8e by user d1bd0c3f-9d5f-4034-92c9-0419e7dbcfe4
+[12:57:59 INF] Executed DbCommand (1ms) [Parameters=[@__request_GroupId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT g."Id", g."Budget", g."CreatedAt", g."DrawCompletedAt", g."InvitationToken", g."Name", g."OrganizerUserId", g."UpdatedAt"
+FROM "Groups" AS g
+WHERE g."Id" = @__request_GroupId_0
+ORDER BY g."Id"
+LIMIT 1
+[12:57:59 INF] Executed DbCommand (2ms) [Parameters=[@__request_GroupId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT s."GroupId", s."UserId", s."BudgetSuggestion", s."JoinedAt", s."WishlistContent", s."WishlistLastModified", s."Id", s."AccessFailedCount", s."ConcurrencyStamp", s."CreatedAt", s."DeletedAt", s."Email", s."EmailConfirmed", s."FirstName", s."IsDeleted", s."LastLoginAt", s."LastName", s."LockoutEnabled", s."LockoutEnd", s."NormalizedEmail", s."NormalizedUserName", s."PasswordHash", s."PhoneNumber", s."PhoneNumberConfirmed", s."SecurityStamp", s."TwoFactorEnabled", s."UserName", g1."Id"
+FROM (
+    SELECT g."Id"
+    FROM "Groups" AS g
+    WHERE g."Id" = @__request_GroupId_0
+    LIMIT 1
+) AS g1
+INNER JOIN (
+    SELECT g0."GroupId", g0."UserId", g0."BudgetSuggestion", g0."JoinedAt", g0."WishlistContent", g0."WishlistLastModified", a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."CreatedAt", a."DeletedAt", a."Email", a."EmailConfirmed", a."FirstName", a."IsDeleted", a."LastLoginAt", a."LastName", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+    FROM "GroupParticipants" AS g0
+    INNER JOIN "AspNetUsers" AS a ON g0."UserId" = a."Id"
+) AS s ON g1."Id" = s."GroupId"
+ORDER BY g1."Id"
+[12:57:59 INF] Executed DbCommand (2ms) [Parameters=[@__request_GroupId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."CreatedByUserId", e."GroupId", e."UserId1", e."UserId2", g2."Id"
+FROM (
+    SELECT g."Id"
+    FROM "Groups" AS g
+    WHERE g."Id" = @__request_GroupId_0
+    LIMIT 1
+) AS g2
+INNER JOIN "ExclusionRules" AS e ON g2."Id" = e."GroupId"
+ORDER BY g2."Id"
+[12:57:59 INF] Executed DbCommand (1ms) [Parameters=[@__request_GroupId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT a0."Id", a0."AssignedAt", a0."GroupId", a0."RecipientUserId", a0."SantaUserId", g3."Id"
+FROM (
+    SELECT g."Id"
+    FROM "Groups" AS g
+    WHERE g."Id" = @__request_GroupId_0
+    LIMIT 1
+) AS g3
+INNER JOIN "Assignments" AS a0 ON g3."Id" = a0."GroupId"
+ORDER BY g3."Id"
+[12:57:59 INF] Executed DbCommand (1ms) [Parameters=[@__request_GroupId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT e0."Id", e0."AttemptCount", e0."FirstAttemptAt", e0."GroupId", e0."LastAttemptAt", e0."LastError", e0."RecipientUserId", e0."ScheduledAt", e0."SentAt", e0."Type", g4."Id"
+FROM (
+    SELECT g."Id"
+    FROM "Groups" AS g
+    WHERE g."Id" = @__request_GroupId_0
+    LIMIT 1
+) AS g4
+INNER JOIN "EmailNotifications" AS e0 ON g4."Id" = e0."GroupId"
+ORDER BY g4."Id"
+[12:57:59 INF] Executing draw algorithm for 4 participants with 0 exclusion rules
+[12:57:59 INF] Draw algorithm succeeded on attempt 1, created 4 assignments
+[12:57:59 INF] Draw completed for group 8f909244-2ed3-43de-8e0e-6bda1ebd0b8e. Created 4 assignments
+[12:57:59 INF] Scheduling email notifications for group 8f909244-2ed3-43de-8e0e-6bda1ebd0b8e with 4 participants
+[12:57:59 INF] Scheduled 4 email notifications for group 8f909244-2ed3-43de-8e0e-6bda1ebd0b8e
+[12:57:59 INF] Executed DbCommand (3ms) [Parameters=[@p4='?' (DbType = Guid), @p0='?' (DbType = DateTime), @p1='?' (DbType = Guid), @p2='?', @p3='?', @p9='?' (DbType = Guid), @p5='?' (DbType = DateTime), @p6='?' (DbType = Guid), @p7='?', @p8='?', @p14='?' (DbType = Guid), @p10='?' (DbType = DateTime), @p11='?' (DbType = Guid), @p12='?', @p13='?', @p19='?' (DbType = Guid), @p15='?' (DbType = DateTime), @p16='?' (DbType = Guid), @p17='?', @p18='?', @p20='?' (DbType = Guid), @p21='?' (DbType = DateTime), @p22='?' (DbType = Guid), @p23='?' (DbType = DateTime), @p24='?', @p25='?', @p26='?' (DbType = DateTime), @p27='?' (DbType = DateTime), @p28='?', @p29='?' (DbType = Guid), @p30='?' (DbType = DateTime), @p31='?' (DbType = Guid), @p32='?' (DbType = DateTime), @p33='?', @p34='?', @p35='?' (DbType = DateTime), @p36='?' (DbType = DateTime), @p37='?', @p38='?' (DbType = Guid), @p39='?' (DbType = DateTime), @p40='?' (DbType = Guid), @p41='?' (DbType = DateTime), @p42='?', @p43='?', @p44='?' (DbType = DateTime), @p45='?' (DbType = DateTime), @p46='?', @p47='?' (DbType = Guid), @p48='?' (DbType = DateTime), @p49='?' (DbType = Guid), @p50='?' (DbType = DateTime), @p51='?', @p52='?', @p53='?' (DbType = DateTime), @p54='?' (DbType = DateTime), @p55='?', @p59='?' (DbType = Guid), @p56='?' (DbType = Decimal), @p57='?' (DbType = DateTime), @p58='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+UPDATE "Assignments" SET "AssignedAt" = @p0, "GroupId" = @p1, "RecipientUserId" = @p2, "SantaUserId" = @p3
+WHERE "Id" = @p4;
+UPDATE "Assignments" SET "AssignedAt" = @p5, "GroupId" = @p6, "RecipientUserId" = @p7, "SantaUserId" = @p8
+WHERE "Id" = @p9;
+UPDATE "Assignments" SET "AssignedAt" = @p10, "GroupId" = @p11, "RecipientUserId" = @p12, "SantaUserId" = @p13
+WHERE "Id" = @p14;
+UPDATE "Assignments" SET "AssignedAt" = @p15, "GroupId" = @p16, "RecipientUserId" = @p17, "SantaUserId" = @p18
+WHERE "Id" = @p19;
+INSERT INTO "EmailNotifications" ("Id", "FirstAttemptAt", "GroupId", "LastAttemptAt", "LastError", "RecipientUserId", "ScheduledAt", "SentAt", "Type")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28)
+RETURNING "AttemptCount";
+INSERT INTO "EmailNotifications" ("Id", "FirstAttemptAt", "GroupId", "LastAttemptAt", "LastError", "RecipientUserId", "ScheduledAt", "SentAt", "Type")
+VALUES (@p29, @p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37)
+RETURNING "AttemptCount";
+INSERT INTO "EmailNotifications" ("Id", "FirstAttemptAt", "GroupId", "LastAttemptAt", "LastError", "RecipientUserId", "ScheduledAt", "SentAt", "Type")
+VALUES (@p38, @p39, @p40, @p41, @p42, @p43, @p44, @p45, @p46)
+RETURNING "AttemptCount";
+INSERT INTO "EmailNotifications" ("Id", "FirstAttemptAt", "GroupId", "LastAttemptAt", "LastError", "RecipientUserId", "ScheduledAt", "SentAt", "Type")
+VALUES (@p47, @p48, @p49, @p50, @p51, @p52, @p53, @p54, @p55)
+RETURNING "AttemptCount";
+UPDATE "Groups" SET "Budget" = @p56, "DrawCompletedAt" = @p57, "UpdatedAt" = @p58
+WHERE "Id" = @p59;
+[12:57:59 WRN] Transaction rollback triggered for command ExecuteDrawCommand
+Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException: The database operation was expected to affect 1 row(s), but actually affected 0 row(s); data may have been modified or deleted since entities were loaded. See https://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Update.Internal.NpgsqlModificationCommandBatch.ThrowAggregateUpdateConcurrencyExceptionAsync(RelationalDataReader reader, Int32 commandIndex, Int32 expectedRowsAffected, Int32 rowsAffected, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Update.Internal.NpgsqlModificationCommandBatch.Consume(RelationalDataReader reader, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at SantaVibe.Api.Features.Groups.ExecuteDraw.ExecuteDrawHandler.Handle(ExecuteDrawCommand request, CancellationToken cancellationToken) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Features\Groups\ExecuteDraw\ExecuteDrawHandler.cs:line 76
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.<>c__DisplayClass3_0.<<Handle>b__0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 52
+[12:57:59 INF] Executed endpoint 'HTTP: POST /api/groups/{groupId:guid}/draw'
+[12:57:59 ERR] HTTP POST /api/groups/8f909244-2ed3-43de-8e0e-6bda1ebd0b8e/draw responded 500 in 188.8442 ms
+Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException: The database operation was expected to affect 1 row(s), but actually affected 0 row(s); data may have been modified or deleted since entities were loaded. See https://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Update.Internal.NpgsqlModificationCommandBatch.ThrowAggregateUpdateConcurrencyExceptionAsync(RelationalDataReader reader, Int32 commandIndex, Int32 expectedRowsAffected, Int32 rowsAffected, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Update.Internal.NpgsqlModificationCommandBatch.Consume(RelationalDataReader reader, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at SantaVibe.Api.Features.Groups.ExecuteDraw.ExecuteDrawHandler.Handle(ExecuteDrawCommand request, CancellationToken cancellationToken) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Features\Groups\ExecuteDraw\ExecuteDrawHandler.cs:line 76
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.<>c__DisplayClass3_0.<<Handle>b__0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 52
+--- End of stack trace from previous location ---
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.<>c__DisplayClass3_0.<<Handle>b__0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 70
+--- End of stack trace from previous location ---
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.<>c__DisplayClass3_0.<<Handle>b__0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 71
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 40
+   at SantaVibe.Api.Features.Groups.ExecuteDraw.ExecuteDrawEndpoint.<>c.<<MapExecuteDrawEndpoint>b__0_0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Features\Groups\ExecuteDraw\ExecuteDrawEndpoint.cs:line 25
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass101_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+[12:57:59 ERR] Unhandled exception occurred. Path: /api/groups/8f909244-2ed3-43de-8e0e-6bda1ebd0b8e/draw, Method: POST, TraceId: 0HNGQ0S8FM0RI
+Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException: The database operation was expected to affect 1 row(s), but actually affected 0 row(s); data may have been modified or deleted since entities were loaded. See https://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Update.Internal.NpgsqlModificationCommandBatch.ThrowAggregateUpdateConcurrencyExceptionAsync(RelationalDataReader reader, Int32 commandIndex, Int32 expectedRowsAffected, Int32 rowsAffected, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Update.Internal.NpgsqlModificationCommandBatch.Consume(RelationalDataReader reader, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at SantaVibe.Api.Features.Groups.ExecuteDraw.ExecuteDrawHandler.Handle(ExecuteDrawCommand request, CancellationToken cancellationToken) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Features\Groups\ExecuteDraw\ExecuteDrawHandler.cs:line 76
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.<>c__DisplayClass3_0.<<Handle>b__0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 52
+--- End of stack trace from previous location ---
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.<>c__DisplayClass3_0.<<Handle>b__0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 70
+--- End of stack trace from previous location ---
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.<>c__DisplayClass3_0.<<Handle>b__0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 71
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at SantaVibe.Api.Common.Behaviors.TransactionBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Common\Behaviors\TransactionBehavior.cs:line 40
+   at SantaVibe.Api.Features.Groups.ExecuteDraw.ExecuteDrawEndpoint.<>c.<<MapExecuteDrawEndpoint>b__0_0>d.MoveNext() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Features\Groups\ExecuteDraw\ExecuteDrawEndpoint.cs:line 25
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass101_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at SantaVibe.Api.Middleware.GlobalExceptionHandler.InvokeAsync(HttpContext context) in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Api\Middleware\GlobalExceptionHandler.cs:line 19
+[12:57:59 INF] Request finished HTTP/1.1 POST http://localhost/api/groups/8f909244-2ed3-43de-8e0e-6bda1ebd0b8e/draw - 500 null application/json 216.2836ms
+[xUnit.net 00:00:04.62]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:04.62]       Expected: OK
+[xUnit.net 00:00:04.62]       Actual:   InternalServerError
+[xUnit.net 00:00:04.62]       Stack Trace:
+[xUnit.net 00:00:04.62]         C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\Features\Groups\ExecuteDraw\ExecuteDrawIntegrationTests.cs(155,0): at SantaVibe.Tests.Features.Groups.ExecuteDraw.ExecuteDrawIntegrationTests.POST_ExecuteDraw_WithValidRequest_Returns200WithSuccessResponse()
+[xUnit.net 00:00:04.62]         --- End of stack trace from previous location ---
+[testcontainers.org 00:00:04.41] Stop Docker container 11876fba2ea1
+[testcontainers.org 00:00:04.75] Delete Docker container 11876fba2ea1
+[xUnit.net 00:00:05.01]   Finished:    SantaVibe.Tests
+  Failed SantaVibe.Tests.Features.Groups.ExecuteDraw.ExecuteDrawIntegrationTests.POST_ExecuteDraw_WithValidRequest_Returns200WithSuccessResponse [2 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: OK
+Actual:   InternalServerError
+  Stack Trace:
+     at SantaVibe.Tests.Features.Groups.ExecuteDraw.ExecuteDrawIntegrationTests.POST_ExecuteDraw_WithValidRequest_Returns200WithSuccessResponse() in C:\P\Edu\santavibe\SantaVibe.Backend\SantaVibe.Tests\Features\Groups\ExecuteDraw\ExecuteDrawIntegrationTests.cs:line 155
+--- End of stack trace from previous location ---
+
+Total tests: 1
+     Failed: 1
+ Total time: 5,3936 Seconds

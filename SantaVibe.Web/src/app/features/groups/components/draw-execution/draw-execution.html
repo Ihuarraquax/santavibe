@@ -1,0 +1,84 @@
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Wykonaj losowanie</h2>
+
+  <!-- Final Budget Input -->
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      Finalny budżet (PLN)
+    </label>
+    <input
+      type="number"
+      [(ngModel)]="budgetAmount"
+      [disabled]="isExecuting()"
+      class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 dark:focus:ring-green-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+      placeholder="Wprowadź finalny budżet"
+      min="0"
+      step="0.01">
+    @if (budgetError() && budgetAmount()) {
+      <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ budgetError() }}</div>
+    }
+  </div>
+
+  <!-- Execute Button -->
+  <button
+    (click)="onExecuteClick()"
+    [disabled]="!canExecute() || isExecuting()"
+    [attr.title]="buttonTooltip()"
+    class="w-full py-3 px-4 bg-green-600 dark:bg-green-700 text-white font-medium rounded-lg hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+    type="button">
+    @if (isExecuting()) {
+      <div class="flex items-center justify-center">
+        <app-loading-spinner size="sm" />
+        <span class="ml-2">Wykonywanie losowania...</span>
+      </div>
+    } @else {
+      Wykonaj losowanie
+    }
+  </button>
+
+  @if (!isValidationPassed()) {
+    <div class="mt-3 text-sm text-red-600 dark:text-red-400">
+      Nie można wykonać losowania: występują błędy walidacji
+    </div>
+  }
+
+  <!-- Warning Message -->
+  <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded">
+    <div class="flex items-start">
+      <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+      </svg>
+      <p class="text-sm text-yellow-800 dark:text-yellow-200">
+        Ta akcja jest nieodwracalna. Upewnij się, że wszyscy uczestnicy dołączyli i dodali swoje listy życzeń.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Dialog -->
+@if (showConfirmDialog()) {
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" (click)="onCancelled()">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl" (click)="$event.stopPropagation()">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        Wykonać losowanie Świętego Mikołaja?
+      </h3>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+        Ta akcja jest nieodwracalna. Wszyscy uczestnicy zostaną przypisani do swoich odbiorców i otrzymają powiadomienie e-mail. Czy na pewno chcesz kontynuować?
+      </p>
+      <div class="flex gap-3 justify-end">
+        <button
+          (click)="onCancelled()"
+          class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          type="button">
+          Anuluj
+        </button>
+        <button
+          (click)="onConfirmed()"
+          class="px-4 py-2 text-sm font-medium text-white bg-green-600 dark:bg-green-700 rounded hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          type="button">
+          Tak, wykonaj losowanie
+        </button>
+      </div>
+    </div>
+  </div>
+}

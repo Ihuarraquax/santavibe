@@ -16,6 +16,12 @@ import { ParticipantListComponent } from '../../components/participant-list/part
 import { WishlistEditorComponent } from '../../components/wishlist-editor/wishlist-editor';
 import { BudgetSuggestionComponent } from '../../components/budget-suggestion/budget-suggestion';
 import { InvitationLinkCard } from '../../components/invitation-link-card/invitation-link-card';
+import { BudgetManagementComponent } from '../../components/budget-management/budget-management';
+import { ExclusionRulesComponent } from '../../components/exclusion-rules/exclusion-rules';
+import { DrawValidationComponent } from '../../components/draw-validation/draw-validation';
+import { DrawExecutionComponent } from '../../components/draw-execution/draw-execution';
+import { AssignmentCardComponent } from '../../components/assignment-card/assignment-card';
+import { GiftSuggestionsComponent } from '../../components/gift-suggestions/gift-suggestions';
 
 /**
  * Main container component for the Group Details view.
@@ -32,7 +38,13 @@ import { InvitationLinkCard } from '../../components/invitation-link-card/invita
     ParticipantListComponent,
     WishlistEditorComponent,
     BudgetSuggestionComponent,
-    InvitationLinkCard
+    InvitationLinkCard,
+    BudgetManagementComponent,
+    ExclusionRulesComponent,
+    DrawValidationComponent,
+    DrawExecutionComponent,
+    AssignmentCardComponent,
+    GiftSuggestionsComponent
   ],
   templateUrl: './group-details.html',
   styleUrl: './group-details.css',
@@ -254,5 +266,112 @@ export class GroupDetailsComponent implements OnInit {
    */
   private hasMaxTwoDecimals(value: number): boolean {
     return /^\d+(\.\d{1,2})?$/.test(value.toString());
+  }
+
+  /**
+   * Adds an exclusion rule (organizer only).
+   */
+  onAddExclusionRule(data: { user1Id: string; user2Id: string }): void {
+    this.groupService.createExclusionRule(this.groupId(), data.user1Id, data.user2Id)
+      .pipe(
+        switchMap(() => forkJoin([
+          this.groupService.fetchExclusionRules(this.groupId()),
+          this.groupService.fetchGroupDetails(this.groupId())
+        ])),
+        catchError(err => {
+          console.error('Failed to add exclusion rule:', err);
+          this.error.set('Nie udało się dodać reguły wykluczenia. Spróbuj ponownie.');
+          return of(null);
+        })
+      )
+      .subscribe(result => {
+        if (result) {
+          const [rules, groupDto] = result;
+          this.exclusionRules.set(rules);
+          this.groupDetails.set(this.groupService.mapToViewModel(groupDto));
+          console.log('Exclusion rule added successfully');
+        }
+      });
+  }
+
+  /**
+   * Deletes an exclusion rule (organizer only).
+   */
+  onDeleteExclusionRule(ruleId: string): void {
+    this.groupService.deleteExclusionRule(this.groupId(), ruleId)
+      .pipe(
+        switchMap(() => forkJoin([
+          this.groupService.fetchExclusionRules(this.groupId()),
+          this.groupService.fetchGroupDetails(this.groupId())
+        ])),
+        catchError(err => {
+          console.error('Failed to delete exclusion rule:', err);
+          this.error.set('Nie udało się usunąć reguły wykluczenia. Spróbuj ponownie.');
+          return of(null);
+        })
+      )
+      .subscribe(result => {
+        if (result) {
+          const [rules, groupDto] = result;
+          this.exclusionRules.set(rules);
+          this.groupDetails.set(this.groupService.mapToViewModel(groupDto));
+          console.log('Exclusion rule deleted successfully');
+        }
+      });
+  }
+
+  /**
+   * Executes the Secret Santa draw (organizer only).
+   */
+  onExecuteDraw(budget: number): void {
+    this.isExecutingDraw.set(true);
+
+    this.groupService.executeDraw(this.groupId(), budget)
+      .pipe(
+        switchMap(() => this.groupService.fetchGroupDetails(this.groupId())),
+        tap(groupDto => {
+          this.groupDetails.set(this.groupService.mapToViewModel(groupDto));
+          console.log('Draw completed successfully');
+        }),
+        switchMap(() => this.groupService.fetchRecipientWishlist(this.groupId())),
+        tap(wishlist => this.recipientWishlist.set(wishlist)),
+        finalize(() => this.isExecutingDraw.set(false)),
+        catchError(err => {
+          console.error('Failed to execute draw:', err);
+          this.error.set('Nie udało się wykonać losowania. Spróbuj ponownie.');
+          return of(null);
+        })
+      )
+      .subscribe();
+  }
+
+  /**
+   * Generates AI gift suggestions (post-draw).
+   */
+  onGenerateGiftSuggestions(): void {
+    this.isGeneratingSuggestions.set(true);
+
+    this.groupService.generateGiftSuggestions(this.groupId())
+      .pipe(
+        finalize(() => this.isGeneratingSuggestions.set(false)),
+        catchError(err => {
+          console.error('Failed to generate gift suggestions:', err);
+          this.error.set('Nie udało się wygenerować propozycji prezentów. Spróbuj ponownie.');
+          return of([]);
+        })
+      )
+      .subscribe(suggestions => {
+        this.giftSuggestions.set(suggestions);
+        console.log('Gift suggestions generated successfully');
+      });
+  }
+
+  /**
+   * Cancels gift suggestion generation (post-draw).
+   */
+  onCancelGiftSuggestions(): void {
+    // For now, we just reset the loading state
+    // In a real implementation, you'd cancel the HTTP request
+    this.isGeneratingSuggestions.set(false);
   }
 }

@@ -14,13 +14,6 @@
           <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
             Dołączył: {{ participant.joinedAt | date:'short':'':'pl' }}
           </div>
-          <div class="text-sm mt-1">
-            @if (participant.hasWishlist) {
-              <span class="text-green-600 dark:text-green-400">✓ Lista życzeń dodana</span>
-            } @else {
-              <span class="text-gray-400 dark:text-gray-500">Brak listy życzeń</span>
-            }
-          </div>
         </div>
 
         @if (canRemove() && participant.canRemove) {

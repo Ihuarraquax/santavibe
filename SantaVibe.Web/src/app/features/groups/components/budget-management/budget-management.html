@@ -1,0 +1,50 @@
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Zarządzanie budżetem</h2>
+
+  <!-- Suggestion Summary -->
+  <div class="mb-4">
+    <h3 class="text-md font-medium text-gray-800 dark:text-gray-200 mb-2">Sugestie uczestników</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400">
+      {{ suggestionCount() }} z {{ participantCount() }} uczestników dodało sugestię budżetu
+    </p>
+  </div>
+
+  <!-- Anonymous Suggestions List -->
+  @if (budgetSuggestions().length > 0) {
+    <div class="mb-6">
+      <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        Sugerowane kwoty (posortowane):
+      </h4>
+      <div class="flex flex-wrap gap-2">
+        @for (suggestion of budgetSuggestions(); track $index) {
+          <div class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200">
+            {{ suggestion | number:'1.2-2' }} PLN
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+      Brak sugestii budżetu
+    </p>
+  }
+
+  <!-- Final Budget Display -->
+  <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+    <h3 class="text-md font-medium text-gray-800 dark:text-gray-200 mb-2">Finalny budżet</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+      Budżet zostanie ustalony podczas wykonywania losowania
+    </p>
+    @if (currentBudget()) {
+      <div class="flex items-center space-x-2">
+        <div class="text-2xl font-bold text-green-600 dark:text-green-400">
+          {{ currentBudget()! | number:'1.2-2' }} PLN
+        </div>
+      </div>
+    } @else {
+      <div class="text-gray-500 dark:text-gray-400 italic">
+        Nie ustalono
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 border-2 border-green-200 dark:border-green-800 shadow-lg rounded-lg p-6">
+  <h2 class="text-2xl font-bold text-green-900 dark:text-green-100 mb-4 flex items-center gap-2">
+    <span class="text-3xl">🎁</span>
+    <span>Twoje zadanie Świętego Mikołaja</span>
+  </h2>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
+    <p class="text-lg text-gray-700 dark:text-gray-300 mb-3">Kupujesz prezent dla:</p>
+
+    <div class="text-3xl font-bold text-green-700 dark:text-green-400 mb-4">
+      {{ recipientFullName() }}
+    </div>
+
+    <div class="flex items-center gap-2 mb-6">
+      <span class="text-xl text-gray-700 dark:text-gray-300">Budżet:</span>
+      <span class="text-2xl font-bold text-green-600 dark:text-green-400">
+        {{ budget() | number:'1.2-2' }} PLN
+      </span>
+    </div>
+
+    <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+        Lista życzeń {{ recipientFirstName() }}
+      </h3>
+
+      @if (hasWishlist() && wishlistContent()) {
+        <div class="bg-gray-50 dark:bg-gray-700 rounded p-4 whitespace-pre-wrap text-gray-900 dark:text-gray-100">
+          {{ wishlistContent() }}
+        </div>
+      } @else {
+        <div class="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded p-4">
+          <div class="flex items-start">
+            <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-sm text-yellow-800 dark:text-yellow-200">
+              Twoja osoba obdarowana nie dodała jeszcze listy życzeń - otrzymasz powiadomienie e-mail, gdy to zrobi.
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

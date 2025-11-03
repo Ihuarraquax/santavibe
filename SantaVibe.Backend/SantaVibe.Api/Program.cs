@@ -24,6 +24,7 @@ using SantaVibe.Api.Features.ExclusionRules.DeleteExclusionRule;
 using SantaVibe.Api.Features.Groups.ValidateDraw;
 using SantaVibe.Api.Features.Groups.ExecuteDraw;
 using SantaVibe.Api.Features.Assignments.GetMyAssignment;
+using SantaVibe.Api.Features.Groups.GetRecipientWishlist;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -276,6 +277,7 @@ try
     app.MapValidateDrawEndpoint();
     app.MapExecuteDrawEndpoint();
     app.MapGetMyAssignmentEndpoint();
+    app.MapGetRecipientWishlistEndpoint();
 
     await app.RunAsync();
 }

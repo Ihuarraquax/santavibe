@@ -87,10 +87,32 @@
             <app-invitation-link-card [invitationLink]="groupDetails()!.invitationLink!" />
           }
 
-          <!-- TODO: Add BudgetManagementComponent -->
-          <!-- TODO: Add ExclusionRulesComponent -->
-          <!-- TODO: Add DrawValidationComponent -->
-          <!-- TODO: Add DrawExecutionComponent -->
+          <!-- Budget Management -->
+          <app-budget-management
+            [budgetSuggestions]="budgetSuggestions()"
+            [participantCount]="groupDetails()!.participantCount"
+            [currentBudget]="groupDetails()!.budget" />
+
+          <!-- Exclusion Rules -->
+          <app-exclusion-rules
+            [participants]="groupDetails()!.participants || []"
+            [currentRules]="exclusionRules()"
+            (addRule)="onAddExclusionRule($event)"
+            (deleteRule)="onDeleteExclusionRule($event)" />
+
+          <!-- Draw Validation -->
+          @if (groupDetails()?.drawValidation) {
+            <app-draw-validation
+              [validationResult]="groupDetails()!.drawValidation!"
+              [participantCount]="groupDetails()!.participantCount"
+              [exclusionRuleCount]="groupDetails()!.exclusionRuleCount || 0" />
+          }
+
+          <!-- Draw Execution -->
+          <app-draw-execution
+            [isValidationPassed]="canExecuteDraw()"
+            [isExecuting]="isExecutingDraw()"
+            (executeDraw)="onExecuteDraw($event)" />
         }
       </div>
     }
@@ -136,8 +158,23 @@
             (save)="onSaveWishlist($event)" />
         </div>
 
-        <!-- TODO: Add AssignmentCardComponent -->
-        <!-- TODO: Add GiftSuggestionsComponent -->
+        <!-- Assignment Card -->
+        @if (groupDetails()?.myAssignment) {
+          <app-assignment-card
+            [recipientFirstName]="groupDetails()!.myAssignment!.recipientFirstName"
+            [recipientLastName]="groupDetails()!.myAssignment!.recipientLastName"
+            [budget]="groupDetails()!.myAssignment!.budget"
+            [hasWishlist]="groupDetails()!.myAssignment!.hasWishlist"
+            [wishlistContent]="recipientWishlist()" />
+        }
+
+        <!-- Gift Suggestions -->
+        <app-gift-suggestions
+          [suggestions]="giftSuggestions()"
+          [isGenerating]="isGeneratingSuggestions()"
+          [error]="null"
+          (generate)="onGenerateGiftSuggestions()"
+          (cancel)="onCancelGiftSuggestions()" />
       </div>
     }
   }

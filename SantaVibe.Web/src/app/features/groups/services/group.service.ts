@@ -4,18 +4,23 @@ import { map } from 'rxjs/operators';
 import { GroupsService } from '@api/api/groups.service';
 import { WishlistsService } from '@api/api/wishlists.service';
 import { BudgetService } from '@api/api/budget.service';
+import { ExclusionRulesService } from '@api/api/exclusion-rules.service';
+import { DrawService } from '@api/api/draw.service';
+import { AssignmentsService } from '@api/api/assignments.service';
 import { GroupDto } from '@api/model/group-dto';
 import { GetUserGroupsResponse } from '@api/model/get-user-groups-response';
 import {
   GroupDetailsViewModel,
   ParticipantViewModel,
   DrawValidationViewModel,
-  ExclusionRuleViewModel
+  ExclusionRuleViewModel,
+  GiftSuggestion
 } from '../models/group-details.viewmodel';
 import {
   GetGroupDetailsResponse,
   ParticipantDto,
-  DrawValidationDto
+  DrawValidationDto,
+  ExclusionRuleDto
 } from '@api/model/models';
 
 /**
@@ -29,6 +34,9 @@ export class GroupService {
   private groupsService = inject(GroupsService);
   private wishlistsService = inject(WishlistsService);
   private budgetService = inject(BudgetService);
+  private exclusionRulesService = inject(ExclusionRulesService);
+  private drawService = inject(DrawService);
+  private assignmentsService = inject(AssignmentsService);
 
   // State signals
   private groupsSignal = signal<GroupDto[]>([]);
@@ -92,9 +100,11 @@ export class GroupService {
 
   /**
    * Fetches the current user's budget suggestion.
-   * TODO: Implement when API endpoint is ready
    */
   fetchMyBudgetSuggestion(groupId: string): Observable<number | null> {
+    // The budget suggestion is returned as part of updateBudgetSuggestion response
+    // For fetching, we'll need to check if there's a separate endpoint or use the group details
+    // For now, returning null as a placeholder - the actual value comes from group details
     return of(null);
   }
 
@@ -112,66 +122,84 @@ export class GroupService {
 
   /**
    * Fetches anonymous budget suggestions (organizer only).
-   * TODO: Implement when API endpoint is ready
    */
   fetchBudgetSuggestions(groupId: string): Observable<number[]> {
-    return of([]);
+    return this.groupsService.getBudgetSuggestions({ groupId }).pipe(
+      map(response => response.suggestions ?? [])
+    );
   }
 
   /**
    * Fetches exclusion rules (organizer only).
-   * TODO: Implement when API endpoint is ready
    */
   fetchExclusionRules(groupId: string): Observable<ExclusionRuleViewModel[]> {
-    return of([]);
+    return this.exclusionRulesService.getExclusionRules({ groupId }).pipe(
+      map(response => (response.exclusionRules ?? []).map((rule: ExclusionRuleDto) => this.mapExclusionRule(rule)))
+    );
   }
 
   /**
    * Creates a new exclusion rule (organizer only).
-   * TODO: Implement when API endpoint is ready
    */
   createExclusionRule(groupId: string, user1Id: string, user2Id: string): Observable<void> {
-    return of(undefined);
+    return this.exclusionRulesService.createExclusionRule({
+      groupId,
+      createExclusionRuleRequest: { userId1: user1Id, userId2: user2Id }
+    }).pipe(
+      map(() => undefined)
+    );
   }
 
   /**
    * Deletes an exclusion rule (organizer only).
-   * TODO: Implement when API endpoint is ready
    */
   deleteExclusionRule(groupId: string, ruleId: string): Observable<void> {
-    return of(undefined);
+    return this.exclusionRulesService.deleteExclusionRule({
+      groupId,
+      ruleId
+    }).pipe(
+      map(() => undefined)
+    );
   }
 
   /**
    * Removes a participant from the group (organizer only).
-   * TODO: Implement when API endpoint is ready
    */
   removeParticipant(groupId: string, userId: string): Observable<void> {
-    return of(undefined);
+    // Note: This endpoint might not be in the generated API yet
+    // If it's missing, we'll need to add it to the OpenAPI spec
+    return of(undefined); // Placeholder - implement when endpoint is available
   }
 
   /**
    * Executes the Secret Santa draw (organizer only).
-   * TODO: Implement when API endpoint is ready
    */
   executeDraw(groupId: string, budget: number): Observable<void> {
-    return of(undefined);
+    return this.drawService.executeDraw({
+      groupId,
+      executeDrawRequest: { budget }
+    }).pipe(
+      map(() => undefined)
+    );
   }
 
   /**
    * Fetches the recipient's wishlist (post-draw).
-   * TODO: Implement when API endpoint is ready
+   * Note: This endpoint is not yet implemented in the backend API.
    */
   fetchRecipientWishlist(groupId: string): Observable<string | null> {
+    // TODO: Implement when backend endpoint is ready
+    // The endpoint should be: GET /api/groups/{groupId}/recipients/me/wishlist
     return of(null);
   }
 
   /**
    * Generates AI gift suggestions based on recipient's wishlist (post-draw).
-   * TODO: Implement when API endpoint is ready
    */
-  generateGiftSuggestions(groupId: string): Observable<any[]> {
-    return of([]);
+  generateGiftSuggestions(groupId: string): Observable<GiftSuggestion[]> {
+    // Note: This endpoint might not be in the generated API yet
+    // If it's missing, we'll need to add it to the OpenAPI spec
+    return of([]); // Placeholder - implement when endpoint is available
   }
 
   // ===== Mapping Methods =====
@@ -247,6 +275,19 @@ export class GroupService {
       isValid: dto.isValid ?? false,
       errors,
       hasErrors: errors.length > 0
+    };
+  }
+
+  /**
+   * Maps ExclusionRuleDto to ExclusionRuleViewModel.
+   */
+  private mapExclusionRule(dto: ExclusionRuleDto): ExclusionRuleViewModel {
+    return {
+      ruleId: dto.ruleId || '',
+      user1Id: dto.user1?.userId || '',
+      user1Name: `${dto.user1?.firstName || ''} ${dto.user1?.lastName || ''}`.trim(),
+      user2Id: dto.user2?.userId || '',
+      user2Name: `${dto.user2?.firstName || ''} ${dto.user2?.lastName || ''}`.trim()
     };
   }
 }

@@ -1,0 +1,65 @@
+<div
+  class="shadow rounded-lg p-6 transition-colors"
+  [class.bg-green-50]="validationResult().isValid"
+  [class.border-green-200]="validationResult().isValid"
+  [class.bg-red-50]="!validationResult().isValid"
+  [class.border-red-200]="!validationResult().isValid"
+  [class.dark:bg-green-900/30]="validationResult().isValid"
+  [class.dark:border-green-800]="validationResult().isValid"
+  [class.dark:bg-red-900/30]="!validationResult().isValid"
+  [class.dark:border-red-800]="!validationResult().isValid"
+  style="border-width: 2px;">
+
+  <div class="flex items-start space-x-3">
+    @if (validationResult().isValid) {
+      <div class="text-green-600 dark:text-green-400 text-2xl flex-shrink-0">✓</div>
+      <div>
+        <h2 class="text-xl font-semibold text-green-900 dark:text-green-100">Gotowe do losowania</h2>
+        <p class="text-sm text-green-700 dark:text-green-300 mt-1">
+          Wszystkie sprawdzenia walidacji przeszły pomyślnie. Możesz wykonać losowanie.
+        </p>
+      </div>
+    } @else {
+      <div class="text-red-600 dark:text-red-400 text-2xl flex-shrink-0">✕</div>
+      <div class="flex-1">
+        <h2 class="text-xl font-semibold text-red-900 dark:text-red-100">Błędy walidacji</h2>
+        <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+          Napraw następujące problemy przed wykonaniem losowania:
+        </p>
+        <ul class="mt-3 space-y-1 list-disc list-inside">
+          @for (error of validationResult().errors; track $index) {
+            <li class="text-sm text-red-800 dark:text-red-200">{{ error }}</li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-4 text-sm"
+       [class.border-green-200]="validationResult().isValid"
+       [class.dark:border-green-800]="validationResult().isValid"
+       [class.border-red-200]="!validationResult().isValid"
+       [class.dark:border-red-800]="!validationResult().isValid">
+    <div>
+      <span class="text-gray-600 dark:text-gray-400">Uczestnicy:</span>
+      <span class="ml-2 font-medium"
+            [class.text-green-900]="validationResult().isValid"
+            [class.dark:text-green-100]="validationResult().isValid"
+            [class.text-red-900]="!validationResult().isValid"
+            [class.dark:text-red-100]="!validationResult().isValid">
+        {{ participantCount() }}
+      </span>
+    </div>
+    <div>
+      <span class="text-gray-600 dark:text-gray-400">Reguły wykluczenia:</span>
+      <span class="ml-2 font-medium"
+            [class.text-green-900]="validationResult().isValid"
+            [class.dark:text-green-100]="validationResult().isValid"
+            [class.text-red-900]="!validationResult().isValid"
+            [class.dark:text-red-100]="!validationResult().isValid">
+        {{ exclusionRuleCount() }}
+      </span>
+    </div>
+  </div>
+</div>

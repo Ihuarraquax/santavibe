@@ -34,6 +34,7 @@ model/get-group-details-response.ts
 model/get-invitation-details-response.ts
 model/get-my-assignment-response.ts
 model/get-my-wishlist-response.ts
+model/get-recipient-wishlist-response.ts
 model/get-user-groups-response.ts
 model/group-dto.ts
 model/login-request.ts

@@ -25,6 +25,8 @@ import { CreateGroupResponse } from '../model/create-group-response';
 // @ts-ignore
 import { GetGroupDetailsResponse } from '../model/get-group-details-response';
 // @ts-ignore
+import { GetRecipientWishlistResponse } from '../model/get-recipient-wishlist-response';
+// @ts-ignore
 import { GetUserGroupsResponse } from '../model/get-user-groups-response';
 // @ts-ignore
 import { ProblemDetails } from '../model/problem-details';
@@ -44,6 +46,10 @@ export interface GetBudgetSuggestionsRequestParams {
 }
 
 export interface GetGroupDetailsRequestParams {
+    groupId: string;
+}
+
+export interface GetRecipientWishlistRequestParams {
     groupId: string;
 }
 
@@ -234,6 +240,65 @@ export class GroupsService extends BaseService {
         let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<GetGroupDetailsResponse>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get recipient\&#39;s wishlist
+     * Retrieves the wishlist of the authenticated user\&#39;s assigned gift recipient. Only available after draw completion. Returns recipient\&#39;s name, wishlist content, and last modification date.
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getRecipientWishlist(requestParameters: GetRecipientWishlistRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetRecipientWishlistResponse>;
+    public getRecipientWishlist(requestParameters: GetRecipientWishlistRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetRecipientWishlistResponse>>;
+    public getRecipientWishlist(requestParameters: GetRecipientWishlistRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetRecipientWishlistResponse>>;
+    public getRecipientWishlist(requestParameters: GetRecipientWishlistRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const groupId = requestParameters?.groupId;
+        if (groupId === null || groupId === undefined) {
+            throw new Error('Required parameter groupId was null or undefined when calling getRecipientWishlist.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('Bearer', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/groups/${this.configuration.encodeParam({name: "groupId", value: groupId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/my-assignment/wishlist`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<GetRecipientWishlistResponse>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

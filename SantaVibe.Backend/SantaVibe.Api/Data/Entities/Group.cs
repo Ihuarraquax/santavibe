@@ -1,3 +1,4 @@
+using MediatR;
 using SantaVibe.Api.Common;
 using SantaVibe.Api.Common.DomainEvents;
 using SantaVibe.Api.Data.Entities.Events;
@@ -123,6 +124,47 @@ public class Group : IHasDomainEvents
     /// Gets the total count of participants including the organizer
     /// </summary>
     public int GetParticipantCount() => GroupParticipants.Count;
+
+    /// <summary>
+    /// Removes a participant from the group
+    /// </summary>
+    /// <param name="userId">User ID to remove</param>
+    /// <returns>Result indicating success or failure with appropriate error</returns>
+    public Result<Unit> RemoveParticipant(string userId)
+    {
+        // Business rule: Cannot remove participants after draw is completed
+        if (IsDrawCompleted())
+        {
+            return Result<Unit>.Failure(
+                "DrawAlreadyCompleted",
+                "Cannot remove participants after draw has been completed");
+        }
+
+        // Business rule: Cannot remove the organizer
+        if (userId == OrganizerUserId)
+        {
+            return Result<Unit>.Failure(
+                "CannotRemoveOrganizer",
+                "The organizer cannot be removed from the group");
+        }
+
+        // Find the participant
+        var participant = GroupParticipants.FirstOrDefault(gp => gp.UserId == userId);
+        if (participant == null)
+        {
+            return Result<Unit>.Failure(
+                "ParticipantNotFound",
+                "Participant not found in this group");
+        }
+
+        // Remove the participant
+        GroupParticipants.Remove(participant);
+
+        // Update group metadata
+        UpdatedAt = DateTimeOffset.UtcNow;
+
+        return Result<Unit>.Success(Unit.Value);
+    }
 
     /// <summary>
     /// Executes the Secret Santa draw for this group

@@ -185,12 +185,11 @@ export class GroupService {
 
   /**
    * Fetches the recipient's wishlist (post-draw).
-   * Note: This endpoint is not yet implemented in the backend API.
    */
   fetchRecipientWishlist(groupId: string): Observable<string | null> {
-    // TODO: Implement when backend endpoint is ready
-    // The endpoint should be: GET /api/groups/{groupId}/recipients/me/wishlist
-    return of(null);
+    return this.groupsService.getRecipientWishlist({ groupId }).pipe(
+      map(response => response.wishlistContent ?? null)
+    );
   }
 
   /**

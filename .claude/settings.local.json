@@ -42,7 +42,9 @@
       "Bash(timeout 120 dotnet test:*)",
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|POST_ExecuteDraw_WithZeroBudget_Returns400|POST_ExecuteDraw_WithNegativeBudget_Returns400|POST_ExecuteDraw_WithExcessiveBudget_Returns400|POST_ExecuteDraw_WithThreeDecimalPlaces_Returns400\")",
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|GetMyAssignment\" -Context 0,2)",
-      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:|GetRecipientWishlist\" -Context 0,2)"
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:|GetRecipientWishlist\" -Context 0,2)",
+      "Bash(Select-String -Pattern \"Build at:|ERROR|✔ Built|✘\")",
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|RemoveParticipant\" -Context 0,2)"
     ]
   },
   "outputStyle": "default"

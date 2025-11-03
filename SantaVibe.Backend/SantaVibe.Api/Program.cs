@@ -25,6 +25,7 @@ using SantaVibe.Api.Features.Groups.ValidateDraw;
 using SantaVibe.Api.Features.Groups.ExecuteDraw;
 using SantaVibe.Api.Features.Assignments.GetMyAssignment;
 using SantaVibe.Api.Features.Groups.GetRecipientWishlist;
+using SantaVibe.Api.Features.Groups.RemoveParticipant;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -278,6 +279,7 @@ try
     app.MapExecuteDrawEndpoint();
     app.MapGetMyAssignmentEndpoint();
     app.MapGetRecipientWishlistEndpoint();
+    app.MapRemoveParticipantEndpoint();
 
     await app.RunAsync();
 }

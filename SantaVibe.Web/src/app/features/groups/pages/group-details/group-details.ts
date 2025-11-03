@@ -197,7 +197,22 @@ export class GroupDetailsComponent implements OnInit {
    */
   onRefresh(): void {
     this.isRefreshing.set(true);
-    this.loadGroupData();
+
+    this.groupService.fetchGroupDetails(this.groupId())
+      .pipe(
+        switchMap(groupDto => {
+          const viewModel = this.groupService.mapToViewModel(groupDto);
+          this.groupDetails.set(viewModel);
+
+          return this.fetchAdditionalData(viewModel);
+        }),
+        finalize(() => this.isRefreshing.set(false)),
+        catchError(err => {
+          this.handleError(err);
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 
   /**

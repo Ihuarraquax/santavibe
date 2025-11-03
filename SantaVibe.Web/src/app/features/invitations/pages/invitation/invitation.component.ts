@@ -11,6 +11,8 @@ import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { InvitationService } from '../../services/invitation.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
@@ -59,6 +61,11 @@ export class InvitationComponent implements OnInit {
   });
 
   /**
+   * Subject to handle join group requests with automatic cancellation
+   */
+  private readonly joinGroupSubject = new Subject<JoinGroupFormData>();
+
+  /**
    * Computed authentication state from service
    */
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
@@ -80,6 +87,9 @@ export class InvitationComponent implements OnInit {
 
     // Load invitation details
     this.loadInvitation(token);
+
+    // Setup join group request handler with automatic cancellation
+    this.setupJoinGroupHandler();
   }
 
   /**
@@ -134,15 +144,19 @@ export class InvitationComponent implements OnInit {
   }
 
   /**
-   * Handles join group form submission
+   * Setup handler for join group requests with automatic cancellation.
+   * Uses switchMap to automatically cancel previous requests when a new one arrives.
    */
-  handleJoinGroup(formData: JoinGroupFormData): void {
-    const token = this.state().invitation!.invitationToken!;
-
-    this.state.update(s => ({ ...s, isJoining: true }));
-
-    this.invitationService.acceptInvitation(token, formData.budgetSuggestion)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+  private setupJoinGroupHandler(): void {
+    this.joinGroupSubject
+      .pipe(
+        switchMap((formData) => {
+          const token = this.state().invitation!.invitationToken!;
+          this.state.update(s => ({ ...s, isJoining: true }));
+          return this.invitationService.acceptInvitation(token, formData.budgetSuggestion);
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe({
         next: (response) => {
           this.toastr.success('Pomyślnie dołączono do grupy!', 'Sukces');
@@ -167,6 +181,19 @@ export class InvitationComponent implements OnInit {
           }
         }
       });
+  }
+
+  /**
+   * Handles join group form submission.
+   * Emits the form data to the subject, which handles request cancellation.
+   */
+  handleJoinGroup(formData: JoinGroupFormData): void {
+    // Prevent multiple submissions while joining
+    if (this.state().isJoining) {
+      return;
+    }
+
+    this.joinGroupSubject.next(formData);
   }
 
   /**

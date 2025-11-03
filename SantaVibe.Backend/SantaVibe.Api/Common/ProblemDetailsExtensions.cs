@@ -34,6 +34,8 @@ public static class ProblemDetailsExtensions
             "SameUser" => StatusCodes.Status400BadRequest,
             "DuplicateExclusionRule" => StatusCodes.Status409Conflict,
             "InvalidExclusionRule" => StatusCodes.Status400BadRequest,
+            "CannotRemoveOrganizer" => StatusCodes.Status400BadRequest,
+            "ParticipantNotFound" => StatusCodes.Status404NotFound,
             "InternalServerError" => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest // Default for unknown errors
         };

@@ -104,6 +104,7 @@ FR-008: Participant Management
 
 FR-009: Budget Suggestions and Setting
 - When joining a group, each participant provides an anonymous budget suggestion
+- Participants can view and modify their own budget suggestion before the draw
 - Organizer can view an anonymous, sorted list of all budget suggestions
 - Organizer sets a final, binding budget for the entire group
 - Final budget applies to all participants equally
@@ -597,7 +598,8 @@ Edge cases:
 - Budget suggestion is required (can be empty)
 - Budget must be a positive number
 - System does not accept decimal values (e.g., 50.50 PLN)
-- Suggestion can be modified before draw (future enhancement)
+- Participants can view their own budget suggestion at any time
+- Suggestion can be modified before draw is completed
 
 US-018: View Pre-Draw Status
 Title: Monitor group status before draw

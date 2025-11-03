@@ -696,6 +696,49 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
 
 ---
 
+#### Get My Budget Suggestion
+
+**Endpoint**: `GET /api/groups/{groupId}/participants/me/budget-suggestion`
+
+**Description**: Retrieve the authenticated user's budget suggestion for a specific group. Available to any participant before draw completion.
+
+**Authentication**: Required (JWT Bearer token)
+
+**Path Parameters**:
+- `groupId` (UUID): Group identifier
+
+**Authorization**: User must be a participant in the group
+
+**Success Response** (200 OK):
+```json
+{
+  "groupId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "budgetSuggestion": 80.00,
+  "submittedAt": "2025-10-15T13:00:00Z"
+}
+```
+
+**Success Response - No Suggestion Submitted** (200 OK):
+```json
+{
+  "groupId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "budgetSuggestion": null,
+  "submittedAt": null
+}
+```
+
+**Business Logic**:
+- Returns the BudgetSuggestion field from GroupParticipants table for the authenticated user
+- Returns null if no budget suggestion has been submitted
+- Available before and after draw completion
+
+**Error Responses**:
+- `401 Unauthorized`: Missing or invalid token
+- `403 Forbidden`: User is not a participant
+- `404 Not Found`: Group does not exist
+
+---
+
 #### Update My Budget Suggestion
 
 **Endpoint**: `PUT /api/groups/{groupId}/participants/me/budget-suggestion`
@@ -1255,6 +1298,7 @@ These endpoints require the authenticated user to be the group organizer:
 These endpoints require the authenticated user to be a participant in the group:
 - `GET /api/groups/{groupId}`
 - `GET /api/groups/{groupId}/exclusion-rules`
+- `GET /api/groups/{groupId}/participants/me/budget-suggestion`
 - `PUT /api/groups/{groupId}/participants/me/budget-suggestion`
 - `GET /api/groups/{groupId}/draw/validate`
 

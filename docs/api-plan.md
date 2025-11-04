@@ -1181,59 +1181,24 @@ This document defines the RESTful API design for the SantaVibe Secret Santa appl
   "groupId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
   "recipientFirstName": "Maria",
   "budget": 100.00,
-  "suggestions": [
-    {
-      "category": "Books",
-      "itemName": "Agatha Christie Mystery Collection",
-      "description": "A curated box set of 5 classic Agatha Christie mystery novels, perfect for mystery enthusiasts",
-      "approximatePrice": 85.00,
-      "currency": "PLN"
-    },
-    {
-      "category": "Gardening",
-      "itemName": "Premium Gardening Tool Set",
-      "description": "Professional-grade gardening tools including pruner, trowel, and cultivator with ergonomic handles",
-      "approximatePrice": 95.00,
-      "currency": "PLN"
-    },
-    {
-      "category": "Flowers",
-      "itemName": "Heirloom Flower Seed Collection",
-      "description": "Assorted heirloom flower seeds including roses, tulips, and daisies with planting guide",
-      "approximatePrice": 45.00,
-      "currency": "PLN"
-    },
-    {
-      "category": "Books",
-      "itemName": "Polish Mystery Novel by Marek Krajewski",
-      "description": "Contemporary Polish mystery novel set in Wrocław, for fans of detective fiction",
-      "approximatePrice": 40.00,
-      "currency": "PLN"
-    },
-    {
-      "category": "Experience",
-      "itemName": "Botanical Garden Annual Pass",
-      "description": "Year-long access to local botanical gardens with seasonal exhibitions",
-      "approximatePrice": 80.00,
-      "currency": "PLN"
-    }
-  ],
+  "suggestionsMarkdown": "## Sugestie prezentów dla Maria\n\n### 1. **Książki** - Kolekcja kryminałów Agathy Christie\nCudowny zestaw 5 klasycznych powieści kryminalnych Agathy Christie, idealny dla miłośników zagadek detektywistycznych.\n\n**Przybliżona cena:** 85 PLN\n\n### 2. **Ogrodnictwo** - Zestaw narzędzi ogrodniczych premium\nProfesjonalne narzędzia ogrodnicze, w tym sekator, szpadel i kultywator z ergonomicznymi rączkami.\n\n**Przybliżona cena:** 95 PLN\n\n### 3. **Kwiaty** - Kolekcja nasion kwiatów dziedzicznych\nRóżnorodne nasiona kwiatów dziedzicznych, w tym róże, tulipany i stokrotki z poradnikiem sadzenia.\n\n**Przybliżona cena:** 45 PLN\n\n### 4. **Książki** - Polski kryminał Marka Krajewskiego\nWspółczesna polska powieść kryminalna osadzona we Wrocławiu, dla fanów literatury detektywistycznej.\n\n**Przybliżona cena:** 40 PLN\n\n### 5. **Doświadczenia** - Roczny karnet do ogrodu botanicznego\nRoczny dostęp do lokalnych ogrodów botanicznych z sezonowymi wystawami.\n\n**Przybliżona cena:** 80 PLN",
   "generatedAt": "2025-10-20T17:00:00Z",
-  "aiModel": "gpt-4o"
+  "aiModel": "openai/gpt-4o"
 }
 ```
 
 **Business Logic**:
 1. Verify draw is completed and user has assignment
 2. Fetch recipient's wishlist and name
-3. Infer gender from Polish first name (for context)
-4. Call OpenRouter.ai API with:
-   - Recipient wishlist content
-   - Inferred gender/context
-   - Budget amount
+3. Call OpenRouter.ai API with:
+   - Recipient wishlist content (or indication if empty)
+   - Recipient first name for personalization
+   - Budget amount in PLN
    - Polish market context
-5. Generate 3-5 suggestions within budget
-6. Return structured suggestions
+   - System prompt instructing AI to respond in Markdown format
+4. Generate 3-5 suggestions within budget, formatted as Markdown
+5. Return markdown-formatted suggestions with headers, lists, and bold text for better readability
+6. Frontend is responsible for rendering markdown to HTML
 
 **Error Responses**:
 - `401 Unauthorized`: Missing or invalid token

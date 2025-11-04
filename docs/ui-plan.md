@@ -18,6 +18,7 @@ SantaVibe is a Secret Santa web application built with Angular 20 using standalo
 - Framework: Angular 20 with standalone components
 - Styling: Tailwind CSS 4.1 + Flowbite 3.1
 - UI Components: Angular CDK for dialogs/overlays
+- Markdown Rendering: Markdown parser library (e.g., marked, ngx-markdown) for AI gift suggestions
 - Date/Time: date-fns with Polish locale
 - Dependency Injection: inject() function pattern
 - Control Flow: Native Angular syntax (@if, @for, @switch)
@@ -244,7 +245,8 @@ SantaVibe is a Secret Santa web application built with Angular 20 using standalo
     - AI Gift Suggestions section (expandable):
       - "Generate Gift Ideas" button
       - Loading state with cancellation
-      - 3-5 suggestions displayed in cards
+      - Markdown-formatted suggestions rendered as HTML with proper styling
+      - 3-5 suggestions displayed with headers, categories, descriptions, and prices
   - My Wishlist section (editable):
     - Current wishlist content
     - Edit and save functionality
@@ -386,7 +388,9 @@ SantaVibe is a Secret Santa web application built with Angular 20 using standalo
     - User sees their recipient's name and budget
     - User reads recipient's wishlist
     - User clicks "Generate Gift Ideas"
-    - User reviews AI suggestions
+    - Loading state displays: "Generating suggestions..."
+    - User reviews AI suggestions displayed as formatted markdown with headers, categories, and prices
+    - User can regenerate suggestions if desired
 
 ---
 
@@ -421,7 +425,7 @@ SantaVibe is a Secret Santa web application built with Angular 20 using standalo
 7. **Viewing Assignment:** `/groups/:groupId` (post-draw)
    - User sees their recipient's name and budget
    - User reads recipient's wishlist
-   - User generates AI gift suggestions
+   - User generates AI gift suggestions (rendered as formatted markdown)
 
 ---
 
@@ -751,18 +755,23 @@ These components receive data via inputs and emit events via outputs.
   - Card styling with visual hierarchy
 
 #### 5.2.11 GiftSuggestionsComponent
-- **Purpose:** Display AI-generated gift suggestions
-- **Inputs:** Suggestions array, loading state
+- **Purpose:** Display AI-generated gift suggestions with markdown rendering
+- **Inputs:** Markdown content string, loading state
 - **Outputs:** Generate suggestions event, cancel event
 - **Visual Elements:**
   - "Generate Gift Ideas" button (if not generated)
   - Loading state with cancellation option
-  - List of suggestions (3-5 cards):
-    - Category
-    - Item name
-    - Description
-    - Approximate price in PLN
+  - Rendered markdown content displaying:
+    - Headers (## and ###) for structure
+    - Bold text (**text**) for emphasis
+    - Line breaks and formatting from markdown
+    - 3-5 suggestions with categories, items, descriptions, and prices in PLN
   - Error state (if AI service fails)
+- **Technical Requirements:**
+  - Use markdown parser library (e.g., marked, ngx-markdown) to convert markdown to HTML
+  - Sanitize HTML output to prevent XSS attacks
+  - Style rendered markdown with appropriate CSS for headers, bold text, and spacing
+  - Ensure mobile-responsive rendering of markdown content
 
 ---
 
@@ -898,9 +907,13 @@ These components receive data via inputs and emit events via outputs.
 
 #### 5.4.9 GiftSuggestionService
 - **Purpose:** Manage AI gift suggestions
+- **State (Signals):**
+  - suggestionsMarkdown (markdown string or null)
+  - isLoading (boolean)
 - **Methods:**
-  - generateGiftSuggestions(groupId)
+  - generateGiftSuggestions(groupId) - Returns markdown string
   - cancelSuggestionRequest()
+  - clearSuggestions()
 
 #### 5.4.10 ErrorHandlingService
 - **Purpose:** Centralized error handling and mapping
@@ -1030,7 +1043,9 @@ These components receive data via inputs and emit events via outputs.
 ### 9.1 Input Sanitization
 
 - Angular built-in XSS protection (automatic template sanitization)
-- No innerHTML usage
+- No innerHTML usage except for sanitized markdown rendering
+- Markdown content from AI responses must be sanitized before rendering to prevent XSS
+- Use DomSanitizer or markdown library's built-in sanitization
 - Server-side validation for all inputs
 
 ### 9.2 Authentication & Authorization
@@ -1164,11 +1179,17 @@ These components receive data via inputs and emit events via outputs.
 
 ### 14.2 Phase 2 (Enhanced Features)
 
-1. AI Gift Suggestions
+1. AI Gift Suggestions (with markdown rendering capability)
 2. Profile Page
 3. Error Pages (404, 500)
 4. Enhanced Loading States
 5. Toast Notifications
+
+**Note on AI Gift Suggestions:**
+- Requires integration of markdown parsing library (marked, ngx-markdown, or similar)
+- Must implement proper HTML sanitization for markdown output
+- Style markdown elements (headers, bold, lists) with Tailwind CSS
+- Test markdown rendering on both mobile and desktop
 
 ---
 

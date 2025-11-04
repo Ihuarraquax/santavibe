@@ -9,6 +9,7 @@ api/authentication.service.ts
 api/budget.service.ts
 api/draw.service.ts
 api/exclusion-rules.service.ts
+api/gifts.service.ts
 api/groups.service.ts
 api/invitations.service.ts
 api/wishlists.service.ts
@@ -37,6 +38,7 @@ model/get-my-budget-suggestion-response.ts
 model/get-my-wishlist-response.ts
 model/get-recipient-wishlist-response.ts
 model/get-user-groups-response.ts
+model/gift-suggestions-response.ts
 model/group-dto.ts
 model/login-request.ts
 model/login-response.ts

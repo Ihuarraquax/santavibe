@@ -19,6 +19,7 @@ export * from './get-my-budget-suggestion-response';
 export * from './get-my-wishlist-response';
 export * from './get-recipient-wishlist-response';
 export * from './get-user-groups-response';
+export * from './gift-suggestions-response';
 export * from './group-dto';
 export * from './login-request';
 export * from './login-response';

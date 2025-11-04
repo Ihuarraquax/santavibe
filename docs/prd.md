@@ -183,8 +183,10 @@ FR-019: Wishlist Update Notification
 FR-020: AI Gift Suggestions
 - Authenticated users can request AI-generated gift suggestions for their assigned recipient
 - Feature is available only after the draw
-- AI analyzes: recipient's wishlist text, recipient's gender (inferred from Polish first name), budget amount
-- AI generates 3-5 gift suggestions with brief descriptions
+- AI analyzes: recipient's wishlist text, recipient's first name, budget amount
+- AI generates 3-5 gift suggestions formatted in Markdown with headers, lists, and bold text
+- Response includes category headers, item names, descriptions, and approximate prices in PLN
+- Markdown format allows for rich, readable presentation on the frontend
 - Suggestions are generated on-demand, not pre-computed
 - Feature available only to the Santa, not to the recipient for their own wishlist
 
@@ -712,19 +714,22 @@ As a participant after the draw, I want to request AI-generated gift suggestions
 Acceptance Criteria:
 - Given I am a participant and the draw is complete
 - When I click "Get Gift Suggestions" on my assignment page
-- Then the system analyzes my recipient's wishlist, name (for gender inference), and budget
-- And I receive 3-5 gift suggestions with brief descriptions
+- Then the system analyzes my recipient's wishlist, name, and budget
+- And I receive 3-5 gift suggestions formatted as Markdown with rich formatting
+- And suggestions include headers for each item, bold text for emphasis, and structured descriptions
 - And suggestions are within the budget amount
 - And suggestions are relevant to Polish market and culture
+- And the markdown content is rendered as formatted HTML on the frontend
 - And I can request suggestions multiple times
 
 Edge cases:
-- If wishlist is empty, AI generates general suggestions based on gender and budget
-- If name doesn't clearly indicate gender, AI uses neutral suggestions
+- If wishlist is empty, AI generates general suggestions based on budget and universal preferences
 - Suggestions include variety of categories (books, experiences, gadgets, etc.)
 - Each suggestion includes approximate price in PLN
+- Markdown formatting provides better readability with headers, lists, and emphasis
 - Loading state is shown while AI generates suggestions
 - Error handling if AI service is unavailable
+- Frontend uses markdown parser to render AI response
 
 US-024: Receive Draw Completion Notification
 Title: Get notified when draw is performed
@@ -817,17 +822,20 @@ As the system, I want to analyze wishlist content and generate gift suggestions 
 
 Acceptance Criteria:
 - Given a participant requests gift suggestions
-- When the AI service receives: recipient wishlist text, recipient first name (for gender), budget amount
-- Then AI generates 3-5 relevant gift suggestions
-- And each suggestion includes: item/category name, brief description, approximate price in PLN
+- When the AI service receives: recipient wishlist text, recipient first name, budget amount
+- Then AI generates 3-5 relevant gift suggestions in Markdown format
+- And each suggestion includes: category header, item name, description, approximate price in PLN
+- And suggestions are formatted with Markdown headers (##, ###), lists, and bold text (**text**)
 - And suggestions are appropriate for Polish market
 - And suggestions respect the budget constraint (at or below budget)
 - And suggestions are returned within 10 seconds
+- And response is a single markdown string ready for frontend rendering
 
 Edge cases:
-- If wishlist is empty, generate general suggestions based on gender and budget
+- If wishlist is empty, generate general suggestions based on budget and universal preferences
 - If AI service fails, show user-friendly error message
 - Suggestions include mix of specific items and general categories
+- Markdown formatting enhances readability with proper structure and emphasis
 
 US-029: Validate Exclusion Rules
 Title: Ensure draw feasibility with exclusion rules

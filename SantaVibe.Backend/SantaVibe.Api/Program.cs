@@ -27,6 +27,7 @@ using SantaVibe.Api.Features.Groups.ExecuteDraw;
 using SantaVibe.Api.Features.Assignments.GetMyAssignment;
 using SantaVibe.Api.Features.Groups.GetRecipientWishlist;
 using SantaVibe.Api.Features.Groups.RemoveParticipant;
+using SantaVibe.Api.Features.Gifts.GenerateGiftSuggestions;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -151,6 +152,27 @@ try
                     QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst,
                     QueueLimit = 0 // No queueing
                 }));
+
+        options.AddPolicy("gift-suggestions", context =>
+            System.Threading.RateLimiting.RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey: context.User?.Identity?.Name ?? context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                factory: _ => new System.Threading.RateLimiting.FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 5, // 5 requests per user
+                    Window = TimeSpan.FromHours(1), // per hour
+                    QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 0 // No queueing
+                }));
+    });
+
+    // Register HttpClient for OpenRouter.ai
+    builder.Services.AddHttpClient("OpenRouter", client =>
+    {
+        client.BaseAddress = new Uri("https://openrouter.ai/api/v1/");
+        client.Timeout = TimeSpan.FromSeconds(30);
+        // Optional headers for app identification on OpenRouter platform
+        client.DefaultRequestHeaders.Add("HTTP-Referer", "https://santavibe.app");
+        client.DefaultRequestHeaders.Add("X-Title", "SantaVibe");
     });
 
     // Register application services (Vertical Slice Architecture)
@@ -161,6 +183,9 @@ try
     builder.Services.AddScoped<IInvitationService, InvitationService>();
     builder.Services.AddScoped<SantaVibe.Api.Services.DrawValidation.IDrawValidationService, SantaVibe.Api.Services.DrawValidation.DrawValidationService>();
     builder.Services.AddScoped<IDrawAlgorithmService, DrawAlgorithmService>();
+
+    // Register AI service
+    builder.Services.AddScoped<SantaVibe.Api.Services.AI.IGiftSuggestionService, SantaVibe.Api.Services.AI.GiftSuggestionService>();
 
     // Register validation filter
     builder.Services.AddScoped(typeof(ValidationFilter<>));
@@ -282,6 +307,7 @@ try
     app.MapGetMyAssignmentEndpoint();
     app.MapGetRecipientWishlistEndpoint();
     app.MapRemoveParticipantEndpoint();
+    app.MapGenerateGiftSuggestionsEndpoint();
 
     await app.RunAsync();
 }

@@ -7,14 +7,14 @@ import { BudgetService } from '@api/api/budget.service';
 import { ExclusionRulesService } from '@api/api/exclusion-rules.service';
 import { DrawService } from '@api/api/draw.service';
 import { AssignmentsService } from '@api/api/assignments.service';
+import { GiftsService } from '@api/api/gifts.service';
 import { GroupDto } from '@api/model/group-dto';
 import { GetUserGroupsResponse } from '@api/model/get-user-groups-response';
 import {
   GroupDetailsViewModel,
   ParticipantViewModel,
   DrawValidationViewModel,
-  ExclusionRuleViewModel,
-  GiftSuggestion
+  ExclusionRuleViewModel
 } from '../models/group-details.viewmodel';
 import {
   GetGroupDetailsResponse,
@@ -37,6 +37,7 @@ export class GroupService {
   private exclusionRulesService = inject(ExclusionRulesService);
   private drawService = inject(DrawService);
   private assignmentsService = inject(AssignmentsService);
+  private giftsService = inject(GiftsService);
 
   // State signals
   private groupsSignal = signal<GroupDto[]>([]);
@@ -195,12 +196,13 @@ export class GroupService {
   }
 
   /**
-   * Generates AI gift suggestions based on recipient's wishlist (post-draw).
+   * Generates AI gift suggestions in markdown format based on recipient's wishlist (post-draw).
+   * @returns Observable<string> - Markdown-formatted gift suggestions
    */
-  generateGiftSuggestions(groupId: string): Observable<GiftSuggestion[]> {
-    // Note: This endpoint might not be in the generated API yet
-    // If it's missing, we'll need to add it to the OpenAPI spec
-    return of([]); // Placeholder - implement when endpoint is available
+  generateGiftSuggestions(groupId: string): Observable<string> {
+    return this.giftsService.generateGiftSuggestions({ groupId }).pipe(
+      map(response => response.suggestionsMarkdown ?? '')
+    );
   }
 
   // ===== Mapping Methods =====

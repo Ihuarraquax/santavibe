@@ -1,7 +1,7 @@
 <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
   <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Propozycje prezentów AI</h2>
 
-  @if (suggestions().length === 0 && !isGenerating()) {
+  @if (!hasSuggestions() && !isGenerating()) {
     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
       Otrzymaj spersonalizowane propozycje prezentów na podstawie listy życzeń odbiorcy
     </p>
@@ -28,7 +28,7 @@
     </div>
   }
 
-  @if (suggestions().length > 0) {
+  @if (hasSuggestions()) {
     <div class="mb-4">
       <button
         (click)="generate.emit()"
@@ -39,23 +39,10 @@
       </button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      @for (suggestion of suggestions(); track $index) {
-        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow bg-white dark:bg-gray-700/50">
-          <div class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase mb-1">
-            {{ suggestion.category }}
-          </div>
-          <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
-            {{ suggestion.itemName }}
-          </h3>
-          <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
-            {{ suggestion.description }}
-          </p>
-          <div class="text-lg font-semibold text-green-600 dark:text-green-400">
-            ~{{ suggestion.approximatePrice | number:'1.2-2' }} PLN
-          </div>
-        </div>
-      }
+    <!-- Render markdown as HTML -->
+    <div
+      class="markdown-content prose prose-sm md:prose-base dark:prose-invert max-w-none"
+      [innerHTML]="suggestionsHtml()">
     </div>
   }
 

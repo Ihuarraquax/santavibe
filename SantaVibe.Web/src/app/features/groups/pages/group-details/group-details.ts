@@ -6,8 +6,7 @@ import { forkJoin, switchMap, finalize, tap, catchError, of } from 'rxjs';
 import { GroupService } from '../../services/group.service';
 import {
   GroupDetailsViewModel,
-  ExclusionRuleViewModel,
-  GiftSuggestion
+  ExclusionRuleViewModel
 } from '../../models/group-details.viewmodel';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { ErrorAlertComponent } from '../../../../shared/components/error-alert/error-alert.component';
@@ -80,7 +79,7 @@ export class GroupDetailsComponent implements OnInit {
 
   // Post-draw states
   recipientWishlist = signal<string | null>(null);
-  giftSuggestions = signal<GiftSuggestion[]>([]);
+  giftSuggestionsMarkdown = signal<string>('');
   isGeneratingSuggestions = signal<boolean>(false);
 
   // Computed signals
@@ -361,7 +360,7 @@ export class GroupDetailsComponent implements OnInit {
   }
 
   /**
-   * Generates AI gift suggestions (post-draw).
+   * Generates AI gift suggestions in markdown format (post-draw).
    */
   onGenerateGiftSuggestions(): void {
     this.isGeneratingSuggestions.set(true);
@@ -372,11 +371,11 @@ export class GroupDetailsComponent implements OnInit {
         catchError(err => {
           console.error('Failed to generate gift suggestions:', err);
           this.error.set('Nie udało się wygenerować propozycji prezentów. Spróbuj ponownie.');
-          return of([]);
+          return of('');
         })
       )
-      .subscribe(suggestions => {
-        this.giftSuggestions.set(suggestions);
+      .subscribe(markdown => {
+        this.giftSuggestionsMarkdown.set(markdown);
         console.log('Gift suggestions generated successfully');
       });
   }

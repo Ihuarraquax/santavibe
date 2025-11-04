@@ -170,7 +170,7 @@
 
         <!-- Gift Suggestions -->
         <app-gift-suggestions
-          [suggestions]="giftSuggestions()"
+          [suggestionsMarkdown]="giftSuggestionsMarkdown()"
           [isGenerating]="isGeneratingSuggestions()"
           [error]="null"
           (generate)="onGenerateGiftSuggestions()"

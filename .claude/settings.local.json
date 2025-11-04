@@ -44,7 +44,8 @@
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|GetMyAssignment\" -Context 0,2)",
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Total time:|GetRecipientWishlist\" -Context 0,2)",
       "Bash(Select-String -Pattern \"Build at:|ERROR|✔ Built|✘\")",
-      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|RemoveParticipant\" -Context 0,2)"
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|RemoveParticipant\" -Context 0,2)",
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run\")"
     ]
   },
   "outputStyle": "default"

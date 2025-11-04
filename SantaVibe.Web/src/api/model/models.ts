@@ -15,6 +15,7 @@ export * from './get-exclusion-rules-response';
 export * from './get-group-details-response';
 export * from './get-invitation-details-response';
 export * from './get-my-assignment-response';
+export * from './get-my-budget-suggestion-response';
 export * from './get-my-wishlist-response';
 export * from './get-recipient-wishlist-response';
 export * from './get-user-groups-response';

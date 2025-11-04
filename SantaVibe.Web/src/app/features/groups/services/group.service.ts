@@ -165,9 +165,12 @@ export class GroupService {
    * Removes a participant from the group (organizer only).
    */
   removeParticipant(groupId: string, userId: string): Observable<void> {
-    // Note: This endpoint might not be in the generated API yet
-    // If it's missing, we'll need to add it to the OpenAPI spec
-    return of(undefined); // Placeholder - implement when endpoint is available
+    return this.groupsService.removeParticipant({
+      groupId,
+      userId
+    }).pipe(
+      map(() => undefined)
+    );
   }
 
   /**

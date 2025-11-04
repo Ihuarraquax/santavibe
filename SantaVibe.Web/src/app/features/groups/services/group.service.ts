@@ -102,10 +102,9 @@ export class GroupService {
    * Fetches the current user's budget suggestion.
    */
   fetchMyBudgetSuggestion(groupId: string): Observable<number | null> {
-    // The budget suggestion is returned as part of updateBudgetSuggestion response
-    // For fetching, we'll need to check if there's a separate endpoint or use the group details
-    // For now, returning null as a placeholder - the actual value comes from group details
-    return of(null);
+    return this.budgetService.getMyBudgetSuggestion({ groupId }).pipe(
+      map(response => response.budgetSuggestion ?? null)
+    );
   }
 
   /**

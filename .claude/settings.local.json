@@ -50,7 +50,8 @@
       "Bash(Select-String -Pattern \"Build succeeded|Build FAILED|error\" -Context 0,2)",
       "WebFetch(domain:openrouter.ai)",
       "Bash(dotnet ef migrations:*)",
-      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|Error Message:|Stack Trace:\" -Context 0,2)"
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|Error Message:|Stack Trace:\" -Context 0,2)",
+      "Bash(timeout 10 npm start)"
     ]
   },
   "outputStyle": "default"

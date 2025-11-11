@@ -46,6 +46,12 @@ export const routes: Routes = [
     title: 'Zaproszenie do grupy - SantaVibe'
   },
   {
+    path: 'profile',
+    loadComponent: () => import('./features/profile/pages/profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [authGuard],
+    title: 'Profil - SantaVibe'
+  },
+  {
     path: '**',
     redirectTo: '/groups'
   }

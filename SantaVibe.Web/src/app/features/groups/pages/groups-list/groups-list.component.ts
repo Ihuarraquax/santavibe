@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GroupService } from '../../services/group.service';
 import { GroupCardViewModel, DrawStatus } from '../../models/group.types';
 import { GroupDto } from '@api/model/group-dto';
@@ -27,7 +27,8 @@ import { ErrorAlertRetryComponent } from '../../../../shared/components/error-al
     SkeletonLoaderComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
-    ErrorAlertRetryComponent
+    ErrorAlertRetryComponent,
+    RouterLink
   ]
 })
 export class GroupsListComponent {

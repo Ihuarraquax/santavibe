@@ -1,0 +1,41 @@
+<div class="container mx-auto py-8 px-4 max-w-7xl">
+  <!-- Header with back button -->
+  <header class="mb-6">
+    <a
+      routerLink="/groups"
+      class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 mb-4">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Powrót do grup
+    </a>
+  </header>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center min-h-[400px]">
+      <app-loading-spinner message="Ładowanie profilu..." />
+    </div>
+  }
+
+  @if (!isLoading() && profile()) {
+    <app-profile-info
+      [profile]="profile()!"
+      [isEditing]="isEditing()"
+      [isSaving]="isSaving()"
+      (edit)="onEdit()"
+      (save)="onSave($event)"
+      (cancel)="onCancel()"
+      (changePassword)="onChangePassword()"
+    />
+  }
+
+  @if (error()) {
+    <div class="max-w-2xl mx-auto mt-4">
+      <app-error-alert
+        [error]="error()"
+        [dismissible]="true"
+        (dismiss)="onErrorDismiss()"
+      />
+    </div>
+  }
+</div>

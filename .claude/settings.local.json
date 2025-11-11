@@ -48,7 +48,9 @@
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run\")",
       "Bash(nul)",
       "Bash(Select-String -Pattern \"Build succeeded|Build FAILED|error\" -Context 0,2)",
-      "WebFetch(domain:openrouter.ai)"
+      "WebFetch(domain:openrouter.ai)",
+      "Bash(dotnet ef migrations:*)",
+      "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|Error Message:|Stack Trace:\" -Context 0,2)"
     ]
   },
   "outputStyle": "default"

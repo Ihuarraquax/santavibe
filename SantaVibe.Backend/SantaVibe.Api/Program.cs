@@ -31,6 +31,9 @@ using SantaVibe.Api.Features.Gifts.GenerateGiftSuggestions;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
+using SantaVibe.Api.Services.Email;
+using SantaVibe.Api.Services.Notifications;
+using SantaVibe.Api.BackgroundServices;
 using Serilog;
 
 // Configure Serilog (basic configuration, will be enhanced with app configuration later)
@@ -186,6 +189,31 @@ try
 
     // Register AI service
     builder.Services.AddScoped<SantaVibe.Api.Services.AI.IGiftSuggestionService, SantaVibe.Api.Services.AI.GiftSuggestionService>();
+
+    // Register email services
+    builder.Services.Configure<ResendOptions>(
+        builder.Configuration.GetSection(ResendOptions.SectionName));
+    builder.Services.AddHttpClient<IEmailService, ResendEmailService>();
+
+    // Register notification services
+    builder.Services.AddScoped<IWishlistNotificationService, WishlistNotificationService>();
+
+    // Register background worker (conditionally based on configuration)
+    builder.Services.Configure<EmailNotificationWorkerOptions>(
+        builder.Configuration.GetSection(EmailNotificationWorkerOptions.SectionName));
+
+    // Always register as scoped service for manual triggering (tests)
+    builder.Services.AddScoped<IEmailNotificationProcessor, EmailNotificationWorker>();
+
+    // Conditionally register as hosted service for automatic background processing
+    var workerOptions = builder.Configuration
+        .GetSection(EmailNotificationWorkerOptions.SectionName)
+        .Get<EmailNotificationWorkerOptions>();
+
+    if (workerOptions?.Enabled ?? true)
+    {
+        builder.Services.AddHostedService<EmailNotificationWorker>();
+    }
 
     // Register validation filter
     builder.Services.AddScoped(typeof(ValidationFilter<>));

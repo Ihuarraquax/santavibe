@@ -12,8 +12,6 @@ jobs:
     defaults:
       run:
         working-directory: ./SantaVibe.Web
-    env:
-      NODE_VERSION: '20.11.1'
 
     steps:
       - name: Checkout code
@@ -22,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: './SantaVibe.Web/.nvmrc'
           cache: 'npm'
           cache-dependency-path: './SantaVibe.Web/package-lock.json'
 
@@ -51,8 +49,6 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          cache: true
-          cache-dependency-path: './SantaVibe.Backend/**/packages.lock.json'
 
       - name: Restore dependencies
         run: dotnet restore

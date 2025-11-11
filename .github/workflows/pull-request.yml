@@ -1,0 +1,72 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  frontend-lint:
+    name: Frontend - Lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./SantaVibe.Web
+    env:
+      NODE_VERSION: '20.11.1'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: './SantaVibe.Web/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+  backend-build-test:
+    name: Backend - Build & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./SantaVibe.Backend
+    env:
+      DOTNET_VERSION: '9.0.x'
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+          cache-dependency-path: './SantaVibe.Backend/**/packages.lock.json'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run tests with coverage
+        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: coverage-reports
+          path: ./SantaVibe.Backend/coverage/**/coverage.cobertura.xml
+          retention-days: 7

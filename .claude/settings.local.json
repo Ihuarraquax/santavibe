@@ -51,7 +51,12 @@
       "WebFetch(domain:openrouter.ai)",
       "Bash(dotnet ef migrations:*)",
       "Bash(Select-String -Pattern \"Total tests:|Passed:|Failed:|Test Run|Error Message:|Stack Trace:\" -Context 0,2)",
-      "Bash(timeout 10 npm start)"
+      "Bash(timeout 10 npm start)",
+      "Bash(if [ ! -d \".github/workflows\" ])",
+      "Bash(then mkdir -p .github/workflows)",
+      "Bash(else echo \"Directory already exists\")",
+      "Bash(fi)",
+      "Bash(curl:*)"
     ]
   },
   "outputStyle": "default"

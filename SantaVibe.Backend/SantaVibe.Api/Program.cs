@@ -28,6 +28,9 @@ using SantaVibe.Api.Features.Assignments.GetMyAssignment;
 using SantaVibe.Api.Features.Groups.GetRecipientWishlist;
 using SantaVibe.Api.Features.Groups.RemoveParticipant;
 using SantaVibe.Api.Features.Gifts.GenerateGiftSuggestions;
+using SantaVibe.Api.Features.Profile;
+using SantaVibe.Api.Features.Profile.GetProfile;
+using SantaVibe.Api.Features.Profile.UpdateProfile;
 using SantaVibe.Api.Middleware;
 using SantaVibe.Api.Services;
 using SantaVibe.Api.Common;
@@ -183,6 +186,7 @@ try
     builder.Services.AddScoped<IUserAccessor, UserAccessor>();
     builder.Services.AddScoped<IRegisterService, RegisterService>();
     builder.Services.AddScoped<ILoginService, LoginService>();
+    builder.Services.AddScoped<IProfileService, ProfileService>();
     builder.Services.AddScoped<IInvitationService, InvitationService>();
     builder.Services.AddScoped<SantaVibe.Api.Services.DrawValidation.IDrawValidationService, SantaVibe.Api.Services.DrawValidation.DrawValidationService>();
     builder.Services.AddScoped<IDrawAlgorithmService, DrawAlgorithmService>();
@@ -317,6 +321,8 @@ try
     // Map endpoints (Vertical Slice Architecture)
     app.MapRegisterEndpoint();
     app.MapLoginEndpoint();
+    app.MapGetProfileEndpoint();
+    app.MapUpdateProfileEndpoint();
     app.MapGetUserGroupsEndpoint();
     app.MapGetGroupDetailsEndpoint();
     app.MapCreateGroupEndpoint();

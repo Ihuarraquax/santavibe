@@ -68,7 +68,7 @@
         <app-join-group-form
           [isJoining]="invitationState().isJoining"
           [groupName]="invitationState().invitation!.groupName || 'Grupa'"
-          (submit)="handleJoinGroup($event)" />
+          (submitted)="handleJoinGroup($event)" />
       }
     </div>
   }

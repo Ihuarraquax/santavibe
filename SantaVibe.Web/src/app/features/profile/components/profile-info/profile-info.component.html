@@ -15,41 +15,41 @@
       <div class="space-y-4">
         <!-- First Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Imię
-          </label>
+          </div>
           <p class="text-gray-900 dark:text-white">{{ profile().firstName }}</p>
         </div>
 
         <!-- Last Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Nazwisko
-          </label>
+          </div>
           <p class="text-gray-900 dark:text-white">{{ profile().lastName }}</p>
         </div>
 
         <!-- Email (always read-only) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Email
-          </label>
+          </div>
           <p class="text-gray-900 dark:text-white">{{ profile().email }}</p>
         </div>
 
         <!-- Created At -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Członek od
-          </label>
+          </div>
           <p class="text-gray-900 dark:text-white">{{ profile().createdAt }}</p>
         </div>
 
         <!-- Last Login -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Ostatnie logowanie
-          </label>
+          </div>
           <p class="text-gray-900 dark:text-white">{{ profile().lastLoginAt }}</p>
         </div>
       </div>
@@ -98,26 +98,26 @@
 
         <!-- Email (read-only even in edit mode) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Email
-          </label>
+          </div>
           <p class="text-gray-500 dark:text-gray-400">{{ profile().email }}</p>
           <span class="text-xs text-gray-500 dark:text-gray-400">Email nie może być zmieniony</span>
         </div>
 
         <!-- Created At (read-only) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Członek od
-          </label>
+          </div>
           <p class="text-gray-500 dark:text-gray-400">{{ profile().createdAt }}</p>
         </div>
 
         <!-- Last Login (read-only) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Ostatnie logowanie
-          </label>
+          </div>
           <p class="text-gray-500 dark:text-gray-400">{{ profile().lastLoginAt }}</p>
         </div>
       </div>

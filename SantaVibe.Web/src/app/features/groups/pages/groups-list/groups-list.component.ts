@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { GroupService } from '../../services/group.service';
 import { GroupCardViewModel, DrawStatus } from '../../models/group.types';
@@ -31,7 +31,7 @@ import { ErrorAlertRetryComponent } from '../../../../shared/components/error-al
     RouterLink
   ]
 })
-export class GroupsListComponent {
+export class GroupsListComponent implements OnInit {
   // Injected services
   private groupService = inject(GroupService);
   private router = inject(Router);

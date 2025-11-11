@@ -183,7 +183,7 @@ export class AuthService {
         }
         this.currentUserSignal.set(user);
         this.isAuthenticatedSignal.set(true);
-      } catch (error) {
+      } catch {
         // Invalid stored user data, clear everything
         this.clearStoredToken();
       }

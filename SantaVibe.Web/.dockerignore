@@ -1,0 +1,14 @@
+**/.git
+**/.gitignore
+**/.dockerignore
+**/Dockerfile
+**/docker-compose.*
+**/node_modules
+**/dist
+**/.angular
+**/.vscode
+**/coverage
+**/*.log
+**/npm-debug.log*
+**/.DS_Store
+**/README.md

@@ -69,7 +69,7 @@ export class JoinGroupFormComponent {
   /**
    * Emits when form is submitted with valid data
    */
-  submit = output<JoinGroupFormData>();
+  submitted = output<JoinGroupFormData>();
 
   /**
    * Reactive form with budget suggestion field
@@ -90,7 +90,7 @@ export class JoinGroupFormComponent {
       const formData: JoinGroupFormData = {
         budgetSuggestion: this.joinForm.value.budgetSuggestion ?? null
       };
-      this.submit.emit(formData);
+      this.submitted.emit(formData);
     }
   }
 }

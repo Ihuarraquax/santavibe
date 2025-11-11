@@ -62,18 +62,18 @@ export class FormInputComponent {
   /**
    * Emits when the input loses focus.
    */
-  blur = output<void>();
+  blurred = output<void>();
 
   /**
    * Emits when the input value changes.
    */
-  change = output<string>();
+  valueChange = output<string>();
 
   /**
    * Handles input blur event.
    */
   onBlur(): void {
-    this.blur.emit();
+    this.blurred.emit();
   }
 
   /**
@@ -82,7 +82,7 @@ export class FormInputComponent {
   onInput(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.value.set(target.value);
-    this.change.emit(target.value);
+    this.valueChange.emit(target.value);
   }
 
   /**

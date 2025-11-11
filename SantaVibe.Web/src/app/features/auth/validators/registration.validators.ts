@@ -1,6 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
-import { inject } from '@angular/core';
 
 /**
  * Custom validators for registration form fields.

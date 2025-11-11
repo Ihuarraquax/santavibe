@@ -56,7 +56,8 @@
       "Bash(then mkdir -p .github/workflows)",
       "Bash(else echo \"Directory already exists\")",
       "Bash(fi)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm run lint:*)"
     ]
   },
   "outputStyle": "default"

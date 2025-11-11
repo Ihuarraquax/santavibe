@@ -9,10 +9,10 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { GroupsService } from '@api/api/groups.service';
 import { CreateGroupRequest } from '@api/model/create-group-request';
-import { CreateGroupResponse } from '@api/model/create-group-response';
 import { ErrorAlertComponent } from '../../../../shared/components/error-alert/error-alert.component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 
@@ -83,7 +83,7 @@ export class GroupCreateComponent {
     };
 
     this.groupsService.createGroup({ createGroupRequest: request }).subscribe({
-      next: (response: CreateGroupResponse) => {
+      next: () => {
         this.isLoading.set(false);
         this.form.markAsPristine();
 
@@ -97,7 +97,7 @@ export class GroupCreateComponent {
         // Navigate back to groups list
         this.router.navigate(['/groups']);
       },
-      error: (error: any) => {
+      error: (error: HttpErrorResponse) => {
         this.isLoading.set(false);
         const errorMessage = this.parseErrorMessage(error);
         this.error.set(errorMessage);
@@ -137,7 +137,7 @@ export class GroupCreateComponent {
     );
   }
 
-  private parseErrorMessage(error: any): string {
+  private parseErrorMessage(error: HttpErrorResponse): string {
     // Network error
     if (error.status === 0) {
       return 'Nie można połączyć się z serwerem. Sprawdź połączenie internetowe.';

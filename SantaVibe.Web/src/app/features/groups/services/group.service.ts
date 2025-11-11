@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GroupsService } from '@api/api/groups.service';
 import { WishlistsService } from '@api/api/wishlists.service';
@@ -52,7 +52,7 @@ export class GroupService {
    * @param includeCompleted - Whether to include groups where draw is completed (default: true)
    * @returns Promise of GetUserGroupsResponse
    */
-  async fetchGroups(includeCompleted: boolean = true): Promise<GetUserGroupsResponse> {
+  async fetchGroups(includeCompleted = true): Promise<GetUserGroupsResponse> {
     const response = await firstValueFrom(
       this.groupsService.getUserGroups({ includeCompleted })
     );

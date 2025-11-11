@@ -8,7 +8,6 @@ import { ValidationService } from '../../services/validation.service';
 import { PasswordStrengthIndicatorComponent } from '../password-strength-indicator/password-strength-indicator.component';
 import { ErrorAlertComponent } from '../../../../shared/components/error-alert/error-alert.component';
 import { RegisterRequest } from '@api/model/register-request';
-import { RegisterResponse } from '@api/model/register-response';
 import { ErrorResponse } from '@api/model/error-response';
 
 /**
@@ -107,7 +106,7 @@ export class RegistrationFormComponent {
 
     // Subscribe to the observable returned by register
     this.authService.register(request).subscribe({
-      next: (response: RegisterResponse) => {
+      next: () => {
         // Registration successful
         this.isSubmitting.set(false);
         // Navigate to return URL or groups list

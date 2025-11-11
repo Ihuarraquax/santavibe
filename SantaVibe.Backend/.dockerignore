@@ -1,0 +1,14 @@
+**/.git
+**/.gitignore
+**/.dockerignore
+**/Dockerfile
+**/docker-compose.*
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/*.user
+**/*.DotSettings.user
+**/test_output.txt
+**/.editorconfig
+**/README.md

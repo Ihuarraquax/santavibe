@@ -33,7 +33,7 @@ export class ProfileInfoComponent {
   // Outputs
   edit = output<void>();
   save = output<UpdateProfileRequest>();
-  cancel = output<void>();
+  cancelled = output<void>();
   changePassword = output<void>();
 
   // Local state
@@ -165,7 +165,7 @@ export class ProfileInfoComponent {
    */
   protected onCancelClick(): void {
     this.validationErrors.set({});
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 
   /**

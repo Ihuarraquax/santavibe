@@ -47,4 +47,4 @@ AI - Communication with models through Openrouter.ai service:
 
 CI/CD and Hosting:
 - Github Actions for creating CI/CD pipelines
-- DigitalOcean for application hosting via Docker image
+- Fly.io for application hosting via Docker image

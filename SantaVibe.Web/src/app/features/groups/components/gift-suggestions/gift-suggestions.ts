@@ -24,7 +24,7 @@ export class GiftSuggestionsComponent {
 
   // Output signals
   generate = output<void>();
-  cancel = output<void>();
+  cancelled = output<void>();
 
   // Computed signal to convert markdown to sanitized HTML
   suggestionsHtml = computed<SafeHtml>(() => {

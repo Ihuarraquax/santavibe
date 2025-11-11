@@ -1,8 +1,9 @@
 import { Component, OnInit, inject, signal, computed, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { forkJoin, switchMap, finalize, tap, catchError, of } from 'rxjs';
+import { forkJoin, switchMap, finalize, tap, catchError, of, Observable } from 'rxjs';
 import { GroupService } from '../../services/group.service';
 import {
   GroupDetailsViewModel,
@@ -130,7 +131,7 @@ export class GroupDetailsComponent implements OnInit {
    * Fetches additional data based on group state (pre-draw vs post-draw, organizer vs participant).
    */
   private fetchAdditionalData(viewModel: GroupDetailsViewModel) {
-    const requests: any[] = [];
+    const requests: Observable<unknown>[] = [];
 
     if (!viewModel.drawCompleted) {
       // Pre-draw: fetch budget suggestion only
@@ -178,7 +179,7 @@ export class GroupDetailsComponent implements OnInit {
   /**
    * Handles errors from API calls.
    */
-  private handleError(err: any): void {
+  private handleError(err: HttpErrorResponse): void {
     console.error('Error loading group data:', err);
 
     if (err.status === 403) {

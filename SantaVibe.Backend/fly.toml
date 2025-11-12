@@ -13,7 +13,8 @@ primary_region = 'fra'
   ASPNETCORE_ENVIRONMENT = 'Production'
   DOTNET_CLI_TELEMETRY_OPTOUT = 'true'
   DOTNET_NOLOGO = 'true'
-  App__BaseUrl = 'https://santavibe-api.fly.dev'
+  App__BaseUrl = 'https://santavibe-web.fly.dev'
+  Cors__AllowedOrigins = 'https://santavibe-web.fly.dev,https://santavibe.pl'
 
 [http_service]
   internal_port = 8080

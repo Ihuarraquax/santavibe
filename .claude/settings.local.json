@@ -57,7 +57,8 @@
       "Bash(else echo \"Directory already exists\")",
       "Bash(fi)",
       "Bash(curl:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(fly deploy)"
     ]
   },
   "outputStyle": "default"

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.santavibe.pl'
+  apiUrl: 'https://santavibe-api.fly.dev'
 };

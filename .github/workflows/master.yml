@@ -69,6 +69,7 @@ jobs:
     name: Deploy Backend to Fly.io
     runs-on: ubuntu-latest
     needs: [backend-build-test]
+    environment: PROD
     defaults:
       run:
         working-directory: ./SantaVibe.Backend
@@ -89,6 +90,7 @@ jobs:
     name: Deploy Frontend to Fly.io
     runs-on: ubuntu-latest
     needs: [frontend-lint, deploy-backend]
+    environment: PROD
     defaults:
       run:
         working-directory: ./SantaVibe.Web

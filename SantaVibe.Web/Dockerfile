@@ -22,7 +22,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy built app from build stage
-COPY --from=build /app/dist/santa-vibe/browser .
+COPY --from=build /app/dist/SantaVibe/browser .
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf

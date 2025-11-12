@@ -121,11 +121,19 @@ try
     builder.Services.AddAuthorization();
 
     // Add CORS services
+    var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                         ?? Array.Empty<string>();
+
+    if (allowedOrigins.Length == 0)
+    {
+        Log.Warning("No CORS origins configured. API will reject cross-origin requests.");
+    }
+
     builder.Services.AddCors(options =>
     {
-        options.AddPolicy("DevelopmentPolicy", policy =>
+        options.AddPolicy("CorsPolicy", policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins(allowedOrigins)
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowCredentials();
@@ -303,10 +311,7 @@ try
     app.UseHttpsRedirection();
 
     // Apply CORS middleware (must be before authentication and authorization)
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseCors("DevelopmentPolicy");
-    }
+    app.UseCors("CorsPolicy");
 
     // Apply rate limiting middleware (skip in testing environment)
     if (!app.Configuration.GetValue<bool>("DisableRateLimiting"))
